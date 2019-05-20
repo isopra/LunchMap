@@ -36,4 +36,4 @@ jobs:
 workflows:
   build-and-test:
     jobs:
-      - build
+      - package
