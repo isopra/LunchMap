@@ -102,7 +102,7 @@ workflows:
             - test
       - deploy:
           requires:
-            - hold
+            - package
           filters:
             branches:
               only:
