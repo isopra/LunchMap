@@ -76,7 +76,7 @@ jobs:
           at: .
       - run:
           name: package
-          command: mvm package
+          command: mvn package
       - run:
           name: move artifacts
           command: |
