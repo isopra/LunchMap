@@ -81,34 +81,14 @@ jobs:
           name: move artifacts
           command: |
             mkdir artifacts
-            mv ./target/*-SNAPSHOT.jar ./artifacts
+            cp ./target/*-SNAPSHOT.jar ./artifacts/
       - store_artifacts:
-          path: artifacts/*
+          path: ./artifacts/*
   deploy:
     executor:
       name: default
     steps:
       - run: echo deploy
-  slack-notification-approval-pending:
-    executor:
-      name: default
-    steps:
-      - run:
-          name: 'send notification to slack'
-          command: |
-            curl -X POST -H 'Content-type: application/json' \
-              --data "{\"text\": \"Please approve workflow from <https://circleci.com/workflow-run/${CIRCLE_WORKFLOW_ID}|here>.\"}" \
-              $SLACK_WEBHOOK_URL
-  slack-notification-approved:
-    executor:
-      name: default
-    steps:
-      - run:
-          name: 'send notification to slack'
-          command: |
-            curl -X POST -H 'Content-type: application/json' \
-              --data "{\"text\": \"Approved workflow from <https://circleci.com/workflow-run/${CIRCLE_WORKFLOW_ID}|here>.\"}" \
-              $SLACK_WEBHOOK_URL
 
 workflows:
   build-and-test-and-deploy:
@@ -120,24 +100,10 @@ workflows:
       - package:
           requires:
             - test
-      - hold:
-          type: approval
-          requires:
-            - package
-          filters:
-            branches:
-              only:
-                - master
-      - slack-notification-approval-pending:
-          requires:
-            - package
-          filters:
-            branches:
-              only:
-                - master
       - deploy:
           requires:
             - hold
-      - slack-notification-approved:
-          requires:
-            - hold
+          filters:
+            branches:
+              only:
+                - master
