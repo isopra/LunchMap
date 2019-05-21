@@ -83,7 +83,7 @@ jobs:
             mkdir artifacts
             cp ./target/*-SNAPSHOT.jar ./artifacts/
       - store_artifacts:
-          path: ./artifacts/*
+          path: ./artifacts
   deploy:
     executor:
       name: default
