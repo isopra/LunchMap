@@ -21,7 +21,7 @@ jobs:
           name: dependency:go-offline
           command: mvn dependency:go-offline
       - save_cache:
-          keys: v1-dependencies-{{ cheacksum "pom.xml" }}
+          key: v1-dependencies-{{ cheacksum "pom.xml" }}
           paths:
             - ~/.m2
       - run:
@@ -44,7 +44,7 @@ jobs:
           name: dependency:go-offline
           command: mvn dependency:go-offline
       - save_cache:
-          keys: v1-dependencies-{{ cheacksum "pom.xml" }}
+          key: v1-dependencies-{{ cheacksum "pom.xml" }}
           paths:
             - ~/.m2
       - attach_workspace:
@@ -65,9 +65,11 @@ jobs:
           keys:
             - v1-dependencies-{{ cheacksum "pom.xml" }}
             - v1-dependencies-
-      - run: mvn dependency:go-offline
+      - run:
+          name: mvn dependency:go-offline
+          command: mvn dependency:go-offline
       - save_cache:
-          keys: v1-dependencies-{{ cheacksum "pom.xml" }}
+          key: v1-dependencies-{{ cheacksum "pom.xml" }}
           paths:
             - ~/.m2
       - attach_workspace:
