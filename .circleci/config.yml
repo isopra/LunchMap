@@ -15,13 +15,13 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-dependencies-{{ cheacksum "pom.xml" }}
+            - v1-dependencies-{{ checksum "pom.xml" }}
             - v1-dependencies-
       - run:
           name: dependency:go-offline
           command: mvn dependency:go-offline
       - save_cache:
-          key: v1-dependencies-{{ cheacksum "pom.xml" }}
+          key: v1-dependencies-{{ checksum "pom.xml" }}
           paths:
             - ~/.m2
       - run:
@@ -38,13 +38,13 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-dependencies-{{ cheacksum "pom.xml" }}
+            - v1-dependencies-{{ checksum "pom.xml" }}
             - v1-dependencies-
       - run:
           name: dependency:go-offline
           command: mvn dependency:go-offline
       - save_cache:
-          key: v1-dependencies-{{ cheacksum "pom.xml" }}
+          key: v1-dependencies-{{ checksum "pom.xml" }}
           paths:
             - ~/.m2
       - attach_workspace:
@@ -63,13 +63,13 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-dependencies-{{ cheacksum "pom.xml" }}
+            - v1-dependencies-{{ checksum "pom.xml" }}
             - v1-dependencies-
       - run:
           name: mvn dependency:go-offline
           command: mvn dependency:go-offline
       - save_cache:
-          key: v1-dependencies-{{ cheacksum "pom.xml" }}
+          key: v1-dependencies-{{ checksum "pom.xml" }}
           paths:
             - ~/.m2
       - attach_workspace:
