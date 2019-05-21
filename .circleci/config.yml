@@ -3,37 +3,93 @@ version: 2.1
 executors:
   default:
     docker:
-      - image: circleci/openjdk:8-jdk
-    working_directory: ~/repo    
-    environment:
-      # Customize the JVM maximum heap limit
-      MAVEN_OPTS: -Xmx3200m
+      - image: circleci/openjdk:11.0.2-jdk
+    working_directory: ~/repo
 
 
 jobs:
+  compile:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ cheacksum "pom.xml" }}
+            - v1-dependencies-
+      - run:
+          name: dependency:go-offline
+          command: mvn dependency:go-offline
+      - save_cache:
+          keys: v1-dependencies-{{ cheacksum "pom.xml" }}
+          paths:
+            - ~/.m2
+      - run:
+          name: compile
+          command: mvn compile
+      - persist_to_workspace:
+          root: target
+          paths:
+            - .
+  test:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ cheacksum "pom.xml" }}
+            - v1-dependencies-
+      - run:
+          name: dependency:go-offline
+          command: mvn dependency:go-offline
+      - save_cache:
+          keys: v1-dependencies-{{ cheacksum "pom.xml" }}
+          paths:
+            - ~/.m2
+      - attach_workspace:
+          at: .
+      - run: 
+          name: test
+          command: mvn test
+      - persist_to_workspace:
+          root: target
+          paths:
+            - .
   package:
     executor:
       name: default
     steps:
       - checkout
-      # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "pom.xml" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
+            - v1-dependencies-{{ cheacksum "pom.xml" }}
+            - v1-dependencies-
       - run: mvn dependency:go-offline
-
       - save_cache:
-          key: v1-dependencies-{{ checksum "pom.xml" }}
+          keys: v1-dependencies-{{ cheacksum "pom.xml" }}
           paths:
             - ~/.m2
-
-      # run package
-      - run: mvn package
+      - attach_workspace:
+          at: .
+      - run:
+          name: package
+          command: mvm package
+      - run:
+          name: move artifacts
+          command: |
+            mkdir artifacts
+            mv ./target/*-SNAPSHOT.jar ./artifacts
+      - store_artifacts:
+          path: artifacts/*
 
 workflows:
   build-and-test:
     jobs:
+      - compile
+      - test
+          requires:
+            - compile
       - package
+          requires:
+            - test
