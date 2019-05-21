@@ -85,7 +85,7 @@ jobs:
   deploy:
     executor:
       name: default
-    step:
+    steps:
       - run: echo deploy
   slack-notification-approval-pending:
     executor:
