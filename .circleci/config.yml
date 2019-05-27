@@ -4,8 +4,14 @@ executors:
   default:
     docker:
       - image: circleci/openjdk:11.0.2-jdk
+        environment:
+          PGHOST: 127.0.0.1
+          PGUSER: root
+      - image: circleci/postgres:9.6.2-alpine
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: lunchmap
     working_directory: ~/repo
-
 
 jobs:
   compile:
@@ -49,6 +55,9 @@ jobs:
             - ~/.m2
       - attach_workspace:
           at: .
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://127.0.0.1:5432 -timeout 1m
       - run: 
           name: test
           command: mvn test
