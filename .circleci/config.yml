@@ -93,12 +93,32 @@ jobs:
             cp ./target/*-SNAPSHOT.jar ./artifacts/
       - store_artifacts:
           path: ./artifacts
+      - persist_to_workspace:
+          root: target
+          paths:
+            - .
   deploy:
     executor:
       name: default
     steps:
-      - run: echo deploy
-
+      - attach_workspace:
+          at: .
+      - run:
+          name: start ssh-agent
+          command: eval $(ssh-agent -s)
+      - run:
+          name: set private key
+          command: | 
+            echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+            mkdir -p ~/.ssh
+            chmod 700 ~/.ssh
+            ssh-keyscan ${DEPLOY_HOST} >> ~/.ssh/known_hosts
+      - run:
+          name: Copy jar
+          command: scp ./target/*-SNAPSHOT.jar ${DEPLOY_USER}@${DEPLOY_HOST}:~/deploy/deploy.jar
+      - run:
+          name: restart service
+          command: ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo service spring-boot stop && \cp -f --no-preserve=mode,ownership ~/deploy/deploy.jar ~/deploy/spring-boot.jar && sudo service spring-boot start && rm ~/deploy/deploy.jar"
 workflows:
   build-and-test-and-deploy:
     jobs:
