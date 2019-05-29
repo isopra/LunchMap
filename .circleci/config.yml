@@ -106,19 +106,21 @@ jobs:
       - run:
           name: start ssh-agent
           command: eval $(ssh-agent -s)
+      - add_ssh_keys:
+          fingerprints:
+            - "c0:e5:a5:58:3e:19:dd:cf:4f:15:16:4d:12:8d:dc:f6"
       - run:
-          name: set private key
-          command: | 
-            echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-            mkdir -p ~/.ssh
-            chmod 700 ~/.ssh
+          name: aaa
+          command: |
             ssh-keyscan ${DEPLOY_HOST} >> ~/.ssh/known_hosts
       - run:
-          name: Copy jar
-          command: scp ./target/*-SNAPSHOT.jar ${DEPLOY_USER}@${DEPLOY_HOST}:~/deploy/deploy.jar
-      - run:
-          name: restart service
-          command: ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo service spring-boot stop && \cp -f --preserve=mode,ownership ~/deploy/deploy.jar ~/deploy/spring-boot.jar && sudo service spring-boot start && rm ~/deploy/deploy.jar"
+          name: deploy
+          command: |
+            scp ./target/*-SNAPSHOT.jar ${DEPLOY_USER}@${DEPLOY_HOST}:~/deploy/deploy.jar
+            ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo service spring-boot stop"
+            ssh ${DEPLOY_USER}@${DEPLOY_HOST} "\cp -f --preserve=mode,ownership ~/deploy/deploy.jar ~/deploy/spring-boot.jar"
+            ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo service spring-boot start"
+            ssh ${DEPLOY_USER}@${DEPLOY_HOST} "rm ~/deploy/deploy.jar"
 workflows:
   build-and-test-and-deploy:
     jobs:
