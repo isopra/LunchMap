@@ -118,7 +118,7 @@ jobs:
           command: scp ./target/*-SNAPSHOT.jar ${DEPLOY_USER}@${DEPLOY_HOST}:~/deploy/deploy.jar
       - run:
           name: restart service
-          command: ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo service spring-boot stop && \cp -f --no-preserve=mode,ownership ~/deploy/deploy.jar ~/deploy/spring-boot.jar && sudo service spring-boot start && rm ~/deploy/deploy.jar"
+          command: ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo service spring-boot stop && \cp -f --preserve=mode,ownership ~/deploy/deploy.jar ~/deploy/spring-boot.jar && sudo service spring-boot start && rm ~/deploy/deploy.jar"
 workflows:
   build-and-test-and-deploy:
     jobs:
