@@ -62,9 +62,9 @@ jobs:
           name: test
           command: mvn test
       - persist_to_workspace:
-          root: target
+          root: .
           paths:
-            - .
+            - ./target
   package:
     executor:
       name: default
@@ -90,27 +90,24 @@ jobs:
           name: move artifacts
           command: |
             mkdir artifacts
-            cp ./target/*-SNAPSHOT.jar ./artifacts/
+            cp ./target/lunch-map-*-SNAPSHOT.jar ./artifacts/
       - store_artifacts:
           path: ./artifacts
       - persist_to_workspace:
-          root: target
+          root: .
           paths:
-            - .
+            - ./target
   deploy:
     executor:
       name: default
     steps:
       - attach_workspace:
           at: .
-      - run:
-          name: start ssh-agent
-          command: eval $(ssh-agent -s)
       - add_ssh_keys:
           fingerprints:
             - "c0:e5:a5:58:3e:19:dd:cf:4f:15:16:4d:12:8d:dc:f6"
       - run:
-          name: aaa
+          name: add SSH
           command: |
             ssh-keyscan ${DEPLOY_HOST} >> ~/.ssh/known_hosts
       - run:
