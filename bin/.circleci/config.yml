@@ -1,0 +1,137 @@
+version: 2.1
+
+executors:
+  default:
+    docker:
+      - image: circleci/openjdk:11.0.2-jdk
+        environment:
+          PGHOST: 127.0.0.1
+          PGUSER: root
+      - image: circleci/postgres:9.6.2-alpine
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: lunchmap
+    working_directory: ~/repo
+
+jobs:
+  compile:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            - v1-dependencies-
+      - run:
+          name: dependency:go-offline
+          command: mvn dependency:go-offline
+      - save_cache:
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+          paths:
+            - ~/.m2
+      - run:
+          name: compile
+          command: mvn compile
+      - persist_to_workspace:
+          root: target
+          paths:
+            - .
+  test:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            - v1-dependencies-
+      - run:
+          name: dependency:go-offline
+          command: mvn dependency:go-offline
+      - save_cache:
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+          paths:
+            - ~/.m2
+      - attach_workspace:
+          at: .
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://127.0.0.1:5432 -timeout 1m
+      - run: 
+          name: test
+          command: mvn test
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./target
+  package:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            - v1-dependencies-
+      - run:
+          name: mvn dependency:go-offline
+          command: mvn dependency:go-offline
+      - save_cache:
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+          paths:
+            - ~/.m2
+      - attach_workspace:
+          at: .
+      - run:
+          name: package
+          command: mvn package
+      - run:
+          name: move artifacts
+          command: |
+            mkdir artifacts
+            cp ./target/lunch-map-*-SNAPSHOT.jar ./artifacts/
+      - store_artifacts:
+          path: ./artifacts
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./target
+  deploy:
+    executor:
+      name: default
+    steps:
+      - attach_workspace:
+          at: .
+      - add_ssh_keys:
+          fingerprints:
+            - "c0:e5:a5:58:3e:19:dd:cf:4f:15:16:4d:12:8d:dc:f6"
+      - run:
+          name: add SSH
+          command: |
+            ssh-keyscan ${DEPLOY_HOST} >> ~/.ssh/known_hosts
+      - run:
+          name: deploy
+          command: |
+            scp ./target/*-SNAPSHOT.jar ${DEPLOY_USER}@${DEPLOY_HOST}:~/deploy/deploy.jar
+            ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo service spring-boot stop"
+            ssh ${DEPLOY_USER}@${DEPLOY_HOST} "\cp -f --preserve=mode,ownership ~/deploy/deploy.jar ~/deploy/spring-boot.jar"
+            ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo service spring-boot start"
+            ssh ${DEPLOY_USER}@${DEPLOY_HOST} "rm ~/deploy/deploy.jar"
+workflows:
+  build-and-test-and-deploy:
+    jobs:
+      - compile
+      - test:
+          requires:
+            - compile
+      - package:
+          requires:
+            - test
+      - deploy:
+          requires:
+            - package
+          filters:
+            branches:
+              only:
+                - master
