@@ -4,6 +4,11 @@
 <head>
 <meta charset="UTF-8">
 <title>ログイン</title>
+<script>
+function toRegister() {
+	location.href = "/member/register";
+}
+</script>
 </head>
 <body>
 <form th:action="@{/authenticate}" method="POST">
@@ -24,14 +29,7 @@
     </table>
 </form>
 
-<form th:action="@{/member/register}" method="POST">
--- メンバー登録　仮フォーム --<br>
-ログインID：<input type="text" id="login_id" name="login_id"/><br>
-パスワード<input type="password" id="password" name="password"/><br>
-表示用氏名<input type="text" id="nickname" name="nickname"/><br>
-<button type="submit">会員新規登録</button>
-<p th:text="${message}"></p>
-</form>
+<button onClick="toRegister()">新規登録</button>
 
 </body>
 </html>
