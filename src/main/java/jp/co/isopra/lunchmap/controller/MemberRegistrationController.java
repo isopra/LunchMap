@@ -43,7 +43,7 @@ public class MemberRegistrationController {
 		//memberテーブルにinsertする。
 		service.registerMember(entity);
 
-		model.addAttribute("message", "登録しました");
+//		model.addAttribute("message", "登録しました");
 
 		return "menu";
 	}

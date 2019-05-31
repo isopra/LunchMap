@@ -41,8 +41,8 @@ public class LoginController {
     		@AuthenticationPrincipal AccountDetails accountDetails) {
 
     	// ログイン情報（memberテーブルのデータ）をModelにセット
-    	model.addAttribute("loginMember", accountDetails.getMember());
+//    	model.addAttribute("loginMember", accountDetails.getMember());
 
-    	return "index";
+    	return "menu";
     }
 }
