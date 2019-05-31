@@ -45,7 +45,7 @@ public class MemberRegistrationController {
 
 		model.addAttribute("message", "登録しました");
 
-		return "login";
+		return "menu";
 	}
 	
 	//登録画面表示
