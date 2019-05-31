@@ -23,7 +23,7 @@ public class MemberRegistrationController {
 	 * @param model 遷移先画面にセットするModel
 	 * @return 遷移先画面名
 	 */
-	@RequestMapping("/member/register")
+	@RequestMapping("/member/register/result")
 	public String registerMember(
 			@RequestParam String login_id,
 			@RequestParam String password,
@@ -46,5 +46,11 @@ public class MemberRegistrationController {
 		model.addAttribute("message", "登録しました");
 
 		return "login";
+	}
+	
+	//登録画面表示
+	@RequestMapping("/member/register")
+	public String showMemberRegisterForm() {
+		return "memberRegisterOrEdit";
 	}
 }
