@@ -20,9 +20,11 @@
 	<div class="wrapper">
         <!-- <p th:text="${getprace_name()}"></p> -->
 		<p class="lab">あしあと：</p>
-		<p class="lab">コメント：</p>
-        <textarea id="text" class="lab area" name="com"></textarea>
-		<input type="button" id="reset" value="clear">
+		<form>
+			<p class="lab">コメント：</p>
+	        <textarea id="text" class="lab area" name="com"></textarea>
+			<input type="reset" id="reset" value="clear">
+		</form>
 		<p id="comment" class="lab">最大200文字まで登録できます</p>
     </div>
     <br>
