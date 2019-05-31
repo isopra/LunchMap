@@ -31,7 +31,7 @@ public class MenuControllerTest {
 
 	@Test
 	public void test_menu_show_ok() throws Exception {
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/menu"))
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/menu/"))
 			.andDo(MockMvcResultHandlers.print())
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.model().hasNoErrors())
