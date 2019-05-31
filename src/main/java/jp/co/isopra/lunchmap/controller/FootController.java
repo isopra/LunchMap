@@ -3,7 +3,7 @@ package jp.co.isopra.lunchmap.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.isopra.lunchmap.entity.FootPrint;
 import jp.co.isopra.lunchmap.repositories.FootPrintRepository;
@@ -16,18 +16,22 @@ public class FootController {
 	FootPrintRepository repository;
 
 	@RequestMapping("/foot")
+	public String viewFoot() {
 
-	public ModelAndView view(ModelAndView mav) {
+		return "foot";
+}
 
-		mav.setViewName("foot");
-		Iterable<FootPrint> List = repository.findAll();
+	@RequestMapping("/foot/register")
+	public String registerFoot(@RequestParam String comment) {
 
-		return mav;
+		FootPrint entity = new FootPrint();
 
-	}
+		entity.setComment(comment);
+		repository.save(entity);
 
+		//memberテーブルにinsertする。
+		// service.registerMember(entity);
 
-
-
-
+		return "foot";
+}
 }

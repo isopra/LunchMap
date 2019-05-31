@@ -20,14 +20,14 @@
 	<div class="wrapper">
         <!-- <p th:text="${getprace_name()}"></p> -->
 		<p class="lab">あしあと：</p>
-		<form>
+		<form th:action="@{/foot/register}" method="POST">
 			<p class="lab">コメント：</p>
-	        <textarea id="text" class="lab area" name="com"></textarea>
+	        <textarea id="text" class="lab area" name="comment"></textarea>
 			<input type="reset" id="reset" value="clear">
+			<p id="comment" class="lab">最大200文字まで登録できます</p>
+			<br>
+			<input type="submit" class="button" value="登録" />
 		</form>
-		<p id="comment" class="lab">最大200文字まで登録できます</p>
     </div>
-    <br>
-	<input type="submit" class="button" value="登録" />
 </body>
 </html>
