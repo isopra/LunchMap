@@ -48,6 +48,7 @@ public class MemberRegistrationController {
 		return "login";
 	}
 	
+	//登録画面表示
 	@RequestMapping("/member/register")
 	public String showMemberRegisterForm() {
 		return "memberRegisterOrEdit";
