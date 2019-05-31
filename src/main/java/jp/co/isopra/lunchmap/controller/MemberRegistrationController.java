@@ -43,9 +43,9 @@ public class MemberRegistrationController {
 		//memberテーブルにinsertする。
 		service.registerMember(entity);
 
-		model.addAttribute("message", "登録しました");
+//		model.addAttribute("message", "登録しました");
 
-		return "login";
+		return "menu";
 	}
 	
 	//登録画面表示

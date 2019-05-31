@@ -66,8 +66,8 @@ public class MemberRegistrationControllerTest {
             .andDo(MockMvcResultHandlers.print()) // コンソールに詳細を出力
             .andExpect(MockMvcResultMatchers.status().isOk()) // HTTPステータスの確認
             .andExpect(MockMvcResultMatchers.model().hasNoErrors()) // エラー情報がなにもないことを確認
-            .andExpect(MockMvcResultMatchers.view().name("login")) // 遷移先名の確認
-            .andExpect(MockMvcResultMatchers.model().attribute("message", "登録しました")); // Modelにセットされた値の確認
+            .andExpect(MockMvcResultMatchers.view().name("menu")) // 遷移先名の確認
+            ;
 
         this.mockMvc.perform(MockMvcRequestBuilders.get("/member/register"))
         	.andDo(MockMvcResultHandlers.print())
