@@ -10,11 +10,13 @@ import jp.co.isopra.lunchmap.entity.AccountDetails;
 @Controller
 public class MenuController {
 
+	//メニュー画面表示
 	@RequestMapping("/menu")
 	public String showMenuPage() {
 		return "menu";
 	}
 
+	//アカウント情報編集画面表示
 	@RequestMapping("/menu/acount_edit")
 	public String showAccountEdit(@AuthenticationPrincipal AccountDetails accountDetails, Model model) {
 		model.addAttribute("id", accountDetails.getUsername());

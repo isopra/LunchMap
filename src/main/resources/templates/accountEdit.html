@@ -5,15 +5,15 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form th:action="@{/authenticate}" method="POST">
+<form th:action="@{/member/register/result}" method="POST">
     <table align="center">
         <tr>
             <td>ログインID：</td>
-            <td><p th:text="${id}"></td>
+            <td><input type="text" readOnly="readOnly" th:value="${id}" name="login_id"></td>
         </tr>
         <tr>
             <td>パスワード：</td>
-            <td><input type="password" id="password" name="password" th:value="${password}"/></td>
+            <td><input type="password" id="password" name="password"/></td>
         </tr>
         <tr>
             <td>表示用氏名：</td>
