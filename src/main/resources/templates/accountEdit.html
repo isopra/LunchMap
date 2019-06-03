@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form th:action="@{/authenticate}" method="POST">
+    <table align="center">
+        <tr>
+            <td>ログインID：</td>
+            <td><p th:text="${id}"></td>
+        </tr>
+        <tr>
+            <td>パスワード：</td>
+            <td><input type="password" id="password" name="password" th:value="${password}"/></td>
+        </tr>
+        <tr>
+            <td>表示用氏名：</td>
+            <td><input type="text" id="nickname" name="nickname" th:value="${nickname}"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td align="right"><button type="submit">登録</button></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
