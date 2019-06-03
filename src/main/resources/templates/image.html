@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	<style>
+		h1 { font-weight:bold; font-size:18pt; color:gray; }
+		button { width:80pt; height: 20pt; }
+		.wrapper { width: 400px; height: 250px; border:solid 1px #000; }
+		#comment { font-size:12px; }
+        .lab { margin-left:20px; }
+        .area { width: 250px; height:100px;}
+		.file_wrapper { width:320px; height: 125px; margin:50px auto; border:solid 1px #000;}
+	</style>
+
+</head>
+<body>
+	<h1>画像情報登録</h1>
+	<button type="button" onclick="">戻る</button>
+	<br>
+	<div class="wrapper">
+		<div class="file_wrapper">
+	        <!-- <p th:text="${getprace_id()}"></p> -->
+	        <input type="file" name="fileChoice" accept="image/*" multiple><!-- file選択 -->
+		</div>
+    </div>
+    <br>
+	<button>登録</button>
+</body>
+</html>
