@@ -1,11 +1,12 @@
 package jp.co.isopra.lunchmap.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jp.co.isopra.lunchmap.entity.AccountDetails;
 import jp.co.isopra.lunchmap.entity.Member;
 import jp.co.isopra.lunchmap.service.MemberRegistrationService;
 
@@ -27,8 +28,7 @@ public class MemberRegistrationController {
 	public String registerMember(
 			@RequestParam String login_id,
 			@RequestParam String password,
-			@RequestParam String nickname,
-			Model model) {
+			@RequestParam String nickname) {
 
 //		// DEBUG parameter出力
 //		java.lang.System.out.println("member regist:" + login_id + "/" + password + "/" + nickname);
@@ -52,5 +52,11 @@ public class MemberRegistrationController {
 	@RequestMapping("/member/register")
 	public String showMemberRegisterForm() {
 		return "memberRegisterOrEdit";
+	}
+	
+	//アカウント情報編集
+	@RequestMapping("/member/edit")
+	public String editMember(@RequestParam String password, @RequestParam String nickname, @AuthenticationPrincipal AccountDetails accountDetails) {
+		return registerMember(accountDetails.getUsername(), password, nickname);
 	}
 }

@@ -5,11 +5,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form th:action="@{/member/register/result}" method="POST">
+<form th:action="@{/member/edit}" method="POST">
     <table align="center">
         <tr>
             <td>ログインID：</td>
-            <td><input type="text" readOnly="readOnly" th:value="${id}" name="login_id"></td>
+            <td><p th:text="${id}"></td>
         </tr>
         <tr>
             <td>パスワード：</td>
