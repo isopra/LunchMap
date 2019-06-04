@@ -1,8 +1,11 @@
 package jp.co.isopra.lunchmap.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -18,6 +21,9 @@ public class Member {
 
 	@Column(name="nickname")
 	private String nickname;
+
+	@OneToMany(mappedBy = "login_id")
+	private List<FootPrint> footPrintList;
 
 	public String getLogin_id() {
 		return login_id;
