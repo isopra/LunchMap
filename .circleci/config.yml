@@ -62,9 +62,9 @@ jobs:
           name: test
           command: mvn test
       - persist_to_workspace:
-          root: target
+          root: .
           paths:
-            - .
+            - ./target
   package:
     executor:
       name: default
@@ -90,15 +90,34 @@ jobs:
           name: move artifacts
           command: |
             mkdir artifacts
-            cp ./target/*-SNAPSHOT.jar ./artifacts/
+            cp ./target/lunch-map-*-SNAPSHOT.jar ./artifacts/
       - store_artifacts:
           path: ./artifacts
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./target
   deploy:
     executor:
       name: default
     steps:
-      - run: echo deploy
-
+      - attach_workspace:
+          at: .
+      - add_ssh_keys:
+          fingerprints:
+            - "c0:e5:a5:58:3e:19:dd:cf:4f:15:16:4d:12:8d:dc:f6"
+      - run:
+          name: add SSH
+          command: |
+            ssh-keyscan ${DEPLOY_HOST} >> ~/.ssh/known_hosts
+      - run:
+          name: deploy
+          command: |
+            scp ./target/*-SNAPSHOT.jar ${DEPLOY_USER}@${DEPLOY_HOST}:~/deploy/deploy.jar
+            ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo service spring-boot stop"
+            ssh ${DEPLOY_USER}@${DEPLOY_HOST} "\cp -f --preserve=mode,ownership ~/deploy/deploy.jar ~/deploy/spring-boot.jar"
+            ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo service spring-boot start"
+            ssh ${DEPLOY_USER}@${DEPLOY_HOST} "rm ~/deploy/deploy.jar"
 workflows:
   build-and-test-and-deploy:
     jobs:
