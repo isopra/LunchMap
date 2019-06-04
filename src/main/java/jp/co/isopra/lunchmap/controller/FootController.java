@@ -29,8 +29,6 @@ public class FootController {
 		entity.setComment(comment);
 		repository.save(entity);
 
-		//memberテーブルにinsertする。
-		// service.registerMember(entity);
 
 		return "foot";
 }
