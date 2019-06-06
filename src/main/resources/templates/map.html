@@ -91,12 +91,14 @@ function createMarker(place){
 
 	//place_idの判定
 
-	for(var e = 0; e < datalist.length; e++){
-		if(place.place_id == datalist[e].place_id){
-			iconCo = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
-			break;
-		}else{
-			iconCo ='https://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
+	if(datalist != null){
+		for(var e = 0; e < datalist.length; e++){
+			if(place.place_id == datalist[e].place_id){
+				iconCo = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+				break;
+			}else{
+				iconCo ='https://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
+			}
 		}
 	}
 		//各店のマーカーを定義
@@ -128,13 +130,9 @@ function toView(to) {
 </head>
 <body>
 <h1>地図</h1>
-
 <button   onclick="toView('')">戻る</button> <!-- メニューにもどる -->
 <button   onclick="toView('search')">検索</button><!-- 検索画面へ -->
 
-
 <div id="map_sam" style="width:100%; height:400px"></div>
-
-
 </body>
 </html>

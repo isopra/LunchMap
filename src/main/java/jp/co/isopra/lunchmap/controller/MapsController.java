@@ -17,7 +17,7 @@ public class MapsController {
 	@Autowired
 	private ShopRepository repository;
 
-	@RequestMapping(path = "/menu/map" , method = RequestMethod.GET)
+	@RequestMapping(path = "/menu/mapview" , method = RequestMethod.GET)
 	public ModelAndView map(ModelAndView mav) {
 		mav.setViewName("map");
 		Iterable<Shop> list = this.repository.findAll();
