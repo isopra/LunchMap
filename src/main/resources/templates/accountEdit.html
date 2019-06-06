@@ -2,7 +2,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>アカウント情報編集</title>
+<script>
+	function al() {
+	//	alert('test');
+	}
+</script>
 </head>
 <body>
 <form th:action="@{/member/edit}" method="POST">
@@ -21,7 +26,7 @@
         </tr>
         <tr>
             <td></td>
-            <td align="right"><button type="submit">登録</button></td>
+            <td align="right"><button type="submit" onclick="al()">登録</button></td>
         </tr>
     </table>
 </form>

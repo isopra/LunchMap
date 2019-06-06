@@ -43,20 +43,26 @@ public class MemberRegistrationController {
 		//memberテーブルにinsertする。
 		service.registerMember(entity);
 
+		//TODO 結果をアラート
+
 //		model.addAttribute("message", "登録しました");
 
 		return "menu";
 	}
-	
+
 	//登録画面表示
 	@RequestMapping("/member/register")
 	public String showMemberRegisterForm() {
 		return "memberRegisterOrEdit";
 	}
-	
+
 	//アカウント情報編集
 	@RequestMapping("/member/edit")
-	public String editMember(@RequestParam String password, @RequestParam String nickname, @AuthenticationPrincipal AccountDetails accountDetails) {
+	public String editMember(
+			@RequestParam String password, 
+			@RequestParam String nickname, 
+			@AuthenticationPrincipal AccountDetails accountDetails)
+	{
 		return registerMember(accountDetails.getUsername(), password, nickname);
 	}
 }
