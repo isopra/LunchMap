@@ -23,7 +23,7 @@ public class FootController {
 	@RequestMapping(value = "menu/foot/edit", method = RequestMethod.GET )
 	public ModelAndView footEdit (
 		//@RequestParam String comment,
-		@RequestParam (name = "footprint_id", defaultValue = "" ) String footprint_id,
+		@RequestParam (name = "footprint_id", defaultValue = "" ) Long footprint_id,
 		@RequestParam (name = "place_name", defaultValue = "") String place_name,
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav

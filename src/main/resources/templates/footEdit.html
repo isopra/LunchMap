@@ -16,7 +16,7 @@
 			<p class="foot_print_label">"| あしあと： *{ FootPrint.datetime() } |"</p>
 			<p class="foot_print_label">コメント：</p>
 			<span  class="error_message" th:value="${error_message}"></span>  <!-- error表示 -->
-	        <textarea id="foot_print_comment" class="foot_print_label area" name="comment" th:value="{editComment}"></textarea>
+	        <textarea id="foot_print_comment" class="foot_print_label area" th:text="*{editComment}"></textarea>
 			<input type="reset" value="clear">
 			<p class="foot_print_label">最大200文字まで登録できます</p>
 			<br>
