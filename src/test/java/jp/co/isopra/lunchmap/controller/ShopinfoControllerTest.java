@@ -77,19 +77,19 @@ public class ShopinfoControllerTest {
 //			.andExpect(MockMvcResultMatchers.model().attribute("place_id", "hello world"));
 //	}
 //
-	@Test
-	public void test_deleteImage_show_ok() throws Exception {
-
-
-//		doReturn().when(imageService).deleteImage(anyString(),anyLong());
-//		when(service.deleteImage(place_id, image_id)).thenReturn(999);
-
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/shopinfo/delete/test/1"))
-			.andDo(MockMvcResultHandlers.print())
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.model().hasNoErrors())
-			.andExpect(MockMvcResultMatchers.view().name("shopinfo"));
-	}
+//	@Test
+//	public void test_deleteImage_show_ok() throws Exception {
+//
+//
+////		doReturn().when(imageService).deleteImage(anyString(),anyLong());
+////		when(service.deleteImage(place_id, image_id)).thenReturn(999);
+//
+//		this.mockMvc.perform(MockMvcRequestBuilders.get("/shopinfo/delete/test/1"))
+//			.andDo(MockMvcResultHandlers.print())
+//			.andExpect(MockMvcResultMatchers.status().isOk())
+//			.andExpect(MockMvcResultMatchers.model().hasNoErrors())
+//			.andExpect(MockMvcResultMatchers.view().name("shopinfo"));
+//	}
 
 
 }
