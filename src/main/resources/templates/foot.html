@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	<style>
+		h1 { font-weight:bold; font-size:18pt; color:gray; }
+		.button { width:80pt; height: 20pt; }
+		.wrapper { width: 400px; height: 250px; border:solid 1px #000; }
+		#comment { font-size:12px; }
+        .lab { margin-left:20px; }
+        .area { width: 250px; height:100px;}
+	</style>
+</head>
+<body>
+    <h1>あしあと情報 登録・編集</h1>
+    <button type="button" class="button" onclick="">戻る</button>
+    <br><br>
+	<div class="wrapper">
+        <!-- <p th:text="${getprace_name()}"></p> -->
+		<p class="lab">あしあと：</p>
+		<form th:action="@{/foot/register}" method="POST">
+			<p class="lab">コメント：</p>
+	        <textarea id="text" class="lab area" name="comment"></textarea>
+			<input type="reset" id="reset" value="clear">
+			<p id="comment" class="lab">最大200文字まで登録できます</p>
+			<br>
+			<input type="submit" class="button" value="登録" />
+		</form>
+    </div>
+</body>
+</html>

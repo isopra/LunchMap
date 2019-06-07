@@ -17,6 +17,4 @@ public interface FootprintRepository extends JpaRepository<Footprint, Long> {
 
 	@Query("FROM Footprint f WHERE f.place_id = :place_id ORDER BY created_time DESC")
 	public List<Footprint> getByPlace_id(@Param("place_id") String place_id);
-
-
 }

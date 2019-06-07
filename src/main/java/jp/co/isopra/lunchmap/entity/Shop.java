@@ -27,14 +27,6 @@ public class Shop {
 	@NotNull
 	private String place_name;
 
-	@Column
-	@NotNull
-	private BigDecimal latitude;
-
-	@Column
-	@NotNull
-	private BigDecimal longitude;
-
 	@OneToMany(mappedBy = "shop", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<Footprint> footprint;
 
@@ -55,22 +47,6 @@ public class Shop {
 
 	public String getPlace_name() {
 		return place_name;
-	}
-
-	public void setLatitude(BigDecimal latitude) {
-		this.latitude = latitude;
-	}
-
-	public BigDecimal getLatitude() {
-		return latitude;
-	}
-
-	public void setLongitude(BigDecimal longitude) {
-		this.longitude = longitude;
-	}
-
-	public BigDecimal getLongitude() {
-		return longitude;
 	}
 
 	public void setFootprint(List<Footprint> footprint) {

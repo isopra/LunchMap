@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>メンバー登録</title>
+</head>
+<body>
+	<form th:action="@{/member/register/result}" method="POST">
+		ログインID：<input type="text" id="login_id" name="login_id"/><br>
+		パスワード<input type="password" id="password" name="password"/><br>
+		表示用氏名<input type="text" id="nickname" name="nickname"/><br>
+		<button type="submit">会員新規登録</button>
+		<p th:text="${message}"></p>
+</form>
+</body>
+</html>
