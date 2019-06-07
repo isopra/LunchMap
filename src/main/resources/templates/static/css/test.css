@@ -1,0 +1,15 @@
+@charset "UTF-8";
+	h1{ font-size :18px; font-weight:bold; color: gray; }
+	body{ font-size:13px; color:gray; margin:5px 25px; }
+	pre { border: solid 3px #ddd; padding: 10px; }
+	tr { margin:5px; }
+	th { padding:5px; color:white; background:darkgray; }
+	td { padding:5px; color:black: background:#f0f0f0; }
+	table.navi { width:100%; background:white; }
+	table.navi tr { background:white; }
+	table.navi tr td { background:white; }
+	.err { color:red; }
+	#sample {
+		width: 700px;
+		height: 400px;
+	}

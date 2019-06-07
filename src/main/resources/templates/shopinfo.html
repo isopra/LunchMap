@@ -4,30 +4,16 @@
 	<title>shopinfo</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<style>
-	h1{ font-size :18px; font-weight:bold; color: gray; }
-	body{ font-size:13px; color:gray; margin:5px 25px; }
-	pre { border: solid 3px #ddd; padding: 10px; }
-	tr { margin:5px; }
-	th { padding:5px; color:white; background:darkgray; }
-	td { padding:5px; color:black: background:#f0f0f0; }
-	table.navi { width:100%; background:white; }
-	table.navi tr { background:white; }
-	table.navi tr td { background:white; }
-	.err { color:red; }
-	#sample {
-		width: 700px;
-		height: 400px;
-	}
-</style>
+	<link rel="stylesheet" media="all" th:href="@{/css/test.css}"/>
 </head>
 <body>
 	<h1 th:text="${title}">shopinfo page</h1>
 	<button type="button" onclick="">戻る</button>
-  	<h1 name="shopName" id="shopName"></h1>
+  	<label name="shopName" id="shopName"></label>
   	<div id="sample"></div>
 
    	<script th:inline="javascript">
+   	var placeId = /*[[${placeId}]]*/;
    	window.onload = function test(){
 
 
@@ -41,18 +27,20 @@
 
    			var service = new google.maps.places.PlacesService(map);
    			service.getDetails({
-   			    placeId: /*[[${placeId}]]*/,
+   			    placeId: placeId,
    			    fields: ['name', 'formatted_address', 'geometry', 'url']
    			}, function(place, status) {
-   			    if (status == google.maps.places.PlacesServiceStatus.OK) {
-				/*  var marker = new google.maps.Marker({ // マーカーの追加
+		    if (status == google.maps.places.PlacesServiceStatus.OK) {
+
+   			    map = new google.maps.Map(document.getElementById('sample'), { // #sampleに地図を埋め込む
+   	   			     center: place.geometry.location, // 地図の中心を指定
+   	   			     zoom: 19 // 地図のズームを指定
+   	   			   });
+				  var marker = new google.maps.Marker({ // マーカーの追加
    				      position: place.geometry.location, // マーカーを立てる位置を指定
    				      map: map // マーカーを立てる地図を指定
-   				   });*/
-   				map = new google.maps.Map(document.getElementById('sample'), { // #sampleに地図を埋め込む
-   			     center: place.geometry.location, // 地図の中心を指定
-   			     zoom: 19 // 地図のズームを指定
-   			   });
+   				   });
+
    			    	var element = document.getElementById('shopName');
    			    	element.innerHTML = place.name;
    			    	console.log(place.name);
@@ -64,16 +52,18 @@
 	}
    	</script>
    	<h1>あしあと数：</h1>
-  	<p th:text="${footplintRecords}"></p>
-  	<button type="button" onclick="">足跡追加</button>
+  	<p th:text="${footprintRecords}"></p>
+  	<button type="button"  onclick="location.href='{./create/'+ ${footprintDatalist.getPlace_id()} + '}'">足跡追加</button> -->
 
 	<h1>コメント</h1>
 	<div id="footprint_list_more">
 	  	<table>
-		<tr th:each="obj : ${footplintDatalist}">
-				<td th:text="${obj.getComment()}"></td>
-				<td th:text="${obj.getMember().getNickname()}"></td>
-				<td th:if="${obj.getMember().getLogin_id() == session_id}"><a th:href="@{'./update/' + ${obj.getFootprint_id()}}">編集</a></td>
+		<tr th:each="obj : ${footprintDatalist}">
+			<div th:unless="${obj.getComment().isBlank()}" id=footprint_list></td>
+					<td th:text="${obj.getComment()}"></td>
+					<td th:text="${obj.getMember().getNickname()}"></td>
+					<td th:if="${obj.getMember().getLogin_id() == Login_id}"><a th:href="@{'./update/' + ${obj.getFootprint_id()}}">編集</a></td>
+			</div>
 		</tr>
 		</table>
 
@@ -83,24 +73,24 @@
 
 	<script>
   //trの個数を取得しておく
-  var listContents = $("#footprint_list_more tr").length;
+  var listContents = $("#footprint_list").length;
   $("#footprint_list_more").each(function(){
 
       //最初に表示させるアイテムの数
-      var Num =1,
+      var Num =2,
           gtNum = Num-1;
-
+		console.log(this);
       //最初はmoreボタン表示にし、
       $(this).find('#footprint_more_btn').show();
       $(this).find('#footprint_close_btn').hide();
       //1行目まで表示
-      $(this).find("tr:not(:lt("+Num+"))").hide();
+      $(this).find("#tr:not(:lt("+Num+"))").hide();
 
       //moreボタンがクリックされた時
       $('#footprint_more_btn').click(function(){
 
-         //Numに+3ずつしていく = 3行ずつ追加する
-          Num +=3;
+         //Numに+10ずつしていく = 10行ずつ追加する
+          Num +=10;
           $(this).parent().find("tr:lt("+Num+")").slideDown();
           //trの個数よりNumが多い時、
           if(listContents <= Num){
@@ -127,8 +117,8 @@
 	<div id="image_list_more">
 	  	<table>
 		<tr th:each="obj : ${imageDatalist}">
-				<!-- <img th:src="|/${obj.getPlace_id()}_${obj.getImage_id()}.jpg|"> --> <img th:src="|/images/${obj.getPlace_id()}/${obj.getPlace_id()}_${obj.getImage_id()}.jpg|"> <!-- LunchMap/images/{place_id}/[place_id]_[image_id].jpg -->
-				<p th:if="${obj.getMember().getLogin_id() == session_id}"><a th:href="@{'./delete/' + ${obj.getPlace_id()} + '?image_id=' + ${obj.getImage_id()}}">削除</a></p>
+				<img th:src="|/images/${obj.getPlace_id()}/${obj.getPlace_id()}_${obj.getImage_id()}.jpg|" class="img"> <!-- LunchMap/images/{place_id}/[place_id]_[image_id].jpg -->
+				<p th:if="${obj.getMember().getLogin_id() == Login_id}"><a th:href="@{'./delete/' + ${obj.getPlace_id()} + '/' + ${obj.getImage_id()}}">削除</a></p>
 		</tr>
 		</table>
 	</div>
