@@ -41,8 +41,6 @@ public class ShopRegistrationController {
 
 		entity.setPlace_id(place_id);
 		entity.setPlace_name(place_name);
-		entity.setLatitude(latitude);
-		entity.setLongitude(longitude);
 
 		//memberテーブルにinsertする。
 		service.registerShop(entity);
