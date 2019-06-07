@@ -13,17 +13,19 @@ h1 {
 
 .wrapper {
 	width: 400px;
-	height: 250px;
+	height: 258px;
 	border:solid 1px #000;
 }
 
-#comment { font-size:12px; }
-
-.lab { margin-left:20px; }
+.foot_print_label {
+	margin-left:20px;
+	font-size: 14px;
+	}
 
 .area { width: 250px; height:100px;}
 
-.error-message {
+.error_message {
   color: #F51414;
   height: 20px;
+  font-size: 14px;
 }

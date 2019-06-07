@@ -12,11 +12,11 @@
     <br><br>
 	<div class="wrapper">
 		<form id="foot_print_form" method="post" th:action="@{/foot/register}">
-			<p th:value="${shop.getPlace_name}"></p>
-			<p class="foot_print_label">あしあと：</p> <!-- ToDo: system日時を表示 -->
+			<p th:value="${place_name}"></p> <!--  飲食店名を表示 -->
+			<p class="foot_print_label">"| あしあと： *{ FootPrint.datetime() } |"</p>
 			<p class="foot_print_label">コメント：</p>
 			<span  class="error_message" th:value="${error_message}"></span>  <!-- error表示 -->
-	        <textarea id="foot_print_comment" class="foot_print_label area" name="comment"></textarea>
+	        <textarea id="foot_print_comment" class="foot_print_label area" name="comment" th:value="{editComment}"></textarea>
 			<input type="reset" value="clear">
 			<p class="foot_print_label">最大200文字まで登録できます</p>
 			<br>

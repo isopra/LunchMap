@@ -33,6 +33,9 @@ public class FootPrint {
 	/**
 	 * TODO: shopとの関連付
 	 */
+	@ManyToOne
+	private Shop shop;
+
 
 	/**
 	 * コメント
@@ -57,9 +60,5 @@ public class FootPrint {
 
 	public void setComment(String comment) {
 		this.comment = comment;
-	}
-
-	public void setDate(Date date) {
-		this.datetime = date;
 	}
 }
