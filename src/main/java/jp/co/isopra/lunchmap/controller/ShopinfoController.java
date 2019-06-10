@@ -10,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
 import jp.co.isopra.lunchmap.entity.AccountDetails;
 import jp.co.isopra.lunchmap.entity.Footprint;
 import jp.co.isopra.lunchmap.entity.Image;
@@ -45,6 +45,9 @@ public class ShopinfoController {
 			@PathVariable String place_id,
 			Principal principal) {
 
+		//URLからplace_idを取得しviewに送る
+		mav.addObject("placeId",place_id);
+
 		// ログインしているidを取得しviewに送る
 		Authentication auth = (Authentication)principal;
 		AccountDetails accountDetails = (AccountDetails)auth.getPrincipal();
@@ -53,8 +56,6 @@ public class ShopinfoController {
 
 		// 動作確認のための変数たち
 		String placeIdTest = "ChIJ4XvxNw6MGGAR6EctyrTwmyI";
-		mav.addObject("placeId",placeIdTest);
-
 
 		mav.setViewName("shopinfo");
 

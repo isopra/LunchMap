@@ -1,6 +1,5 @@
 package jp.co.isopra.lunchmap.entity;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "shop")
@@ -28,9 +29,11 @@ public class Shop {
 	private String place_name;
 
 	@OneToMany(mappedBy = "shop", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
+	@JsonManagedReference // 循環参照を止めるアノテーション
 	private List<Footprint> footprint;
 
 	@OneToMany(mappedBy = "shop", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
+	@JsonManagedReference // 循環参照を止めるアノテーション
 	private List<Image> image;
 
 	public void setPlace_id(String place_id) {

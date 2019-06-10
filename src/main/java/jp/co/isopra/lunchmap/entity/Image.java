@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "image")
 public class Image {
@@ -33,9 +35,11 @@ public class Image {
 	private Date created_time;
 
 	@ManyToOne
+	@JsonBackReference
 	private Member member;
 
 	@ManyToOne
+	@JsonBackReference
 	private Shop shop;
 
 	public Image() {

@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "member")
 public class Member {
@@ -25,9 +27,11 @@ public class Member {
 	private String nickname;
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
+	@JsonManagedReference // 循環参照を止めるアノテーション
 	private List<Footprint> footprint;
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
+	@JsonManagedReference // 循環参照を止めるアノテーション
 	private List<Image> image;
 
 	public String getLogin_id() {
