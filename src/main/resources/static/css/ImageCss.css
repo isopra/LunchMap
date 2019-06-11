@@ -1,0 +1,38 @@
+@charset "UTF-8";
+h1 {
+	font-weight:bold;
+	font-size:18pt;
+	color:gray;
+	text-aligin: center;
+}
+
+button {
+	width:80pt;
+	height:20pt;
+}
+
+.img_modal {
+	width: 80%;
+	height: auto;
+	margin: 0 auto;
+}
+
+.lab {
+    margin-left:20px;
+}
+.area {
+	width: 250px;
+	height:100px;
+}
+.imgfile_wrapper {
+	width: 50%;
+	height: 300px;
+	padding:30px auto;
+	border:solid 1px #000;
+	margin: 0 auto;
+}
+
+.img_error {
+	color: red;
+	font-size: 14px;
+}

@@ -4,28 +4,22 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-	<style>
-		h1 { font-weight:bold; font-size:18pt; color:gray; }
-		button { width:80pt; height: 20pt; }
-		.wrapper { width: 400px; height: 250px; border:solid 1px #000; }
-		#comment { font-size:12px; }
-        .lab { margin-left:20px; }
-        .area { width: 250px; height:100px;}
-		.file_wrapper { width:320px; height: 125px; margin:50px auto; border:solid 1px #000;}
-	</style>
-
+<link rel="stylesheet" type="text/css" th:href="@{/css/ImageCss.css}">
 </head>
 <body>
+	<div class="img_modal">
 	<h1>画像情報登録</h1>
-	<button type="button" onclick="">戻る</button>
-	<br>
-	<div class="wrapper">
-		<div class="file_wrapper">
-	        <!-- <p th:text="${getprace_id()}"></p> -->
-	        <input type="file" name="fileChoice" accept="image/*" multiple><!-- file選択 -->
+	<input type="button" th:action="@{menu/image/return}" value="戻る">
+	<br><br>
+		<div class="imgfile_wrapper">
+			<form method="post" enctype="multipart/form-data" th:action="@{menu/image/register}">
+			   	<p th:text="${getplace_name()}"></p>	 <!--  飲食店名を表示 -->
+				<input type="file" id="img_file" accept="image/jpg" multiple>	<!-- file選択 -->
+			    <p class="img_error" th:text="${img_error_message}"></p>	<!-- errorを表示 -->
+				<br>
+				<input type="submit" class="button" value="登録"/>
+			</form>
 		</div>
     </div>
-    <br>
-	<button>登録</button>
 </body>
 </html>

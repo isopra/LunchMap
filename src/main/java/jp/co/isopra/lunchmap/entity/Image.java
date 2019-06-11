@@ -20,26 +20,30 @@ public class Image {
     @Column
     private long image_id;
 
+ /*
     @Column(length = 100)
     @NotNull
     private String place_id;
 
+
     @Column( length = 100)
     @NotNull
     private String login_id;
+*/
 
     @Column
     @NotNull
     private Date created_time;
 
     @ManyToOne
-    private Member member;
+    private Member login_id;
 
     @ManyToOne
-    private Shop shop;
+    private Shop place_id;
+
 
     public Image() {
-//        super(); //なにこれ？これ消しても問題なく登録できる、
+//      super(); //なにこれ？これ消しても問題なく登録できる、
         this.created_time = new Date();
     }
 
@@ -51,7 +55,7 @@ public class Image {
         return image_id;
     }
 
-    public void setPlace_id(String place_id) {
+ /*   public void setPlace_id(String place_id) {
         this.place_id = place_id;
     }
 
@@ -66,25 +70,26 @@ public class Image {
     public String getLogin_id() {
         return login_id;
     }
+*/
 
     public Date getCreated_time() {
         return created_time;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setMember(Member login_id) {
+        this.login_id = login_id;
     }
 
     public Member getMember() {
-        return member;
+        return login_id;
     }
 
-    public void setShop(Shop shop) {
-        this.shop = shop;
+    public void setShop(Shop place_id) {
+        this.place_id = place_id;
     }
 
     public Shop getShop() {
-        return shop;
+        return place_id;
     }
 
 }
