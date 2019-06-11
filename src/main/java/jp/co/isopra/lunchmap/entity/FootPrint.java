@@ -28,7 +28,7 @@ public class FootPrint {
 	 * 社員
 	 */
 	@ManyToOne
-	private Member login_id;
+	private Member member;
 
 	/**
 	 * TODO: shopとの関連付
@@ -46,13 +46,10 @@ public class FootPrint {
 	/**
 	 *  登録日時
 	 */
-	@Column(name = "created_time")
+	@Column(name = "datetime")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date datetime;
 
-	public void setLogin_id(Member member) {
-		this.login_id = member;
-	}
 
 	public String getComment() {
 		return comment;
@@ -60,5 +57,25 @@ public class FootPrint {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
+	public void setShop(Shop shop) {
+		this.shop = shop;
+	}
+
+	public String getShop(String shop) {
+		return shop;
+	}
+
+	public Date getDatetime() {
+		return datetime;
+	}
+
+	public void setDatetime(Date datetime) {
+		this.datetime = datetime;
 	}
 }
