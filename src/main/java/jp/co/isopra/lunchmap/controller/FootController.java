@@ -5,15 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jp.co.isopra.lunchmap.entity.Footprint;
-import jp.co.isopra.lunchmap.repositories.FootprintRepository;
+import jp.co.isopra.lunchmap.entity.FootPrint;
+import jp.co.isopra.lunchmap.repositories.FootPrintRepository;
 
 
 @Controller
 public class FootController {
 
 	@Autowired
-	FootprintRepository repository;
+	FootPrintRepository repository;
 
 	@RequestMapping("/foot")
 	public String viewFoot() {
@@ -24,7 +24,7 @@ public class FootController {
 	@RequestMapping("/foot/register")
 	public String registerFoot(@RequestParam String comment) {
 
-		Footprint entity = new Footprint();
+		FootPrint entity = new FootPrint();
 
 		entity.setComment(comment);
 		repository.save(entity);

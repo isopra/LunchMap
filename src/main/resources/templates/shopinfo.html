@@ -40,7 +40,12 @@
 </head>
 <body>
 	<h1 th:text="${title}">shopinfo page</h1>
-	<button type="button" onclick="history.back()">戻る</button>
+<script>
+	function toView(to) {
+		location.href = "/menu/" + to;
+	}
+</script>
+	<button type="button" onclick="toView('mapview')">戻る</button>
   	<label id="shopName"></label>
   	<div id="sample"></div>
 

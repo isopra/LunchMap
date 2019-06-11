@@ -28,7 +28,7 @@ public class Member {
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
 	@JsonManagedReference // 循環参照を止めるアノテーション
-	private List<Footprint> footprint;
+	private List<FootPrint> footprint;
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
 	@JsonManagedReference // 循環参照を止めるアノテーション
@@ -53,11 +53,11 @@ public class Member {
 		this.nickname = nickname;
 	}
 
-	public void setFootprint(List<Footprint> footprint) {
+	public void setFootprint(List<FootPrint> footprint) {
 		this.footprint = footprint;
 	}
 
-	public List<Footprint> getFootprint() {
+	public List<FootPrint> getFootprint() {
 		return footprint;
 	}
 

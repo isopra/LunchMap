@@ -5,7 +5,7 @@ import java.io.File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jp.co.isopra.lunchmap.repositories.FootprintRepository;
+import jp.co.isopra.lunchmap.repositories.FootPrintRepository;
 import jp.co.isopra.lunchmap.repositories.ImageRepository;
 import jp.co.isopra.lunchmap.repositories.MemberRepository;
 import jp.co.isopra.lunchmap.repositories.ShopRepository;
@@ -20,7 +20,7 @@ public class ImageService {
 	ShopRepository shopRepository;
 
 	@Autowired
-	FootprintRepository footprintRepository;
+	FootPrintRepository footprintRepository;
 
 	@Autowired
 	ImageRepository imageRepository;
@@ -34,7 +34,7 @@ public class ImageService {
 		if (!file.exists()) {
             System.out.println("ファイル:[" + urltest + "]が存在しません");
         }
-		
+
         if (file.delete()) {
             System.out.println("ファイル:[" + url + "]の削除に成功しました");
 			imageRepository.deleteByImage_id(image_id);

@@ -30,7 +30,7 @@ public class Shop {
 
 	@OneToMany(mappedBy = "shop", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
 	@JsonManagedReference // 循環参照を止めるアノテーション
-	private List<Footprint> footprint;
+	private List<FootPrint> footprint;
 
 	@OneToMany(mappedBy = "shop", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
 	@JsonManagedReference // 循環参照を止めるアノテーション
@@ -52,11 +52,11 @@ public class Shop {
 		return place_name;
 	}
 
-	public void setFootprint(List<Footprint> footprint) {
+	public void setFootprint(List<FootPrint> footprint) {
 		this.footprint = footprint;
 	}
 
-	public List<Footprint> getFootprint() {
+	public List<FootPrint> getFootprint() {
 		return footprint;
 	}
 

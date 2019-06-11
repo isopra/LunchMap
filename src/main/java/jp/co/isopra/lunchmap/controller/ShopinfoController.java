@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import jp.co.isopra.lunchmap.entity.AccountDetails;
-import jp.co.isopra.lunchmap.entity.Footprint;
+import jp.co.isopra.lunchmap.entity.FootPrint;
 import jp.co.isopra.lunchmap.entity.Image;
-import jp.co.isopra.lunchmap.repositories.FootprintRepository;
+import jp.co.isopra.lunchmap.repositories.FootPrintRepository;
 import jp.co.isopra.lunchmap.repositories.ImageRepository;
 import jp.co.isopra.lunchmap.repositories.MemberRepository;
 import jp.co.isopra.lunchmap.repositories.ShopRepository;
@@ -31,7 +31,7 @@ public class ShopinfoController {
 	ShopRepository shopRepository;
 
 	@Autowired
-	FootprintRepository footprintRepository;
+	FootPrintRepository footprintRepository;
 
 	@Autowired
 	ImageRepository imageRepository;
@@ -62,7 +62,7 @@ public class ShopinfoController {
 		int footprintRecords = footprintRepository.getFootprintRecords(place_id) ;
 		mav.addObject("footprintRecords",footprintRecords);
 		//　place_idが一致するfootprintオブジェクト
-		List<Footprint> footprintDatalist = footprintRepository.getByPlace_id(place_id);
+		List<FootPrint> footprintDatalist = footprintRepository.getByPlace_id(place_id);
 		mav.addObject("footprintDatalist",footprintDatalist);
 
 		// imageについて
@@ -88,7 +88,7 @@ public class ShopinfoController {
         return mav;
     }
 
-	@RequestMapping(value = "/shopinfo/delete/{place_id}/{image_id}")
+	@RequestMapping(value = "/shopinfo/delete/image/{place_id}/{image_id}")
 	@Transactional(readOnly=false)
 	public ModelAndView deleteImage(
 			@PathVariable String place_id,
