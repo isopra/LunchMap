@@ -20,16 +20,13 @@ button {
 .lab {
     margin-left:20px;
 }
-.area {
-	width: 250px;
-	height:100px;
-}
+
 .imgfile_wrapper {
 	width: 50%;
 	height: 300px;
-	padding:30px auto;
+	padding: 20px;
 	border:solid 1px #000;
-	margin: 0 auto;
+/*	margin: 0 auto; */
 }
 
 .img_error {
