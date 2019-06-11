@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "footprint")
 public class Footprint {
@@ -36,9 +38,11 @@ public class Footprint {
 	private Date created_time;
 
 	@ManyToOne
+	@JsonBackReference
 	private Member member;
 
 	@ManyToOne
+	@JsonBackReference
 	private Shop shop;
 
 	public Footprint() {
