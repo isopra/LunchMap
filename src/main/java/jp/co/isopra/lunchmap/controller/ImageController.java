@@ -28,7 +28,7 @@ public class ImageController {
 			ModelAndView mav)
 	{
 		mav.setViewName("image");
-		Shop entityShop = this.ShopRepository.findById(place_name).get();
+		Shop entityShop = this.ShopRepository.findById(place_id).get();
 		mav.addObject("getplace_name", entityShop.getPlace_name());
 		return mav;
 	}
@@ -69,7 +69,7 @@ public class ImageController {
 		ModelAndView mav)
 	{
 
-		mav.setViewName("menu/image/return");
+		mav.setViewName("shop");
 		return mav;
 	}
 

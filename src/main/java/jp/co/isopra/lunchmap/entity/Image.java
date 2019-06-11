@@ -20,26 +20,15 @@ public class Image {
     @Column
     private long image_id;
 
- /*
-    @Column(length = 100)
-    @NotNull
-    private String place_id;
-
-
-    @Column( length = 100)
-    @NotNull
-    private String login_id;
-*/
-
     @Column
     @NotNull
     private Date created_time;
 
     @ManyToOne
-    private Member login_id;
+    private Member member;
 
     @ManyToOne
-    private Shop place_id;
+    private Shop shop;
 
 
     public Image() {
@@ -55,41 +44,24 @@ public class Image {
         return image_id;
     }
 
- /*   public void setPlace_id(String place_id) {
-        this.place_id = place_id;
-    }
-
-    public String getPlace_id() {
-        return place_id;
-    }
-
-    public void setLogin_id(String login_id) {
-        this.login_id = login_id;
-    }
-
-    public String getLogin_id() {
-        return login_id;
-    }
-*/
-
     public Date getCreated_time() {
         return created_time;
     }
 
-    public void setMember(Member login_id) {
-        this.login_id = login_id;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     public Member getMember() {
-        return login_id;
+        return member;
     }
 
-    public void setShop(Shop place_id) {
-        this.place_id = place_id;
+    public void setShop(Shop shop) {
+        this.shop = shop;
     }
 
     public Shop getShop() {
-        return place_id;
+        return shop;
     }
 
 }
