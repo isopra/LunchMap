@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja"  xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta http-equiv="Content-Type"
+    content="text/html; charset=utf-8">
+
+<title>MapSearch</title>
+
+
+</head>
+<body>
+<h1>検索</h1>
+<p>口コミ情報：</p>
+<form method ="POST" th:action ="@{/menu/searchView}">
+<label> あり/なし両方
+<input type ="radio" name ="locate" value ="Both" checked="checked" onClick="flg0(this.checked)">
+</label>
+<br>
+<label> あり
+<input type ="radio" name ="locate" value ="Exist" 	onClick="flg1(this.checked)"/>
+</label>
+<br>
+<label> 最近の口コミ
+<input type ="radio" id ="select1" name ="near" value ="near" disabled="disabled">
+</label>
+<br>
+<label> 自分が投稿したもの
+<input type ="radio" id ="select2" name ="mylog" value ="mylog" disabled="disabled">
+</label>
+
+<br>
+<input type ="submit">
+</form>
+
+<script>
+	//あり/なし両方を押したとき
+	function flg0(ischecked){
+		if(ischecked == true){
+  			document.getElementById("select1").disabled = true;
+  			document.getElementById("select1").checked=false;
+  			document.getElementById("select2").disabled = true;
+  			document.getElementById("select2").checked=false;
+		}else {
+  			document.getElementById("select1").disabled = false;
+  			document.getElementById("select2").disabled = false;
+		}
+	}
+
+	//ありを押したとき
+	function flg1(ischecked){
+    	if(ischecked == true){
+      		document.getElementById("select1").disabled = false;
+      		document.getElementById("select2").disabled = false;
+    	} else {
+      		document.getElementById("select1").disabled = true;
+      		document.getElementById("select2").disabled = true;
+    	}
+  	}
+</script>
+</body>
+</html>

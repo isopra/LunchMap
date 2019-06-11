@@ -1,19 +1,7 @@
-<!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-<title>map_now place</title>
-<style >
-h1 {font-weight:bold;}
-
-</style>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3OYplN1nN_Vl7RkS2-V7yMJrMUkxSm3U&libraries=places"></script>
-<script type="text/javascript"  th:inline="javascript">
-
 var map;
 var marker = [];
-var data = [];
-var datalist = /*[[${datalist}]]*/ '';
+var pl = [];
+var requestid =[];
 
 function initMap(){
 	if(!navigator.geolocation) {
@@ -24,11 +12,11 @@ function initMap(){
 	navigator.geolocation.getCurrentPosition(function(position){
 		var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);//現在地
 		var opts = {
-			zoom:16,
+			zoom:18,
 			center:latlng,
 		};
 
-
+		console.log(data);
 		map = new google.maps.Map(document.getElementById("map_sam"), opts);
 
 		//現在地にマーカーを立てる
@@ -50,6 +38,7 @@ function initMap(){
 }
 //ドラッグ操作の設定
 function dispLatLng(){
+
 	if(marker.length > 0){
 		//マーカー削除
 		for (i = 0; i <  marker.length; i++) {
@@ -62,35 +51,53 @@ function dispLatLng(){
     }
 	//中心座標取得
 	var center = map.getCenter();
-	var request = {
-		location: center,
-		radius:'500',
-		query:'restaurant'
-	};
 
-	service = new google.maps.places.PlacesService(map);
-	service.textSearch(request, callback);
-
+	//map起動時またはあり/なし両方が押されたとき
+	if(data == "Both"){
+		var request = {
+			location: center,
+			radius:'250',
+			type:['restaurant']
+		};
+		console.log(request);
+		service = new google.maps.places.PlacesService(map);
+		service.nearbySearch(request, callback);
+	}else {
+		//ありが押されたとき
+		for(i= 0;i<datalist.length;i++){
+			var request = {
+				placeId:datalist[i].place_id,
+				fields: ['name',  'place_id', 'geometry']
+			};
+			service = new google.maps.places.PlacesService(map);
+			service.getDetails(request, createMarker);
+			}
+		}
 }
 
 //検索結果の処理
 function callback(results, status) {
 	if (status == google.maps.places.PlacesServiceStatus.OK) {
-
+		console.log(results);
 		for (var i = 0; i < results.length; i++) {
 			createMarker(results[i]);
 		}
 	}
 }
 
+
 //マーカーを表示
 function createMarker(place){
-	var pos = place.geometry.location;
+	console.log(place);
+	var center = map.getCenter();
+	if(place == null){
+		return;
+	}
+	//console.log(place.place_id);
 	var iconCo ='https://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
-
+	var vis = true;
 
 	//place_idの判定
-
 	if(datalist != null){
 		for(var e = 0; e < datalist.length; e++){
 			if(place.place_id == datalist[e].place_id){
@@ -98,15 +105,25 @@ function createMarker(place){
 				break;
 			}else{
 				iconCo ='https://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
+
+
 			}
 		}
 	}
-		//各店のマーカーを定義
+
+	var res = google.maps.geometry.spherical.computeDistanceBetween(place.geometry.location, center);
+	console.log(res);
+	if(res > 500){
+		vis = false;
+	}
+	console.log(vis);
+	//各店のマーカーを定義
 	marker.push ( new google.maps.Marker({
 		position: place.geometry.location,
 		title:place.name,
 		url:"/shopinfo/" + place.place_id,//情報ページのurl指定
 		map: map,
+		visible:vis,
 		icon:iconCo
 	}));
 
@@ -118,21 +135,9 @@ function createMarker(place){
 		});
 	}
 
-}window.onload = initMap;
+}
 
-</script>
-<script>
+
 function toView(to) {
 	location.href = "/menu/" + to;
 }
-</script>
-
-</head>
-<body>
-<h1>地図</h1>
-<button   onclick="toView('')">戻る</button> <!-- メニューにもどる -->
-<button   onclick="toView('searchView')">検索</button><!-- 検索画面へ -->
-
-<div id="map_sam" style="width:100%; height:400px"></div>
-</body>
-</html>
