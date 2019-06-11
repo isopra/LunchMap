@@ -34,7 +34,10 @@ public class MenuController {
 	
 	//メンバー管理画面表示
 	@RequestMapping("/menu/member_manager")
-	public String showMemberManager() {
+	public String showMemberManager(Model model) {
+		
+		model.addAttribute("allMembers", service.findAllMembers());
+		
 		return "memberManager";
 	}
 }

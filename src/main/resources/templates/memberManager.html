@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	tr { margin:5px;}
+	th { padding:5px;}
+	td {padding:5px;;}
+</style>
 </head>
 <body>
-	テスト
+<form method="POST" th:action="@{/member/edit_by_manager}">
+	<table border="1">
+		<tr><th></th><th>ID</th><th>ニックネーム</th></tr>
+		<tr th:each="obj : ${allMembers}" >
+			<td><input type="radio" name="login_id" th:value="${obj.login_id}"></td>
+			<td th:text="${obj.login_id}"></td>
+			<td th:text="${obj.nickname}"></td>
+		</tr>
+	</table>
+	<input type="submit">
+</form>
 </body>
 </html>

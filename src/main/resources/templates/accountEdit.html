@@ -11,6 +11,7 @@
 </head>
 <body>
 <form th:action="@{/member/edit}" method="POST">
+	<input type="hidden" th:value="${id}" name="login_id">
     <table align="center">
         <tr>
             <td>ログインID：</td>
