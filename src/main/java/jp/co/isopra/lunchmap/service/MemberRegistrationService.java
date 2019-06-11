@@ -28,14 +28,21 @@ public class MemberRegistrationService {
 		entity.setPassword(passwordEncoder.encode(entity.getPassword()));
 
 		//会員情報をUSERテーブルにinsert。
-		entity = memberRepository.save(entity);
+		return memberRepository.save(entity);
+
+
 
 //		// DEBUG テーブル内データの確認
 //		java.lang.System.out.println("<MEMBER TABLE>");
 //		for(Member mem : memberRepository.findAll()) {
 //			java.lang.System.out.println(mem.getLogin_id() + "/" + mem.getPassword());
 //		}
-		return entity;
+	}
 
+	/**
+	 * IDをもとにメンバー情報を取得
+	 */
+	public Member findMember(String login_id) {
+		return memberRepository.findById(login_id).get();
 	}
 }
