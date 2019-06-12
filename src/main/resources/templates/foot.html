@@ -14,7 +14,8 @@
 		<form method="post" th:action="@{foot/register}">
 			<p class="footprint_label" th:text="${place_name}"></p> <!-- 飲食店名を表示 -->
 		  	<p class="footprint_label" th:text="${datetime}"></p>  <!-- システム日時を表示 -->
-			<p class="footprint_label">コメント：</p><span  class="foot_error_message" th:text="${error_message}"></span>  <!-- error表示 -->
+			<p class="footprint_label">コメント：</p>
+			<p  class="foot_error_message" th:if="${error_message}" th:text="${trueVal}"></p>  <!-- error表示 -->
 		    <textarea id="footprint_comment" class="footprint_label" name="comment"></textarea>
 		    <input type="hidden" name="place_id" th:value="${place_id}">
 			<input type="reset" value="clear">

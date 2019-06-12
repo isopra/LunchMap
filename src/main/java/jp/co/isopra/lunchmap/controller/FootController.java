@@ -97,6 +97,11 @@ public class FootController {
 	{
 
 		int commentLength =  comment.length();
+
+		mav.setViewName("foot");
+		mav.addObject("error_message", commentLength >= 200);
+		mav.addObject("trueVal","200字以内で入力してください");
+
 		if  (commentLength <= 200) {
 
 			FootPrint entity = new FootPrint();
@@ -111,14 +116,7 @@ public class FootController {
 			entity.setShop(entityShop);
 
 			footRepository.saveAndFlush(entity);
-
-			mav.setViewName("foot");
-
-		} else {
-			mav.setViewName("foot");
-			mav.addObject("error_message", "200字以内で入力してください");  // ToDo: 表示させる
 		}
-
 		return mav;
 	}
 
