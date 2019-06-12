@@ -4,7 +4,15 @@
 <head>
 <meta charset="UTF-8">
 <title>ログイン</title>
-<script>
+<script th:inline="javascript">
+
+window.addEventListener("load", function() {
+	var errorMessage = [[${errorMessage}]];
+	if(!errorMessage == "") {
+		alert(errorMessage);
+	}
+}, false);
+
 function toRegister() {
 	location.href = "/member/register";
 }
@@ -15,11 +23,11 @@ function checkValue() {
 	if (document.form.login_id.value == "") {
 		sendMessage += "ログインIDを入力してください\n";
 	}
-	
+
 	if(document.form.password.value == "") {
 		sendMessage += "パスワードを入力してください";
 	}
-	
+
 	if(sendMessage == "") {
 		return true;
 	}else {
@@ -33,7 +41,6 @@ function checkValue() {
 <body>
 <form th:action="@{/authenticate}" method="POST" name="form" onSubmit="return checkValue()">
     <table align="center">
-    	<tr><td><p th:text="${errorMessage}"></p></td></tr>
         <tr>
             <td>ログインID：</td>
             <td><input type="text" id="login_id" name="login_id"/></td>
