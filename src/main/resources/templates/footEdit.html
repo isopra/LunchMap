@@ -8,18 +8,19 @@
 </head>
 <body>
 <div class="footprint_modal">
-    <h1>あしあと情報 登録・編集</h1>
+    <h1>あしあと情報 編集</h1>
     <input type="button" class="btn" th:action="@{menu/foot/return}" value="戻る"><br><br>
     <div class="footprint_wrapper">
-		<form method="post" th:action="@{menu/foot/register}">
-			<p class="foot_print_label" th:text="${editPlace_name}"></p> <!--  飲食店名を表示 -->
-			<p class="foot_print_label" th:text="|あしあと：*{editDatetime}|"></p> <!--  登録日時を表示 -->
-			<p class="foot_print_label">コメント：</p><span  class="error_message" th:text="${error_message}"></span>  <!-- error表示 -->
-	        <textarea id="foot_print_comment" class="foot_print_label area" th:text="*{editComment}"></textarea>
+		<form method="post" th:action="@{register}">
+			<p class="footprint_label" th:text="${editPlace_name}"></p> <!--  飲食店名を表示 -->
+			<p class="footprint_label" th:text="|あしあと：*{editDatetime}|"></p> <!--  登録日時を表示 -->
+			<p class="footprint_label">コメント：</p><span  class="error_message" th:text="${error_message}"></span>  <!-- error表示 -->
+	        <textarea id="footprint_comment" class="footprint_label" th:text="*{editComment}" name="comment"></textarea>
+	        <input type="hidden" name="place_id" th:value="${place_id}">
 			<input type="reset" value="clear">
-			<p class="foot_print_label">最大200文字まで登録できます</p>
+			<p class="footprint_label">最大200文字まで登録できます</p>
 			<br>
-			<input type="submit" class="button" value="登録" />
+			<input type="submit" class="btn" value="登録" />
 		</form>
     </div>
 </div>

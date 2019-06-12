@@ -35,17 +35,31 @@ public class FootController {
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
 	{
-		mav.setViewName("footEdit");
+
+		// DBから登録内容を検索
 		FootPrint entityFootPrint = this.footRepository.findById(footprint_id).get();
 		Shop entityShop = this.shopRepository.findById(place_id).get();
 
+		// 登録日時のフォーマットを指定
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+		String formatDate = dateFormat.format(entityFootPrint.getDatetime());
+
+		// 表示
+		mav.setViewName("footEdit"); // これないと画面表示されない
 		mav.addObject("editComment", entityFootPrint.getComment());
 		mav.addObject("editPlace_name", entityShop.getPlace_name());
-		mav.addObject("editDatetime", entityFootPrint.getDatetime());
+		mav.addObject("editDatetime", formatDate);
+		mav.addObject("place_id", entityShop.getPlace_id());
 
 		return mav;
 	}
 
+/*
+ *  上書き保存
+	@RequestMapping("menu/foot/update")
+	public ModelAndView Update(
+		ModelAndView mav)
+ */
 
 	// コメント作成
 	@RequestMapping(value = "menu/foot", method = RequestMethod.GET )
@@ -55,19 +69,20 @@ public class FootController {
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
 	{
-		mav.setViewName("foot");
 
-		// place_idから飲食店名を表示
-		System.out.println(place_name);
-		Shop entityShop = this.shopRepository.findById(place_id).get();
-		mav.addObject("place_name", entityShop.getPlace_name());
-
-		// 現在日時をフォーマット指定して表示
+		// 現在日時のフォーマットを指定
 		Date nowDate = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 		String formatDate = dateFormat.format(nowDate);
-		mav.addObject("datetime", formatDate);
 
+		// shopテーブルから検索
+		Shop entityShop = this.shopRepository.findById(place_id).get();
+
+		// 表示
+		mav.setViewName("foot");
+		mav.addObject("place_name", entityShop.getPlace_name());
+		mav.addObject("datetime", formatDate);
+		mav.addObject("place_id", entityShop.getPlace_id());
 
 		return mav;
 	}
@@ -76,32 +91,28 @@ public class FootController {
 	@RequestMapping(value = "menu/foot/register", method = RequestMethod.POST)
 	public ModelAndView newFoot(
 		@RequestParam String comment,
-//		@RequestParam String place_id,
-//		@RequestParam Date datetime,
+		@RequestParam String place_id,
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
 	{
-		System.out.println("test");
+
 		int commentLength =  comment.length();
 		if  (commentLength <= 200) {
 
-			// DBに各値をセット
 			FootPrint entity = new FootPrint();
 			Date nowDate = new Date();
+			Shop entityShop = this.shopRepository.findById(place_id).get();
 
+			// DBに各値をセット
 			entity.setComment(comment);
 			entity.setMember(accountDetails.getMember());
 			entity.setDatetime(nowDate);
-
 			// ToDo:place_idを登録
-			// entity.setShop(Shop.getPlace_id());
+			entity.setShop(entityShop);
 
-
-			footRepository.save(entity);
-			System.out.println("登録しました");
+			footRepository.saveAndFlush(entity);
 
 			mav.setViewName("foot");
-
 
 		} else {
 			mav.setViewName("foot");
