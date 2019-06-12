@@ -8,10 +8,30 @@
 function toRegister() {
 	location.href = "/member/register";
 }
+
+//送信時チェック
+function checkValue() {
+	var sendMessage = "";
+	if (document.form.login_id.value == "") {
+		sendMessage += "ログインIDを入力してください\n";
+	}
+	
+	if(document.form.password.value == "") {
+		sendMessage += "パスワードを入力してください";
+	}
+	
+	if(sendMessage == "") {
+		return true;
+	}else {
+		alert(sendMessage);
+		return false;
+	}
+}
+
 </script>
 </head>
 <body>
-<form th:action="@{/authenticate}" method="POST">
+<form th:action="@{/authenticate}" method="POST" name="form" onSubmit="return checkValue()">
     <table align="center">
     	<tr><td><p th:text="${errorMessage}"></p></td></tr>
         <tr>
