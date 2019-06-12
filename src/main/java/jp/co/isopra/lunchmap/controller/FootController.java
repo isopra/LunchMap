@@ -38,9 +38,10 @@ public class FootController {
 		mav.setViewName("footEdit");
 		FootPrint entityFootPrint = this.footRepository.findById(footprint_id).get();
 		Shop entityShop = this.shopRepository.findById(place_id).get();
+
 		mav.addObject("editComment", entityFootPrint.getComment());
-		mav.addObject("place_name", entityShop.getPlace_name());
-		// ToDo: entityFootPrintから登録日時を表示
+		mav.addObject("editPlace_name", entityShop.getPlace_name());
+		mav.addObject("editDatetime", entityFootPrint.getDatetime());
 
 		return mav;
 	}
@@ -56,11 +57,12 @@ public class FootController {
 	{
 		mav.setViewName("foot");
 
+		// place_idから飲食店名を表示
 		System.out.println(place_name);
 		Shop entityShop = this.shopRepository.findById(place_id).get();
 		mav.addObject("place_name", entityShop.getPlace_name());
 
-		// システム日時をフォーマット指定して表示
+		// 現在日時をフォーマット指定して表示
 		Date nowDate = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 		String formatDate = dateFormat.format(nowDate);
