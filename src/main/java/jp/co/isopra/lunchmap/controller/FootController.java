@@ -1,5 +1,8 @@
 package jp.co.isopra.lunchmap.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -28,13 +31,13 @@ public class FootController {
 	@RequestMapping(value = "menu/foot/edit", method = RequestMethod.GET )
 	public ModelAndView footEdit (
 		@RequestParam (name = "footprint_id", defaultValue = "" ) Long footprint_id,
-		@RequestParam (name = "place_name", defaultValue = "") String place_name,
+		@RequestParam (name = "place_id", defaultValue = "") String place_id,
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
 	{
 		mav.setViewName("footEdit");
 		FootPrint entityFootPrint = this.footRepository.findById(footprint_id).get();
-		Shop entityShop = this.shopRepository.findById(place_name).get();
+		Shop entityShop = this.shopRepository.findById(place_id).get();
 		mav.addObject("editComment", entityFootPrint.getComment());
 		mav.addObject("place_name", entityShop.getPlace_name());
 		// ToDo: entityFootPrintから登録日時を表示
@@ -52,11 +55,16 @@ public class FootController {
 		ModelAndView mav)
 	{
 		mav.setViewName("foot");
+
 		System.out.println(place_name);
 		Shop entityShop = this.shopRepository.findById(place_id).get();
-
 		mav.addObject("place_name", entityShop.getPlace_name());
-		// ToDo:システム日時を表示
+
+		// システム日時をフォーマット指定して表示
+		Date nowDate = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+		String formatDate = dateFormat.format(nowDate);
+		mav.addObject("datetime", formatDate);
 
 
 		return mav;
@@ -66,25 +74,28 @@ public class FootController {
 	@RequestMapping(value = "menu/foot/register", method = RequestMethod.POST)
 	public ModelAndView newFoot(
 		@RequestParam String comment,
-		@RequestParam String place_id,
+//		@RequestParam String place_id,
+//		@RequestParam Date datetime,
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
 	{
 		System.out.println("test");
 		int commentLength =  comment.length();
 		if  (commentLength <= 200) {
+
 			// DBに各値をセット
 			FootPrint entity = new FootPrint();
+			Date nowDate = new Date();
 
 			entity.setComment(comment);
 			entity.setMember(accountDetails.getMember());
+			entity.setDatetime(nowDate);
+
 			// ToDo:place_idを登録
-			// entity.setShop(Shop.);
+			// entity.setShop(Shop.getPlace_id());
 
-			// ToDo:日時を登録
-			//entity.setDatetime();
 
-			footRepository.saveAndFlush(entity);
+			footRepository.save(entity);
 			System.out.println("登録しました");
 
 			mav.setViewName("foot");

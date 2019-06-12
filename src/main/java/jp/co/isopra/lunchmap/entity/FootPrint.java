@@ -46,7 +46,7 @@ public class FootPrint {
 	/**
 	 *  登録日時
 	 */
-	@Column(name = "datetime")
+	@Column(name = "created_time")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date datetime;
 
