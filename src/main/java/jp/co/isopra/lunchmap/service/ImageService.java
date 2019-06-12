@@ -27,17 +27,16 @@ public class ImageService {
 
 	public void deleteImage(String place_id,Long image_id) {
 
-		String urltest = "C:\\Users\\kondo.takuya\\Documents\\LunchMap\\src\\main\\resources\\static\\images\\"+ place_id + "\\" + place_id + "_" + image_id + ".jpg";
-		String url = "http://localhost:8080/images/" + place_id + "/" + place_id + "_" + image_id + ".jpg";
-		File file = new File(urltest);
+		String url = "static\\images\\"+ place_id + "\\" + place_id + "_" + image_id + ".jpg";
+		File file = new File(url);
 
 		if (!file.exists()) {
-            System.out.println("ファイル:[" + urltest + "]が存在しません");
+            System.out.println("ファイル:[" + url + "]が存在しません");
         }
 
         if (file.delete()) {
+        	imageRepository.deleteByImage_id(image_id);
             System.out.println("ファイル:[" + url + "]の削除に成功しました");
-			imageRepository.deleteByImage_id(image_id);
         } else {
         	System.out.println("ファイル:[" + url + "]の削除に失敗しました");
         }

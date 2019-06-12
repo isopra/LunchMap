@@ -60,7 +60,7 @@ public class Shop {
 		return footprint;
 	}
 
-	public void setImaga(List<Image> image) {
+	public void setImage(List<Image> image) {
 		this.image = image;
 	}
 

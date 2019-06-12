@@ -46,7 +46,6 @@ public class FootPrint {
 	private Shop shop;
 
 	public FootPrint() {
-//		super(); //なにこれ？これ消しても問題なく登録できる、
 		this.created_time = new Date();
 	}
 

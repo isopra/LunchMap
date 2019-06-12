@@ -43,7 +43,6 @@ public class Image {
 	private Shop shop;
 
 	public Image() {
-//		super(); //なにこれ？これ消しても問題なく登録できる、
 		this.created_time = new Date();
 	}
 

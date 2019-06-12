@@ -6,29 +6,71 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!--  	<link rel="stylesheet" media="all" th:href="@{/css/test.css}"/> -->
 <style>
-	h1{ font-size :18px; font-weight:bold; color: gray; }
-	body{ font-size:13px; color:gray; margin:5px 25px; }
-	pre { border: solid 3px #ddd; padding: 10px; }
-	tr { margin:5px; }
-	th { padding:5px; color:white; background:darkgray; }
-	td { padding:5px; color:black: background:#f0f0f0; }
-	table.navi { width:100%; background:white; }
-	table.navi tr { background:white; }
-	table.navi tr td { background:white; }
-	.err { color:red; }
-	#sample {
-		width: 700px;
+	h1{ font-size :18px;
+		font-weight:bold;
+		color: gray;
+	}
+
+	body{
+		font-size:13px;
+		color:gray;
+		margin:5px 25px;
+	}
+
+	pre {
+		border: solid 3px #ddd;
+		padding: 10px;
+	}
+
+	tr {
+		margin:5px;
+	}
+
+	th {
+		padding:5px;
+		color:white;
+		background:darkgray;
+	}
+
+	td {
+		padding:5px;
+		color:black:
+		background:#f0f0f0;
+	}
+
+	table.navi {
+		width:100%;
+		background:white;
+	}
+
+	table.navi tr {
+		background:white;
+	}
+
+	table.navi tr td {
+		background:white;
+	}
+
+	.err {
+		color:red;
+	}
+
+	#shopMap {
+		width: 780px;
 		height: 400px;
 	}
+
 	.image {
 		position: relative;
  		width: 300px;
 	}
+
 	.image p{
 		position: absolute;
 		right: 0px;
 		bottom: 0px;
 	}
+
 	.image img{
 		object-fit: contain;
 		width: 300px;
@@ -47,60 +89,53 @@
 </script>
 	<button type="button" onclick="toView('mapview')">戻る</button>
   	<label id="shopName"></label>
-  	<div id="sample"></div>
+  	<div id="shopMap"></div>
 
-   	<script th:inline="javascript">
-   	var placeId = /*[[${placeId}]]*/;
-   	window.onload = function test(){
+<script th:inline="javascript">
+var placeId = /*[[${placeId}]]*/;
 
+window.onload = function ShowMap(){
 
-   			var map;
-			var infoWindow;
+	var map;
+	var infoWindow;
 
-   			map = new google.maps.Map(document.getElementById('sample'), { // #sampleに地図を埋め込む
+	map = new google.maps.Map(document.getElementById('shopMap'), { // #sampleに地図を埋め込む
+		zoom: 19 // 地図のズームを指定
+		});
 
-			     zoom: 19 // 地図のズームを指定
-			   });
+	var service = new google.maps.places.PlacesService(map);
+	service.getDetails({
+		placeId: placeId,
+		fields: ['name', 'formatted_address', 'geometry', 'url']
+	}, function(place, status) {
+		if (status == google.maps.places.PlacesServiceStatus.OK) {
 
-   			var service = new google.maps.places.PlacesService(map);
-   			service.getDetails({
-   			    placeId: placeId,
-   			    fields: ['name', 'formatted_address', 'geometry', 'url']
-   			}, function(place, status) {
-				if (status == google.maps.places.PlacesServiceStatus.OK) {
+			map = new google.maps.Map(document.getElementById('shopMap'), { // #sampleに地図を埋め込む
+				center: place.geometry.location, // 地図の中心を指定
+				zoom: 19 // 地図のズームを指定
+				});
 
-				map = new google.maps.Map(document.getElementById('sample'), { // #sampleに地図を埋め込む
-					center: place.geometry.location, // 地図の中心を指定
-					zoom: 19 // 地図のズームを指定
-					});
-				var marker = new google.maps.Marker({ // マーカーの追加
-					position: place.geometry.location, // マーカーを立てる位置を指定
-					map: map // マーカーを立てる地図を指定
-					});
+			var marker = new google.maps.Marker({ // マーカーの追加
+				position: place.geometry.location, // マーカーを立てる位置を指定
+				map: map // マーカーを立てる地図を指定
+				});
 
-				google.maps.event.addListener(marker, 'click', clickAction); // マーカ＾をクリックしたときメソッドを呼び出す
+			google.maps.event.addListener(marker, 'click', clickAction); // マーカ＾をクリックしたときメソッドを呼び出す
 
-				function clickAction(){
-					window.open(place.url); // 別画面で地図を表示
+			function clickAction(){
+				window.open(place.url); // 別画面で地図を表示
 				}
 
+			var elementName = document.getElementById('shopName'); // 店の名前を取得し#shopNameに埋め込む
+			elementName.innerHTML = place.name;
 
-
-				var elementName = document.getElementById('shopName'); // 店の名前を取得し#shopNameに埋め込む
-					elementName.innerHTML = place.name;
-
-   			    	console.log(place.name);
-   			        console.log(place.geometry.location);
-   			     	console.log(place.url);
-   			    }
-   			});
-
-
-	}
-   	</script>
+		}
+	});
+}
+</script>
    	<h1>あしあと数：</h1>
   	<p th:text="${footprintRecords}"></p>
-  	<a th:href="@{'../create/footprint/' + ${placeId}}" >足跡追加</a>
+  	<a th:href="@{'../foot/' + ${placeId}}" >足跡追加</a>
 
 	<h1>コメント</h1>
 		<div id="footprint_list_more">
@@ -123,24 +158,24 @@
 
 <script>
 $(function() {
-	  // 表示させる要素の総数をlengthメソッドで取得
-	  var $numberListLen = $("#footprint_list_more .footprint").length;
-	  console.log($numberListLen);
-	  // デフォルトの表示数
-	  var defaultNum = 2;
-	  // ボタンクリックで追加表示させる数
-	  var addNum = 2;
-	  // 現在の表示数
-	  var currentNum = 0;
+	// 表示させる要素の総数をlengthメソッドで取得
+	var $numberListLen = $("#footprint_list_more .footprint").length;
 
-	  if($numberListLen <= defaultNum ){
-		  $(this).find("#footprint_more_btn").hide();
-		  $(this).find("#footprint_close_btn").hide();
-		  return;
-	  }
+	// デフォルトの表示数
+	var defaultNum = 5;
+	// ボタンクリックで追加表示させる数
+	var addNum = 10;
+	// 現在の表示数
+	var currentNum = 0;
 
-	  $("#footprint_list_more").each(function() {
-	    // moreボタンを表示し、closeボタンを隠す
+	if($numberListLen <= defaultNum ){
+		$(this).find("#footprint_more_btn").hide();
+		$(this).find("#footprint_close_btn").hide();
+			return;
+	}
+
+	$("#footprint_list_more").each(function() {
+		// moreボタンを表示し、closeボタンを隠す
 	    $(this).find("#footprint_more_btn").show();
 	    $(this).find("#footprint_close_btn").hide();
 
@@ -157,41 +192,42 @@ $(function() {
 
 	    // moreボタンがクリックされた時の処理
 	    $("#footprint_more_btn").click(function() {
-	      // 現在の表示数に追加表示数を加えていく
-	      currentNum += addNum;
+	    	// 現在の表示数に追加表示数を加えていく
+	    	currentNum += addNum;
 
-	      // 現在の表示数に追加表示数を加えた数の要素を表示する
-	      $(this).parent().find(".footprint:lt("+currentNum+")").slideDown();
+	    	// 現在の表示数に追加表示数を加えた数の要素を表示する
+	    	$(this).parent().find(".footprint:lt("+currentNum+")").slideDown();
 
-	      // 表示数の総数よりcurrentNumが多い=全て表示された時の処理
-	      if($numberListLen <= currentNum) {
-	        // 現在の表示数をデフォルト表示数へ戻す
-	        currentNum = defaultNum;
-	        // インデックス用の値をセット
-	        indexNum = currentNum - 1;
+	    	// 表示数の総数よりcurrentNumが多い=全て表示された時の処理
+	    	if($numberListLen <= currentNum) {
+	    		// 現在の表示数をデフォルト表示数へ戻す
+	    		currentNum = defaultNum;
 
-	        // moreボタンを隠し、closeボタンを表示する
-	        $("#footprint_more_btn").hide();
-	        $("#footprint_close_btn").show();
+	    		// インデックス用の値をセット
+	    		indexNum = currentNum - 1;
 
-	        // closeボタンがクリックされた時の処理
-	        $("#footprint_close_btn").click(function() {
-	          // デフォルト数以降=インデックスがindexNumより多い要素は非表示にする
-	          $(this).parent().find(".footprint:gt("+indexNum+")").slideUp();
+	    		// moreボタンを隠し、closeボタンを表示する
+	    		$("#footprint_more_btn").hide();
+	    		$("#footprint_close_btn").show();
 
-	          // closeボタンを隠し、moreボタンを表示する
-	          $(this).hide();
-	          $("#footprint_more_btn").show();
-	        });
-	      }
+	    		// closeボタンがクリックされた時の処理
+	    		$("#footprint_close_btn").click(function() {
+	    			// デフォルト数以降=インデックスがindexNumより多い要素は非表示にする
+	    			$(this).parent().find(".footprint:gt("+indexNum+")").slideUp();
+
+	    			// closeボタンを隠し、moreボタンを表示する
+	    			$(this).hide();
+	    			$("#footprint_more_btn").show();
+	    		});
+	    	}
 	    });
-	  });
 	});
+});
 </script>
 
 
 <h1>画像数：</h1>
-  	<h1 th:text="${imageRecords}"></h1>
+  	<p th:text="${imageRecords}"></p>
   	<a th:href="@{'../create/image/' + ${ placeId }}" >画像追加</a>
 
 	<h1>画像</h1>
@@ -210,27 +246,27 @@ $(function() {
 	<div id="image_more_btn">もっと表示する<i class="fa fa-chevron-down" aria-hidden="true"></i></div>
 	<div id="image_close_btn">表示数を戻す <i class="fa fa-chevron-up" aria-hidden="true"></i></div>
 	</div>
+
 <script>
 $(function() {
-	  // 表示させる要素の総数をlengthメソッドで取得
-	  var $numberListLen = $("#image_list_more .image").length;
-	  console.log($numberListLen);
+	// 表示させる要素の総数をlengthメソッドで取得
+	var $numberListLen = $("#image_list_more .image").length;
 
-	  // デフォルトの表示数
-	  var defaultNum = 1;
-	  // ボタンクリックで追加表示させる数
-	  var addNum = 2;
-	  // 現在の表示数
-	  var currentNum = 0;
+	// デフォルトの表示数
+	var defaultNum = 5;
+	// ボタンクリックで追加表示させる数
+	var addNum = 10;
+	// 現在の表示数
+	var currentNum = 0;
 
-	  if($numberListLen <= defaultNum ){
-		  $(this).find("#image_more_btn").hide();
-		  $(this).find("#image_close_btn").hide();
-		  return;
-	  }
+	if($numberListLen <= defaultNum ){
+		$(this).find("#image_more_btn").hide();
+		$(this).find("#image_close_btn").hide();
+			return;
+	}
 
-	  $("#image_list_more").each(function() {
-	    // moreボタンを表示し、closeボタンを隠す
+	$("#image_list_more").each(function() {
+		// moreボタンを表示し、closeボタンを隠す
 	    $(this).find("#image_more_btn").show();
 	    $(this).find("#image_close_btn").hide();
 
@@ -248,36 +284,36 @@ $(function() {
 
 	    // moreボタンがクリックされた時の処理
 	    $("#image_more_btn").click(function() {
-	      // 現在の表示数に追加表示数を加えていく
-	      currentNum += addNum;
+			// 現在の表示数に追加表示数を加えていく
+			currentNum += addNum;
 
-	      // 現在の表示数に追加表示数を加えた数の要素を表示する
-	      $(this).parent().find(".image:lt("+currentNum+")").slideDown();
+			// 現在の表示数に追加表示数を加えた数の要素を表示する
+			$(this).parent().find(".image:lt("+currentNum+")").slideDown();
 
-	      // 表示数の総数よりcurrentNumが多い=全て表示された時の処理
-	      if($numberListLen <= currentNum) {
-	        // 現在の表示数をデフォルト表示数へ戻す
-	        currentNum = defaultNum;
-	        // インデックス用の値をセット
-	        indexNum = currentNum - 1;
+			// 表示数の総数よりcurrentNumが多い=全て表示された時の処理
+			if($numberListLen <= currentNum) {
+				// 現在の表示数をデフォルト表示数へ戻す
+				currentNum = defaultNum;
+				// インデックス用の値をセット
+				indexNum = currentNum - 1;
 
-	        // moreボタンを隠し、closeボタンを表示する
-	        $("#image_more_btn").hide();
-	        $("#image_close_btn").show();
+				// moreボタンを隠し、closeボタンを表示する
+				$("#image_more_btn").hide();
+				$("#image_close_btn").show();
 
-	        // closeボタンがクリックされた時の処理
-	        $("#image_close_btn").click(function() {
-	          // デフォルト数以降=インデックスがindexNumより多い要素は非表示にする
-	          $(this).parent().find(".image:gt("+indexNum+")").slideUp();
+				// closeボタンがクリックされた時の処理
+				$("#image_close_btn").click(function() {
+					// デフォルト数以降=インデックスがindexNumより多い要素は非表示にする
+					$(this).parent().find(".image:gt("+indexNum+")").slideUp();
 
-	          // closeボタンを隠し、moreボタンを表示する
-	          $(this).hide();
-	          $("#image_more_btn").show();
-	        });
-	      }
-	    });
-	  });
+					// closeボタンを隠し、moreボタンを表示する
+					$(this).hide();
+					$("#image_more_btn").show();
+	        	});
+			}
+		});
 	});
+});
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3OYplN1nN_Vl7RkS2-V7yMJrMUkxSm3U&libraries=places"></script>
 </body>

@@ -45,6 +45,9 @@ public class ShopinfoController {
 			@PathVariable String place_id,
 			Principal principal) {
 
+		// viewの指定
+		mav.setViewName("shopinfo");
+
 		//URLからplace_idを取得しviewに送る
 		mav.addObject("placeId",place_id);
 
@@ -53,9 +56,6 @@ public class ShopinfoController {
 		AccountDetails accountDetails = (AccountDetails)auth.getPrincipal();
 		String Login_id = accountDetails.getMember().getLogin_id();
 		mav.addObject("Login_id",Login_id);
-
-		// viewの指定
-		mav.setViewName("shopinfo");
 
 		// footprintについて
 		//　レコード数の取得
@@ -83,7 +83,7 @@ public class ShopinfoController {
 			ModelAndView mav) {
 
 		mav.setViewName(""); //あしあとアップデートページへ
-		mav.addObject("place_id",footprint_id);
+		mav.addObject("footprint_id",footprint_id);
 
         return mav;
     }
@@ -95,10 +95,9 @@ public class ShopinfoController {
 			@PathVariable Long image_id
 			) {
 
-		System.out.println(image_id);
 		imageService.deleteImage(place_id, image_id);
 
-		return new ModelAndView("redirect:/shopinfo/" + place_id);
+		return new ModelAndView("forward:");
 
 	}
 
