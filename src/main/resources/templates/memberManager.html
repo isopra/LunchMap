@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>メンバー一覧</title>
 <style>
 	tr { margin:5px;}
 	th { padding:5px;}
@@ -19,7 +19,7 @@
 			<td th:text="${obj.nickname}"></td>
 		</tr>
 	</table>
-	<input type="submit">
+	<input type="submit" value="編集">
 </form>
 </body>
 </html>
