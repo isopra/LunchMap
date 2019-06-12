@@ -3,7 +3,9 @@ package jp.co.isopra.lunchmap.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.isopra.lunchmap.entity.AccountDetails;
@@ -59,10 +61,22 @@ public class MemberRegistrationController {
 	//アカウント情報編集
 	@RequestMapping("/member/edit")
 	public String editMember(
+			@RequestParam String login_id,
 			@RequestParam String password, 
 			@RequestParam String nickname, 
 			@AuthenticationPrincipal AccountDetails accountDetails)
 	{
-		return registerMember(accountDetails.getUsername(), password, nickname);
+		return registerMember(login_id, password, nickname);
+	}
+	
+	//メンバー管理からのアカウント情報編集
+	@RequestMapping(value = "/member/edit_by_manager", method = RequestMethod.POST)
+	public String editMemberByManager(@RequestParam String login_id, Model model) {
+		
+		Member member = service.findMember(login_id);
+		model.addAttribute("id", member.getLogin_id());
+		model.addAttribute("nickname", member.getNickname());
+
+		return "accountEdit";
 	}
 }

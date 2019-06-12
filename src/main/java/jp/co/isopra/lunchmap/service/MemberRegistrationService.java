@@ -1,5 +1,7 @@
 package jp.co.isopra.lunchmap.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +46,10 @@ public class MemberRegistrationService {
 	 */
 	public Member findMember(String login_id) {
 		return memberRepository.findById(login_id).get();
+	}
+	
+	//全てのメンバーを取得
+	public List<Member> findAllMembers() {
+		return memberRepository.findAll();
 	}
 }
