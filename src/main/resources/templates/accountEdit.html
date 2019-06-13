@@ -1,16 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>アカウント情報編集</title>
 <script>
-	function al() {
-	//	alert('test');
+	
+	//送信時チェック
+	function checkValue() {
+		var sendMessage = "";
+		
+		if(document.form.password.value == "") {
+			sendMessage += "パスワードを入力してください\n";
+		} else if(document.form.password.value.length > 50) {
+			sendMessage += "パスワードは50文字以内で入力してください\n";
+		}
+
+		if (document.form.nickname.value == "") {
+			sendMessage += "表示用氏名を入力してください\n";
+		} else if(document.form.nickname.value.length > 50) {
+			sendMessage += "表示用氏名は50文字以内で入力してください";
+		}
+		
+		
+
+		if(sendMessage == "") {
+			return true;
+		}else {
+			alert(sendMessage);
+			return false;
+		}
 	}
 </script>
 </head>
 <body>
-<form th:action="@{/member/edit}" method="POST">
+<form th:action="@{/member/edit}" method="POST" onSubmit="return checkValue()" name="form">
 	<input type="hidden" th:value="${id}" name="login_id">
     <table align="center">
         <tr>
@@ -27,7 +50,7 @@
         </tr>
         <tr>
             <td></td>
-            <td align="right"><button type="submit" onclick="al()">登録</button></td>
+            <td align="right"><input type="submit" value="登録"></td>
         </tr>
     </table>
 </form>

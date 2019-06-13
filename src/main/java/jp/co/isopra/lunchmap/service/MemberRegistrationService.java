@@ -1,10 +1,12 @@
 package jp.co.isopra.lunchmap.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,12 @@ public class MemberRegistrationService {
 	/**
 	 * メンバー情報をDBに登録。
 	 */
-	public Member registerMember(Member entity) {
+	public Member registerMember(Member entity) throws DataIntegrityViolationException {
+
+		//同一のlogin_idがないかチェック
+		if (findMember(entity.getLogin_id()) != null) {
+			throw new DataIntegrityViolationException("既に存在するIDです");
+		}
 
 		//パスワードをハッシュ化。
 		entity.setPassword(passwordEncoder.encode(entity.getPassword()));
@@ -41,13 +48,26 @@ public class MemberRegistrationService {
 //		}
 	}
 
+	//メンバー情報のアップデート
+		//ほぼ登録といっしょなのだが。。。
+	public Member updateMember(Member member) {
+		member.setPassword(passwordEncoder.encode(member.getPassword()));
+		return memberRepository.save(member);
+	}
+
 	/**
 	 * IDをもとにメンバー情報を取得
 	 */
 	public Member findMember(String login_id) {
-		return memberRepository.findById(login_id).get();
+		Optional<Member> memberOpt = memberRepository.findById(login_id);
+
+		if (memberOpt.isPresent()) {
+			return memberOpt.get();
+		}else {
+			return null;
+		}
 	}
-	
+
 	//全てのメンバーを取得
 	public List<Member> findAllMembers() {
 		return memberRepository.findAll();
