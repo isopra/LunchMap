@@ -78,4 +78,8 @@ public class FootPrint {
 	public void setDatetime(Date datetime) {
 		this.datetime = datetime;
 	}
+	
+	public void setFootprintId(Long footprint_id) {
+		this.footprint_id = footprint_id;
+	}
 }

@@ -6,6 +6,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,16 +51,51 @@ public class FootController {
 		mav.addObject("editPlace_name", entityShop.getPlace_name());
 		mav.addObject("editDatetime", formatDate);
 		mav.addObject("place_id", entityShop.getPlace_id());
+		mav.addObject("footprint_id", footprint_id);
 
 		return mav;
 	}
 
-/*
- *  上書き保存
-	@RequestMapping("menu/foot/update")
+	//  更新
+	@RequestMapping(value = "menu/foot/update", method = RequestMethod.POST)
 	public ModelAndView Update(
-		ModelAndView mav)
- */
+			@ModelAttribute FootPrint footPrint,
+			@RequestParam String comment,
+			@RequestParam String place_id,
+			@RequestParam Long footprint_id,
+			@AuthenticationPrincipal AccountDetails accountDetails,
+			ModelAndView mav) {
+
+		int commentLength =  comment.length();
+
+		if  (commentLength >= 200) {
+
+			mav.addObject("error_message", commentLength >= 200);
+			mav.addObject("trueVal","200文字以内で入力してください");
+
+			return new ModelAndView("redirect:foot");
+
+		} else {
+
+			Date nowDate = new Date();
+
+			Shop entityShop = this.shopRepository.findById(place_id).get();
+			FootPrint entityFootPrint = this.footRepository.findById(footprint_id).get();
+
+			// DBに各値をセット
+			entityFootPrint.setComment(comment);
+			entityFootPrint.setDatetime(nowDate);
+			entityFootPrint.setShop(entityShop);
+
+			footRepository.saveAndFlush(entityFootPrint);
+
+		}
+
+		mav.setViewName("foot");
+		return mav;
+
+	}
+
 
 	// コメント作成
 	@RequestMapping(value = "menu/foot", method = RequestMethod.GET )
@@ -87,22 +123,23 @@ public class FootController {
 		return mav;
 	}
 
-	// 登録処理
+	// 登録
 	@RequestMapping(value = "menu/foot/register", method = RequestMethod.POST)
 	public ModelAndView newFoot(
 		@RequestParam String comment,
 		@RequestParam String place_id,
+		@ModelAttribute FootPrint footprint,
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
 	{
-
 		int commentLength =  comment.length();
 
-		mav.setViewName("foot");
-		mav.addObject("error_message", commentLength >= 200);
-		mav.addObject("trueVal","200字以内で入力してください");
+		if  (commentLength >= 200) {
 
-		if  (commentLength <= 200) {
+			mav.addObject("error_message", commentLength >= 200);
+			mav.addObject("trueVal","200文字以内で入力してください");
+
+		} else {
 
 			FootPrint entity = new FootPrint();
 			Date nowDate = new Date();
@@ -112,25 +149,28 @@ public class FootController {
 			entity.setComment(comment);
 			entity.setMember(accountDetails.getMember());
 			entity.setDatetime(nowDate);
-			// ToDo:place_idを登録
 			entity.setShop(entityShop);
 
 			footRepository.saveAndFlush(entity);
+
 		}
+
+		mav.setViewName("foot");
 		return mav;
+
 	}
 
 
 	// 戻るボタン
 	@RequestMapping("menu/foot/return")
-	public ModelAndView returnButton(
+	public String returnButton(
 		@RequestParam(name = "place_id", defaultValue = "") String place_id,
 		@RequestParam(name = "place_name", defaultValue = "") String place_name,
 		ModelAndView mav)
 	{
 
-		mav.setViewName("shop");
-		return mav;
+
+		return "menu";
 	}
 }
 
