@@ -50,9 +50,9 @@ public class MemberRegistrationService {
 
 	//メンバー情報のアップデート
 		//ほぼ登録といっしょなのだが。。。
-	public void updateMember(Member member) {
+	public Member updateMember(Member member) {
 		member.setPassword(passwordEncoder.encode(member.getPassword()));
-		memberRepository.save(member);
+		return memberRepository.save(member);
 	}
 
 	/**
