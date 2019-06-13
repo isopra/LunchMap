@@ -1,7 +1,5 @@
 var map;
 var marker = [];
-var pl = [];
-var requestid =[];
 
 function initMap(){
 	if(!navigator.geolocation) {
@@ -12,8 +10,8 @@ function initMap(){
 	navigator.geolocation.getCurrentPosition(function(position){
 		var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);//現在地
 		var opts = {
-			zoom:18,
-			center:latlng,
+			zoom:19,
+			center:latlng
 		};
 
 		console.log(data);
@@ -26,7 +24,7 @@ function initMap(){
 			map: map
 		});
 
-		//開始&ドラッグ操作時に実行
+		//開始&ドラッグ等操作完了時実行
 		google.maps.event.addListener(map, 'idle', function(){
 			dispLatLng();
 		});
@@ -53,16 +51,17 @@ function dispLatLng(){
 	var center = map.getCenter();
 
 	//map起動時またはあり/なし両方が押されたとき
-	if(data == "Both"){
+	if(data == "Both" || data == null){
 		var request = {
 			location: center,
-			radius:'250',
+			rankBy: google.maps.places.RankBy.DISTANCE,
 			type:['restaurant']
 		};
 		console.log(request);
 		service = new google.maps.places.PlacesService(map);
 		service.nearbySearch(request, callback);
-	}else {
+
+	}else if(data == "Exist"){
 		//ありが押されたとき
 		for(i= 0;i<datalist.length;i++){
 			var request = {
@@ -71,8 +70,18 @@ function dispLatLng(){
 			};
 			service = new google.maps.places.PlacesService(map);
 			service.getDetails(request, createMarker);
-			}
 		}
+	}else {
+		//最近の口コミ、または自分の投稿が押されたとき
+		for(i= 0;i<datalist.length;i++){
+			var request = {
+				placeId:datalist[i],
+				fields: ['name',  'place_id', 'geometry']
+			};
+			service = new google.maps.places.PlacesService(map);
+			service.getDetails(request, createMarker);
+		}
+	}
 }
 
 //検索結果の処理
@@ -94,7 +103,7 @@ function createMarker(place){
 		return;
 	}
 	//console.log(place.place_id);
-	var iconCo ='https://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
+	var iconCo ='http://maps.google.com/mapfiles/ms/icons/green-dot.png';
 	var vis = true;
 
 	//place_idの判定
@@ -105,14 +114,12 @@ function createMarker(place){
 				break;
 			}else{
 				iconCo ='https://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
-
-
 			}
 		}
 	}
 
+	//中心座標との距離
 	var res = google.maps.geometry.spherical.computeDistanceBetween(place.geometry.location, center);
-	console.log(res);
 	if(res > 500){
 		vis = false;
 	}
@@ -127,7 +134,6 @@ function createMarker(place){
 		icon:iconCo
 	}));
 
-
 	//クリック時urlに移動
 	for(var i=0; i < marker.length; i++){
 		google.maps.event.addListener(marker[i],'click',function(){
@@ -137,7 +143,39 @@ function createMarker(place){
 
 }
 
-
 function toView(to) {
 	location.href = "/menu/" + to;
+}
+
+function Modal() {
+	const modalArea = document.getElementById('modalArea');
+	modalArea.classList.add('is-show')
+}
+function Modalclose(){
+	const modalArea = document.getElementById('modalArea');
+	modalArea.classList.remove('is-show')
+}
+
+//あり/なし両方を押したとき
+function flg0(ischecked){
+	if(ischecked == true){
+		document.getElementById("select1").disabled = true;
+		document.getElementById("select1").checked=false;
+		document.getElementById("select2").disabled = true;
+		document.getElementById("select2").checked=false;
+	}else {
+		document.getElementById("select1").disabled = false;
+		document.getElementById("select2").disabled = false;
+	}
+}
+
+//ありを押したとき
+function flg1(ischecked){
+	if(ischecked == true){
+  		document.getElementById("select1").disabled = false;
+  		document.getElementById("select2").disabled = false;
+	} else {
+  		document.getElementById("select1").disabled = true;
+  		document.getElementById("select2").disabled = true;
+	}
 }
