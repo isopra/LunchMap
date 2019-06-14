@@ -3,7 +3,19 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>footprint</title>
+<script>
+	function lengthCheck() {
+	    var comment_length = document . form1 . comment . value . length;
+
+	    if ( comment_length > 200 ){
+	        window . alert( '200文字以内で入力してください' );
+	        return false;
+	    }else{
+	        return true;
+	    }
+	}
+</script>
 <link rel="stylesheet"  href="/css/FootPrintCss.css" type="text/css" th:href="@{/css/FootPrintCss.css}">
 </head>
 <body>
@@ -11,11 +23,10 @@
     <h1>あしあと情報 登録</h1>
     <input type="button" class="btn" th:action="@{foot/return}" value="戻る"><br><br>
     <div class="footprint_wrapper">
-		<form method="post" th:action="@{foot/register}">
+		<form method="post" th:action="@{foot/register}" onsubmit="return lengthCheck()" name="form1">
 			<p class="footprint_label" th:text="${place_name}"></p> <!-- 飲食店名を表示 -->
 		  	<p class="footprint_label" th:text="${datetime}"></p>  <!-- システム日時を表示 -->
 			<p class="footprint_label">コメント：</p>
-			<p  class="foot_error_message" th:if="${error_message}" th:text="${trueVal}"></p>  <!-- error表示 -->
 		    <textarea id="footprint_comment" class="footprint_label" name="comment"></textarea>
 		    <input type="hidden" name="place_id" th:value="${place_id}">
 			<input type="reset" value="clear">

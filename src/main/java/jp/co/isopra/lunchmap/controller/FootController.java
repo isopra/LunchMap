@@ -36,7 +36,7 @@ public class FootController {
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
 	{
-
+		
 		// DBから登録内容を検索
 		FootPrint entityFootPrint = this.footRepository.findById(footprint_id).get();
 		Shop entityShop = this.shopRepository.findById(place_id).get();
@@ -46,66 +46,54 @@ public class FootController {
 		String formatDate = dateFormat.format(entityFootPrint.getDatetime());
 
 		// 表示
-		mav.setViewName("footEdit"); // これないと画面表示されない
+		mav.setViewName("foot"); // これないと画面表示されない
 		mav.addObject("editComment", entityFootPrint.getComment());
 		mav.addObject("editPlace_name", entityShop.getPlace_name());
 		mav.addObject("editDatetime", formatDate);
+		//viewでは非表示
 		mav.addObject("place_id", entityShop.getPlace_id());
 		mav.addObject("footprint_id", footprint_id);
 
+		System.out.println("test1");
 		return mav;
 	}
 
 	//  更新
 	@RequestMapping(value = "menu/foot/update", method = RequestMethod.POST)
 	public ModelAndView Update(
-			@ModelAttribute FootPrint footPrint,
 			@RequestParam String comment,
 			@RequestParam String place_id,
 			@RequestParam Long footprint_id,
+			@ModelAttribute FootPrint footPrint,			
 			@AuthenticationPrincipal AccountDetails accountDetails,
-			ModelAndView mav) {
+			ModelAndView mav)
+	{
+		FootPrint entity = new FootPrint();
+		Date nowDate = new Date();
 
-		int commentLength =  comment.length();
+		Shop entityShop = this.shopRepository.findById(place_id).get();
+		FootPrint entityFootPrint = this.footRepository.findById(footprint_id).get();
 
-		if  (commentLength >= 200) {
+		// DBに各値をセット
+		entityFootPrint.setComment(comment);
+		entityFootPrint.setDatetime(nowDate);
+		entityFootPrint.setShop(entityShop);
 
-			mav.addObject("error_message", commentLength >= 200);
-			mav.addObject("trueVal","200文字以内で入力してください");
-
-			return new ModelAndView("redirect:foot");
-
-		} else {
-
-			Date nowDate = new Date();
-
-			Shop entityShop = this.shopRepository.findById(place_id).get();
-			FootPrint entityFootPrint = this.footRepository.findById(footprint_id).get();
-
-			// DBに各値をセット
-			entityFootPrint.setComment(comment);
-			entityFootPrint.setDatetime(nowDate);
-			entityFootPrint.setShop(entityShop);
-
-			footRepository.saveAndFlush(entityFootPrint);
-
-		}
+		footRepository.saveAndFlush(entity);
 
 		mav.setViewName("foot");
 		return mav;
-
 	}
 
 
 	// コメント作成
 	@RequestMapping(value = "menu/foot", method = RequestMethod.GET )
 	public ModelAndView footCreate(
-		@RequestParam(name = "place_id", defaultValue = "") String place_id,
-		@RequestParam (name = "place_name", defaultValue = "") String place_name,
+		@RequestParam String place_id,
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
 	{
-
+	
 		// 現在日時のフォーマットを指定
 		Date nowDate = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
@@ -113,7 +101,7 @@ public class FootController {
 
 		// shopテーブルから検索
 		Shop entityShop = this.shopRepository.findById(place_id).get();
-
+		
 		// 表示
 		mav.setViewName("foot");
 		mav.addObject("place_name", entityShop.getPlace_name());
@@ -132,28 +120,18 @@ public class FootController {
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
 	{
-		int commentLength =  comment.length();
 
-		if  (commentLength >= 200) {
+		FootPrint entity = new FootPrint();
+		Date nowDate = new Date();
+		Shop entityShop = this.shopRepository.findById(place_id).get();
 
-			mav.addObject("error_message", commentLength >= 200);
-			mav.addObject("trueVal","200文字以内で入力してください");
+		// DBに各値をセット
+		entity.setComment(comment);
+		entity.setMember(accountDetails.getMember());
+		entity.setDatetime(nowDate);
+		entity.setShop(entityShop);
 
-		} else {
-
-			FootPrint entity = new FootPrint();
-			Date nowDate = new Date();
-			Shop entityShop = this.shopRepository.findById(place_id).get();
-
-			// DBに各値をセット
-			entity.setComment(comment);
-			entity.setMember(accountDetails.getMember());
-			entity.setDatetime(nowDate);
-			entity.setShop(entityShop);
-
-			footRepository.saveAndFlush(entity);
-
-		}
+		footRepository.saveAndFlush(entity);
 
 		mav.setViewName("foot");
 		return mav;
@@ -169,8 +147,7 @@ public class FootController {
 		ModelAndView mav)
 	{
 
-
-		return "menu";
+		return "redilect:/";
 	}
 }
 
