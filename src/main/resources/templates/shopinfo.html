@@ -87,7 +87,7 @@
 		location.href = "/menu/" + to;
 	}
 </script>
-	<button type="button" onclick="toView('mapview')">戻る</button>
+	<button type="button" onclick="toView('mapView')">戻る</button>
   	<label id="shopName"></label>
   	<div id="shopMap"></div>
 
@@ -98,8 +98,9 @@ window.onload = function ShowMap(){
 
 	var map;
 	var infoWindow;
+	var icon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|0099cc|';
 
-	map = new google.maps.Map(document.getElementById('shopMap'), { // #sampleに地図を埋め込む
+	map = new google.maps.Map(document.getElementById('shopMap'), { // #shopMapに地図を埋め込む
 		zoom: 19 // 地図のズームを指定
 		});
 
@@ -110,14 +111,15 @@ window.onload = function ShowMap(){
 	}, function(place, status) {
 		if (status == google.maps.places.PlacesServiceStatus.OK) {
 
-			map = new google.maps.Map(document.getElementById('shopMap'), { // #sampleに地図を埋め込む
+			map = new google.maps.Map(document.getElementById('shopMap'), { // #shopMapに地図を埋め込む
 				center: place.geometry.location, // 地図の中心を指定
-				zoom: 19 // 地図のズームを指定
+				zoom: 16 // 地図のズームを指定
 				});
 
 			var marker = new google.maps.Marker({ // マーカーの追加
-				position: place.geometry.location, // マーカーを立てる位置を指定
-				map: map // マーカーを立てる地図を指定
+				position : place.geometry.location, // マーカーを立てる位置を指定
+				map : map, // マーカーを立てる地図を指定
+				icon : icon
 				});
 
 			google.maps.event.addListener(marker, 'click', clickAction); // マーカ＾をクリックしたときメソッドを呼び出す
@@ -135,7 +137,7 @@ window.onload = function ShowMap(){
 </script>
    	<h1>あしあと数：</h1>
   	<p th:text="${footprintRecords}"></p>
-  	<a th:href="@{'../foot/' + ${placeId}}" >足跡追加</a>
+  	<a th:href="@{'../menu/foot?place_id=' + ${placeId}}" >足跡追加</a>
 
 	<h1>コメント</h1>
 		<div id="footprint_list_more">
@@ -145,7 +147,7 @@ window.onload = function ShowMap(){
 				<tr>
 					<td th:text="${obj.getComment()}"></td>
 					<td th:text="${obj.getMember().getNickname()}"></td>
-					<td th:if="${obj.getMember().getLogin_id() == Login_id}"><a th:href="@{'../update/footprint/' + ${obj.getFootprint_id()}}">編集</a></td>
+					<td th:if="${obj.getMember().getLogin_id() == Login_id}"><a th:href="@{'../menu/foot/edit?footprint_id=' + ${obj.getFootprint_id()} + '&place_id=' + ${placeId}}">編集</a></td>
 				</tr>
 				</table>
 				</div>
