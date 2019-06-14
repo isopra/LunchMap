@@ -17,14 +17,18 @@ public interface FootPrintRepository extends JpaRepository<FootPrint, Integer>{
 //	public List<FootPrint> findByCreated_timeGreaterThanEquals(Date date);
 //	public Optional<FootPrint> findByFootprint_id(Integer id);
 //	自分の口コミだけがおされたとき
-	@Query(" FROM FootPrint where login_id = :id")
-	public List<FootPrint> findByLogin_id(@Param("id") String id);
+	@Query("SELECT DISTINCT place_id FROM FootPrint where login_id = :id ")
+	public List<String> findByLogin_id(@Param("id") String id);
 //	最近の口コミだけがおされたとき
-	@Query(" FROM FootPrint where created_time > :date")
-	public List<FootPrint> findByCreated_timeGreaterThanEquals(@Param("date") Date date);
+	@Query("SELECT DISTINCT place_id FROM FootPrint where created_time > :date")
+	public List<String> findByCreated_timeGreaterThanEquals(@Param("date") Date date);
 //	どちらもおされたとき
-	@Query(" FROM FootPrint where created_time > :date and login_id = :id")
-	public List<FootPrint> findByCreated_timeAndLogin_id(@Param("date") Date date,@Param("id") String id);
+	@Query("SELECT DISTINCT place_id FROM FootPrint where created_time > :date and login_id = :id")
+	public List<String> findByCreated_timeAndLogin_id(@Param("date") Date date,@Param("id") String id);
+//	初期表示時
+	@Query("SELECT DISTINCT place_id FROM FootPrint ")
+	public List<String> findByplace_id();
+
 //---------------------------------------------------------------------------
 
 }

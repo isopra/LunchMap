@@ -1,6 +1,6 @@
 var map;
 var marker = [];
-
+//地図を表示
 function initMap(){
 	if(!navigator.geolocation) {
     	alert('Geolocation APIに対応していません');
@@ -39,11 +39,11 @@ function dispLatLng(){
 
 	if(marker.length > 0){
 		//マーカー削除
-		for (i = 0; i <  marker.length; i++) {
+		for (var i = 0; i <  marker.length; i++) {
         	marker[i].setMap(null);
         }
         //配列削除
-        for (i = 0; i <  marker.length; i++) {
+        for (var i = 0; i <  marker.length; i++) {
         	marker = [];
         }
     }
@@ -63,7 +63,7 @@ function dispLatLng(){
 
 	}else if(data == "Exist"){
 		//ありが押されたとき
-		for(i= 0;i<datalist.length;i++){
+		for(var i= 0;i<datalist.length;i++){
 			var request = {
 				placeId:datalist[i].place_id,
 				fields: ['name',  'place_id', 'geometry']
@@ -108,8 +108,8 @@ function createMarker(place){
 
 	//place_idの判定
 	if(datalist != null){
-		for(var e = 0; e < datalist.length; e++){
-			if(place.place_id == datalist[e].place_id){
+		for(var i = 0; i < datalist.length; i++){
+			if(place.place_id == datalist[i].place_id){
 				iconCo = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
 				break;
 			}else{
@@ -142,15 +142,16 @@ function createMarker(place){
 	}
 
 }
-
+//ページ遷移用メソッド
 function toView(to) {
 	location.href = "/menu/" + to;
 }
-
+//モーダルの表示
 function Modal() {
 	const modalArea = document.getElementById('modalArea');
 	modalArea.classList.add('is-show')
 }
+//モーダルを閉じる
 function Modalclose(){
 	const modalArea = document.getElementById('modalArea');
 	modalArea.classList.remove('is-show')

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import jp.co.isopra.lunchmap.entity.AccountDetails;
-import jp.co.isopra.lunchmap.entity.Member;
 import jp.co.isopra.lunchmap.entity.Shop;
 import jp.co.isopra.lunchmap.repositories.FootPrintRepository;
 import jp.co.isopra.lunchmap.repositories.ShopRepository;
@@ -40,12 +39,10 @@ public class MapsController {
 	public ModelAndView map(Principal principal,
 			ModelAndView mav) {
 		mav.setViewName("map");
-		Authentication authentication = (Authentication) principal; // (2)
-        // get UserDetails
-		AccountDetails userDetails = (AccountDetails) authentication
-                .getPrincipal(); // (3)
-        // get account object
-		Member member =   userDetails.getMember(); // (4)
+		Authentication auth = (Authentication) principal;
+		AccountDetails accountDetails = (AccountDetails) auth.getPrincipal();
+		String Login_id = accountDetails.getMember().getLogin_id();
+
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DATE, -14);
 		Date date = calendar.getTime();
@@ -61,10 +58,10 @@ public class MapsController {
 			Iterable<String> time = footrepo.findByCreated_timeGreaterThanEquals((Date) date);
 			mav.addObject("datalist", time);
 		}else if(condition.equals("mylog")) {
-			Iterable<String> logId =footrepo.findByLogin_id((String) member.getLogin_id());
+			Iterable<String> logId =footrepo.findByLogin_id((String) Login_id);
 			mav.addObject("datalist", logId);
 		}else if(condition.equals("both condition")) {
-			Iterable<String> con = footrepo.findByCreated_timeAndLogin_id((Date) date,(String)member.getLogin_id());
+			Iterable<String> con = footrepo.findByCreated_timeAndLogin_id((Date) date,(String)Login_id);
 			mav.addObject("datalist", con);
 		}
 
