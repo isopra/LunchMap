@@ -19,12 +19,16 @@ import org.springframework.web.servlet.ModelAndView;
 import jp.co.isopra.lunchmap.entity.AccountDetails;
 import jp.co.isopra.lunchmap.entity.Shop;
 import jp.co.isopra.lunchmap.repositories.FootPrintRepository;
+import jp.co.isopra.lunchmap.repositories.MemberRepository;
 import jp.co.isopra.lunchmap.repositories.ShopRepository;
 
 
 
 @Controller
 public class MapsController {
+
+	@Autowired
+	MemberRepository memberRepository;
 
 	@Autowired
 	 ShopRepository shoprepo;
