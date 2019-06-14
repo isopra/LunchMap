@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
@@ -21,7 +20,7 @@ public class Image {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private long image_id;
-
+	
 	@Column(length = 100)
 	@NotNull
 	private String place_id;
@@ -91,5 +90,3 @@ public class Image {
 	}
 
 }
-
-

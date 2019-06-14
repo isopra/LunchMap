@@ -9,19 +9,25 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "footprint")
 public class FootPrint {
 
+	// あしあとID
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private long footprint_id;
 
+	// コメント
+	@Column
+	private String comment;
+	
 	@Column(length = 100)
 	@NotNull
 	private String place_id;
@@ -31,10 +37,8 @@ public class FootPrint {
 	private String login_id;
 
 	@Column
-	private String comment;
-
-	@Column
 	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date created_time;
 
 	@ManyToOne
@@ -77,14 +81,6 @@ public class FootPrint {
 		this.comment = comment;
 	}
 
-	public String getComment() {
-		return comment;
-	}
-
-	public Date getCreated_time() {
-		return created_time;
-	}
-
 	public void setMember(Member member) {
 		this.member = member;
 	}
@@ -101,5 +97,16 @@ public class FootPrint {
 		return shop;
 	}
 
-}
+	public String getComment() {
+		return comment;
+	}
 
+	public Date getCreated_time() {
+		return created_time;
+	}
+
+	public void setCreated_time(Date created_time) {
+		this.created_time = created_time;
+	}
+	
+}

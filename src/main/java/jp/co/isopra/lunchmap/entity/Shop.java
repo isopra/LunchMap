@@ -44,14 +44,14 @@ public class Shop {
 		return place_id;
 	}
 
+	public String getPlace_name(){
+		return place_name;
+	}	
+
 	public void setPlace_name(String place_name) {
 		this.place_name = place_name;
 	}
-
-	public String getPlace_name() {
-		return place_name;
-	}
-
+	
 	public void setFootprint(List<FootPrint> footprint) {
 		this.footprint = footprint;
 	}
