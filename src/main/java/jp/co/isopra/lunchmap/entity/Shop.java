@@ -24,7 +24,7 @@ public class Shop {
 	@Column(length = 100)
 	private String place_id;
 
-	@Column(length = 100, nullable = false)
+	@Column(length = 100, nullable = true)
 	@NotNull
 	private String place_name;
 
