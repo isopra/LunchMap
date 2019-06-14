@@ -1,4 +1,6 @@
 /target/
+/src/main/resources/messages.properties
+/src/main/resources/static/images/*
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###

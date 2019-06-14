@@ -1,12 +1,9 @@
 package jp.co.isopra.lunchmap.controller;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import jp.co.isopra.lunchmap.entity.AccountDetails;
 
 @Controller
 public class LoginController {
@@ -36,13 +33,13 @@ public class LoginController {
 	 * @param model
 	 * @return
 	 */
-    @RequestMapping("/")
-    public String login(Model model,
-    		@AuthenticationPrincipal AccountDetails accountDetails) {
-
-    	// ログイン情報（memberテーブルのデータ）をModelにセット
-//    	model.addAttribute("loginMember", accountDetails.getMember());
-
-    	return "menu";
-    }
+//    @RequestMapping("/")
+//    public String login(Model model,
+//    		@AuthenticationPrincipal AccountDetails accountDetails) {
+//
+//    	// ログイン情報（memberテーブルのデータ）をModelにセット
+////    	model.addAttribute("loginMember", accountDetails.getMember());
+//
+//    	return "index";
+//    }
 }

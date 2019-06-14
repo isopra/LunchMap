@@ -1,16 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html  xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>メンバー登録</title>
 </head>
 <body>
-	<form th:action="@{/member/register/result}" method="POST">
+<script th:inline="javascript">
+window.addEventListener("load", function() {
+	var errorMessage = [[${errorMessage}]];
+	if(!errorMessage == "") {
+		alert(errorMessage);
+	}
+}, false);
+
+//送信時チェック
+function checkValue() {
+	var sendMessage = "";
+	
+	if(document.form.login_id.value == "") {
+		sendMessage += "ログインIDを入力してください\n";
+	} else if(document.form.password.value.length > 50) {
+		sendMessage += "ログインIDは50文字以内で入力してください\n";
+	}
+	
+	if(document.form.password.value == "") {
+		sendMessage += "パスワードを入力してください\n";
+	} else if(document.form.password.value.length > 50) {
+		sendMessage += "パスワードは50文字以内で入力してください\n";
+	}
+
+	if (document.form.nickname.value == "") {
+		sendMessage += "表示用氏名を入力してください\n";
+	} else if(document.form.nickname.value.length > 50) {
+		sendMessage += "表示用氏名は50文字以内で入力してください";
+	}
+	
+	
+
+	if(sendMessage == "") {
+		return true;
+	}else {
+		alert(sendMessage);
+		return false;
+	}
+}
+</script>
+	<form th:action="@{/member/register/result}" method="POST" name="form" onSubmit="return checkValue()">
 		ログインID：<input type="text" id="login_id" name="login_id"/><br>
 		パスワード<input type="password" id="password" name="password"/><br>
 		表示用氏名<input type="text" id="nickname" name="nickname"/><br>
-		<button type="submit">会員新規登録</button>
-		<p th:text="${message}"></p>
+		<input type="submit" value="会員新規登録">
 </form>
 </body>
 </html>

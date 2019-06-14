@@ -43,7 +43,7 @@ public class FootController {
 
 		// 登録日時のフォーマットを指定
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
-		String formatDate = dateFormat.format(entityFootPrint.getDatetime());
+		String formatDate = dateFormat.format(entityFootPrint.getCreated_time());
 
 		// 表示
 		mav.setViewName("footEdit"); // これないと画面表示されない
@@ -74,7 +74,7 @@ public class FootController {
 
 		// DBに各値をセット
 		entityFootPrint.setComment(comment_edit);
-		entityFootPrint.setDatetime(nowDate);
+		entityFootPrint.setCreated_time(nowDate);
 		entityFootPrint.setShop(entityShop);
 
 		footRepository.saveAndFlush(entityFootPrint);
@@ -127,7 +127,7 @@ public class FootController {
 		// DBに各値をセット
 		entity.setComment(comment);
 		entity.setMember(accountDetails.getMember());
-		entity.setDatetime(nowDate);
+		entity.setCreated_time(nowDate);
 		entity.setShop(entityShop);
 
 		footRepository.saveAndFlush(entity);

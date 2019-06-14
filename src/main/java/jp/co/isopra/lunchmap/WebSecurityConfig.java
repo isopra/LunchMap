@@ -39,6 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .formLogin() //ログインページを指定、だれでもアクセス可。
             .loginPage("/login")
 			.loginProcessingUrl("/authenticate")
+			.defaultSuccessUrl("/menu", true)
 			.usernameParameter("login_id")
 			.passwordParameter("password")
 			.failureUrl("/login?error=1")
