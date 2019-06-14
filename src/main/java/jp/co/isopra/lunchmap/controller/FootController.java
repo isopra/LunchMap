@@ -53,13 +53,13 @@ public class FootController {
 		//viewでは非表示
 		mav.addObject("place_id", entityShop.getPlace_id());
 		mav.addObject("footprint_id", footprint_id);
-
+		
 		return mav;
 	}
 
 	//  更新
 	@RequestMapping(value = "menu/foot/update", method = RequestMethod.POST)
-	public ModelAndView Update(
+	public String Update(
 			@RequestParam String comment_edit,
 			@RequestParam String place_id,
 			@RequestParam Long footprint_id,
@@ -78,9 +78,13 @@ public class FootController {
 		entityFootPrint.setShop(entityShop);
 
 		footRepository.saveAndFlush(entityFootPrint);
-
-		mav.setViewName("foot");
-		return mav;
+		
+		/* ToDo: alert表示してから戻る
+		 * 	mav.setViewName("foot");
+			return mav;
+		 */
+		
+		return "redirect:/shopinfo/" + place_id;
 
 	}
 
@@ -112,7 +116,7 @@ public class FootController {
 
 	// 登録
 	@RequestMapping(value = "menu/foot/register", method = RequestMethod.POST)
-	public ModelAndView newFoot(
+	public String newFoot(
 		@RequestParam String comment,
 		@RequestParam String place_id,
 		@ModelAttribute FootPrint footprint,
@@ -127,15 +131,31 @@ public class FootController {
 		// DBに各値をセット
 		entity.setComment(comment);
 		entity.setMember(accountDetails.getMember());
+		entity.setLogin_id(accountDetails.getMember().getLogin_id());
+		entity.setPlace_id(place_id);
 		entity.setCreated_time(nowDate);
 		entity.setShop(entityShop);
 
 		footRepository.saveAndFlush(entity);
 
-		mav.setViewName("foot");
-		return mav;
+		/* ToDo:
+		 * alert表示してから戻る
+		 * mav.setViewName("foot");
+		 * return mav;
+		 */
+		
+		return "redirect:/shopinfo/" + place_id;
 
 	}
 
-}
+	// 戻る
+	@RequestMapping(value = "menu/foot/previous", method = RequestMethod.POST)
+		public String previous(
+		@RequestParam String place_id,
+		@AuthenticationPrincipal AccountDetails accountDetails,
+		ModelAndView mav)
+	{
+		return "redirect:/shopinfo/" + place_id;
 
+	}
+}

@@ -21,7 +21,10 @@
 <body>
 <div class="footprint_modal">
     <h1>あしあと情報 編集</h1>
-    <input type="button" class="btn" th:action="@{return}" value="戻る"><br><br>
+	<form method = "post" th:action="@{previous}">
+		<input type="submit" class="btn" value="戻る"><br><br>
+		<input type="hidden" th:value="${place_id}" name="place_id">
+	</form>
     <div class="footprint_wrapper">
 		<form method="post" th:action="@{update}" onsubmit="return lengthCheckEdit()" name="form_edit">
 			<p class="footprint_label" th:text="${editPlace_name}"></p> <!--  飲食店名を表示 -->
