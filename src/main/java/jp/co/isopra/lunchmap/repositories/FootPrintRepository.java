@@ -1,9 +1,7 @@
 package jp.co.isopra.lunchmap.repositories;
 
-<<<<<<< HEAD
+
 import java.util.Date;
-=======
->>>>>>> master
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
