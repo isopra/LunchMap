@@ -22,7 +22,10 @@
 <body>
 <div class="footprint_modal">
     <h1>あしあと情報 登録</h1>
-    <input type="button" class="btn" th:action="@{foot/return}" value="戻る"><br><br>
+    <form method="GET" th:action="@{/shopinfo/{place_id}}" >
+    	<input type="submit" class="btn" value="戻る"><br><br>
+    </form>
+
     <div class="footprint_wrapper">
 		<form method="post" th:action="@{foot/register}" onsubmit="return lengthCheck()" name="form1">
 			<p class="footprint_label" th:text="${place_name}"></p> <!-- 飲食店名を表示 -->
