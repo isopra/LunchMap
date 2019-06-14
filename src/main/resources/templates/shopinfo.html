@@ -81,7 +81,7 @@
 </style>
 </head>
 <body>
-	<h1 th:text="${title}">shopinfo page</h1>
+<h1 th:text="${title}">shopinfo page</h1>
 <script>
 	function toView(to) {
 		location.href = "/menu/" + to;
@@ -315,6 +315,6 @@ $(function() {
 	});
 });
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=" APIkey "&libraries=places"></script>
+<script th:src="#{apikey}"></script>
 </body>
 </html>
