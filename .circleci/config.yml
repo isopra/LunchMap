@@ -31,7 +31,8 @@ jobs:
           paths:
             - ~/.m2
       - run:
-        echo "apikey=https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places,geometry" > ./src/main/resources/messages.properties
+          name: create config
+          command: echo "apikey=https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places,geometry" > ./src/main/resources/messages.properties
       - run:
           name: compile
           command: mvn compile
@@ -86,7 +87,8 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-        echo "apikey=https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places,geometry" > ./src/main/resources/messages.properties
+          name: create config
+          command: echo "apikey=https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places,geometry" > ./src/main/resources/messages.properties
       - run:
           name: package
           command: mvn package
