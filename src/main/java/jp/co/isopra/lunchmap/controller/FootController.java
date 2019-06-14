@@ -36,7 +36,7 @@ public class FootController {
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
 	{
-		
+
 		// DBから登録内容を検索
 		FootPrint entityFootPrint = this.footRepository.findById(footprint_id).get();
 		Shop entityShop = this.shopRepository.findById(place_id).get();
@@ -46,7 +46,7 @@ public class FootController {
 		String formatDate = dateFormat.format(entityFootPrint.getDatetime());
 
 		// 表示
-		mav.setViewName("foot"); // これないと画面表示されない
+		mav.setViewName("footEdit"); // これないと画面表示されない
 		mav.addObject("editComment", entityFootPrint.getComment());
 		mav.addObject("editPlace_name", entityShop.getPlace_name());
 		mav.addObject("editDatetime", formatDate);
@@ -54,35 +54,34 @@ public class FootController {
 		mav.addObject("place_id", entityShop.getPlace_id());
 		mav.addObject("footprint_id", footprint_id);
 
-		System.out.println("test1");
 		return mav;
 	}
 
 	//  更新
 	@RequestMapping(value = "menu/foot/update", method = RequestMethod.POST)
 	public ModelAndView Update(
-			@RequestParam String comment,
+			@RequestParam String comment_edit,
 			@RequestParam String place_id,
 			@RequestParam Long footprint_id,
-			@ModelAttribute FootPrint footPrint,			
+			@ModelAttribute FootPrint footPrint,
 			@AuthenticationPrincipal AccountDetails accountDetails,
 			ModelAndView mav)
 	{
-		FootPrint entity = new FootPrint();
 		Date nowDate = new Date();
 
 		Shop entityShop = this.shopRepository.findById(place_id).get();
 		FootPrint entityFootPrint = this.footRepository.findById(footprint_id).get();
 
 		// DBに各値をセット
-		entityFootPrint.setComment(comment);
+		entityFootPrint.setComment(comment_edit);
 		entityFootPrint.setDatetime(nowDate);
 		entityFootPrint.setShop(entityShop);
 
-		footRepository.saveAndFlush(entity);
+		footRepository.saveAndFlush(entityFootPrint);
 
 		mav.setViewName("foot");
 		return mav;
+
 	}
 
 
@@ -93,7 +92,7 @@ public class FootController {
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
 	{
-	
+
 		// 現在日時のフォーマットを指定
 		Date nowDate = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
@@ -101,7 +100,7 @@ public class FootController {
 
 		// shopテーブルから検索
 		Shop entityShop = this.shopRepository.findById(place_id).get();
-		
+
 		// 表示
 		mav.setViewName("foot");
 		mav.addObject("place_name", entityShop.getPlace_name());
@@ -138,16 +137,5 @@ public class FootController {
 
 	}
 
-
-	// 戻るボタン
-	@RequestMapping("menu/foot/return")
-	public String returnButton(
-		@RequestParam(name = "place_id", defaultValue = "") String place_id,
-		@RequestParam(name = "place_name", defaultValue = "") String place_name,
-		ModelAndView mav)
-	{
-
-		return "redilect:/";
-	}
 }
 

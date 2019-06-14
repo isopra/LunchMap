@@ -5,36 +5,43 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "shop")
+@Table(name="shop")
 public class Shop {
 
 	@Id
 	@Column
 	private String place_id;
 
-	@Column
+	@Column(name = "place_name", nullable = false)
 	private String place_name;
 
-	@OneToMany(mappedBy = "shop", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<Image> image;
+	@OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+	private List<FootPrint> FootPrintList;
+
+	@OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+	private List<Image> imageList;
 
 
-	public List<FootPrint> getFootprint() {
-		return getFootprint();
-    }
+	public String getPlace_id(){
+		return place_id;
+	}
 
-    public void setImaga(List<Image> image) {
-        this.image = image;
-    }
+	public void setPlace_id(String place_id) {
+		this.place_id = place_id;
+	}
 
-    public List<Image> getImage() {
-        return image;
-    }
+
+	public String getPlace_name(){
+		return place_name;
+	}
+
+	public void setPlace_name(String place_name) {
+		this.place_name = place_name;
+	}
 
 }

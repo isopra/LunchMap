@@ -2,6 +2,7 @@ package jp.co.isopra.lunchmap.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,7 +23,7 @@ public class Member {
 	@Column(name="nickname")
 	private String nickname;
 
-	@OneToMany(mappedBy = "login_id")
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
 	private List<FootPrint> footPrintList;
 
 	public String getLogin_id() {
