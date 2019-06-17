@@ -76,7 +76,8 @@ public class MemberRegistrationController {
 			@RequestParam String login_id,
 			@RequestParam String password,
 			@RequestParam String nickname,
-			@RequestParam String authority,
+			@RequestParam(defaultValue = "general") String authority,
+			HttpServletRequest request,
 			@AuthenticationPrincipal AccountDetails accountDetails)
 	{
 		Member entity = new Member();
