@@ -19,6 +19,9 @@ public class Member {
 	@Column(name="nickname")
 	private String nickname;
 
+	@Column(name="admin_flag")
+	private boolean admin_flag = false;
+
 	public String getLogin_id() {
 		return login_id;
 	}
@@ -37,4 +40,12 @@ public class Member {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+	public boolean isAdmin_flag() {
+		return admin_flag;
+	}
+	public void setAdmin_flag(boolean admin_flag) {
+		this.admin_flag = admin_flag;
+	}
+
+
 }

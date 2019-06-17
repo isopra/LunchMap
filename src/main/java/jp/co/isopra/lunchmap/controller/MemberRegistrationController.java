@@ -76,6 +76,7 @@ public class MemberRegistrationController {
 			@RequestParam String login_id,
 			@RequestParam String password,
 			@RequestParam String nickname,
+			@RequestParam String authority,
 			@AuthenticationPrincipal AccountDetails accountDetails)
 	{
 		Member entity = new Member();
@@ -83,6 +84,14 @@ public class MemberRegistrationController {
 		entity.setLogin_id(login_id);
 		entity.setPassword(password);
 		entity.setNickname(nickname);
+		
+		if (authority.equals("admin")) {
+			entity.setAdmin_flag(true);
+		}else {
+			//defaultでfalseなので必要ない？
+			entity.setAdmin_flag(false);
+		}
+		
 		service.updateMember(entity);
 
 		return "menu";

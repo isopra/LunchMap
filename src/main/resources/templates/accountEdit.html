@@ -49,6 +49,15 @@
             <td><input type="text" id="nickname" name="nickname" th:value="${nickname}"/></td>
         </tr>
         <tr>
+            <td>権限：</td>
+            <td>
+            	<select name="authority">
+            		<option value="admin">管理者</option>
+            		<option value="general">一般</option>
+            	</select>
+            	</td>
+        </tr>
+        <tr>
             <td></td>
             <td align="right"><input type="submit" value="登録"></td>
         </tr>
