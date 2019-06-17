@@ -22,7 +22,7 @@ public interface FootPrintRepository extends JpaRepository<FootPrint, Long>{
 	public List<String> findByLogin_id(@Param("id") String id);
 //	最近の口コミだけがおされたとき
 	@Query("SELECT DISTINCT place_id FROM FootPrint where created_time > :date")
-	public List<String> findByCreated_timeGreaterThanEquals(@Param("date") Date date);
+	public List<String> findByCreated_time(@Param("date") Date date);
 //	どちらもおされたとき
 	@Query("SELECT DISTINCT place_id FROM FootPrint where created_time > :date and login_id = :id")
 	public List<String> findByCreated_timeAndLogin_id(@Param("date") Date date,@Param("id") String id);
