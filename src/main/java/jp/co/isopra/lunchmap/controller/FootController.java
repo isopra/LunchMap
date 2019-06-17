@@ -53,7 +53,7 @@ public class FootController {
 		//viewでは非表示
 		mav.addObject("place_id", entityShop.getPlace_id());
 		mav.addObject("footprint_id", footprint_id);
-		
+
 		return mav;
 	}
 
@@ -78,12 +78,12 @@ public class FootController {
 		entityFootPrint.setShop(entityShop);
 
 		footRepository.saveAndFlush(entityFootPrint);
-		
+
 		/* ToDo: alert表示してから戻る
 		 * 	mav.setViewName("foot");
 			return mav;
 		 */
-		
+
 		return "redirect:/shopinfo/" + place_id;
 
 	}
@@ -93,6 +93,7 @@ public class FootController {
 	@RequestMapping(value = "menu/foot", method = RequestMethod.GET )
 	public ModelAndView footCreate(
 		@RequestParam String place_id,
+		@RequestParam String place_name,
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
 	{
@@ -103,13 +104,14 @@ public class FootController {
 		String formatDate = dateFormat.format(nowDate);
 
 		// shopテーブルから検索
-		Shop entityShop = this.shopRepository.findById(place_id).get();
+//		Shop entityShop = this.shopRepository.findById(place_id).get();
 
 		// 表示
 		mav.setViewName("foot");
-		mav.addObject("place_name", entityShop.getPlace_name());
+		mav.addObject("place_name", place_name);
 		mav.addObject("datetime", formatDate);
-		mav.addObject("place_id", entityShop.getPlace_id());
+		mav.addObject("place_id", place_id);
+
 
 		return mav;
 	}
@@ -119,31 +121,47 @@ public class FootController {
 	public String newFoot(
 		@RequestParam String comment,
 		@RequestParam String place_id,
+		@RequestParam String place_name,
 		@ModelAttribute FootPrint footprint,
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
 	{
+		System.out.println("test");
 
-		FootPrint entity = new FootPrint();
+		FootPrint entityFoot = new FootPrint();
 		Date nowDate = new Date();
 		Shop entityShop = this.shopRepository.findById(place_id).get();
 
-		// DBに各値をセット
-		entity.setComment(comment);
-		entity.setMember(accountDetails.getMember());
-		entity.setLogin_id(accountDetails.getMember().getLogin_id());
-		entity.setPlace_id(place_id);
-		entity.setCreated_time(nowDate);
-		entity.setShop(entityShop);
+		// 飲食店情報が登録されている場合：FoorPrint Tableに登録
+		if(place_id == entityShop.getPlace_id()) {
 
-		footRepository.saveAndFlush(entity);
+			entityFoot.setComment(comment);
+			entityFoot.setMember(accountDetails.getMember());
+			entityFoot.setLogin_id(accountDetails.getMember().getLogin_id());
+			entityFoot.setPlace_id(place_id);
+			entityFoot.setCreated_time(nowDate);
+			entityFoot.setShop(entityShop);
+
+			footRepository.saveAndFlush(entityFoot);
+
+		// 登録されていない場合：Shop Tableに登録
+		} else {
+
+			Shop newShop = new Shop();
+			newShop.setPlace_id(place_id);
+			newShop.setPlace_name(place_name);
+
+
+
+			shopRepository.saveAndFlush(entityShop);
+
+		}
 
 		/* ToDo:
 		 * alert表示してから戻る
 		 * mav.setViewName("foot");
 		 * return mav;
 		 */
-		
 		return "redirect:/shopinfo/" + place_id;
 
 	}
