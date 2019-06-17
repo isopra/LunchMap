@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
 <title>メニュー</title>
@@ -10,10 +11,11 @@ function toView(to) {
 </script>
 </head>
 <body>
-	<!-- 使用時は、toView('文字列') とする。
-			例）toView('hoge')  -> /menu/hoge ページを表示 -->
 	<button onClick="toView('mapView')">地図表示/検索</button>
 	<button onClick="toView('acount_edit')">アカウント情報編集</button>
-	<button onClick="toView('member_manager')">メンバー管理</button>
+	<div sec:authorize="hasRole('ROLE_ADMIN')">
+		<button onClick="toView('member_manager')">メンバー管理</button>
+	</div>
+
 </body>
 </html>

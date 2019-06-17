@@ -33,7 +33,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	// ログインなしでアクセスできるURLと、保護するURLを定義
         http.authorizeRequests()
         .antMatchers("/member/register", "/login", "/authenticate", "/error", "/member/register/result").permitAll()
-        .antMatchers("/**").hasRole("MEMBER") // 権限によるアクセス範囲の制御。
+        .antMatchers("/menu/member_manager").hasRole("ADMIN")
+//        .antMatchers("/**").hasRole("MEMBER") // 権限によるアクセス範囲の制御。
         .anyRequest().authenticated()
         .and()
         .formLogin() //ログインページを指定、だれでもアクセス可。

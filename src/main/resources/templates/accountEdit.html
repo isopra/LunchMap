@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
 <title>アカウント情報編集</title>
@@ -48,6 +48,17 @@
             <td>表示用氏名：</td>
             <td><input type="text" id="nickname" name="nickname" th:value="${nickname}"/></td>
         </tr>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <tr>
+            <td>権限：</td>
+            <td>
+            	<select name="authority">
+            		<option value="admin">管理者</option>
+            		<option value="general" selected>一般</option>
+            	</select>
+            	</td>
+        </tr>
+        </div>
         <tr>
             <td></td>
             <td align="right"><input type="submit" value="登録"></td>
