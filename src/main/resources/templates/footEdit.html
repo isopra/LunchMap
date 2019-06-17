@@ -3,12 +3,12 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>footprint</title>
+<title>footEdit</title>
 <script>
-	function lengthCheck() {
-	    var comment_length = document . form1 . comment . value . length;
+	function lengthCheckEdit() {
+	    var comment = document . form_edit . comment_edit . value . length;
 
-	    if ( comment_length > 200 ){
+	    if ( comment > 200 ){
 	        window . alert( '200文字以内で入力してください' );
 	        return false;
 	    }else{
@@ -20,24 +20,25 @@
 </head>
 <body>
 <div class="footprint_modal">
-	<h1>あしあと情報 登録</h1>
-	<form method = "post" th:action="@{foot/previous}">
+    <h1>あしあと情報 編集</h1>
+	<form method = "post" th:action="@{previous}">
 		<input type="submit" class="btn" value="戻る"><br><br>
 		<input type="hidden" th:value="${place_id}" name="place_id">
 	</form>
     <div class="footprint_wrapper">
-		<form method="post" th:action="@{foot/register}" onsubmit="return lengthCheck()" name="form1">
-			<p class="footprint_label" th:text="${place_name}"></p> <!-- 飲食店名を表示 -->
-		  	<p class="footprint_label" th:text="${datetime}"></p>  <!-- システム日時を表示 -->
+		<form method="post" th:action="@{update}" onsubmit="return lengthCheckEdit()" name="form_edit">
+			<p class="footprint_label" th:text="${editPlace_name}"></p> <!--  飲食店名を表示 -->
+			<p class="footprint_label" th:text="|あしあと：*{editDatetime}|"></p> <!--  登録日時を表示 -->
 			<p class="footprint_label">コメント：</p>
-		    <textarea id="footprint_comment" class="footprint_label" name="comment"></textarea>
-		    <input type="hidden" name="place_id" th:value="${place_id}">
+	        <textarea id="footprint_comment" class="footprint_label" th:text="*{editComment}" name="comment_edit"></textarea>
+	        <input type="hidden" name="place_id" th:value="${place_id}">
+	        <input type="hidden" name="footprint_id" th:value="${footprint_id}">
 			<input type="reset" value="clear">
 			<p class="footprint_label">最大200文字まで登録できます</p>
 			<br>
 			<input type="submit" class="btn" value="登録" />
 		</form>
-	</div>
+    </div>
 </div>
 </body>
 </html>

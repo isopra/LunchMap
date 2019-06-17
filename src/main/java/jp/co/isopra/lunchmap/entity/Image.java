@@ -9,24 +9,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "footprint")
-public class FootPrint {
+@Table(name = "image")
+public class Image {
 
-	// あしあとID
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
-	private long footprint_id;
-
-	// コメント
-	@Column
-	private String comment;
+	private long image_id;
 	
 	@Column(length = 100)
 	@NotNull
@@ -38,7 +31,6 @@ public class FootPrint {
 
 	@Column
 	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date created_time;
 
 	@ManyToOne
@@ -49,16 +41,16 @@ public class FootPrint {
 	@JsonBackReference
 	private Shop shop;
 
-	public FootPrint() {
+	public Image() {
 		this.created_time = new Date();
 	}
 
-	public void setFootprint_id(long footprint_id) {
-		this.footprint_id = footprint_id;
+	public void setImage_id(long image_id) {
+		this.image_id = image_id;
 	}
 
-	public long getFootprint_id() {
-		return footprint_id;
+	public long getImage_id() {
+		return image_id;
 	}
 
 	public void setPlace_id(String place_id) {
@@ -77,8 +69,8 @@ public class FootPrint {
 		return login_id;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+	public Date getCreated_time() {
+		return created_time;
 	}
 
 	public void setMember(Member member) {
@@ -97,16 +89,4 @@ public class FootPrint {
 		return shop;
 	}
 
-	public String getComment() {
-		return comment;
-	}
-
-	public Date getCreated_time() {
-		return created_time;
-	}
-
-	public void setCreated_time(Date created_time) {
-		this.created_time = created_time;
-	}
-	
 }

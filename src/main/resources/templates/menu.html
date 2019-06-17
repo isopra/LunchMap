@@ -11,7 +11,7 @@ function toView(to) {
 </script>
 </head>
 <body>
-	<button onClick="toView('')">地図表示/検索</button>
+	<button onClick="toView('mapView')">地図表示/検索</button>
 	<button onClick="toView('acount_edit')">アカウント情報編集</button>
 	<div sec:authorize="hasRole('ROLE_ADMIN')">
 		<button onClick="toView('member_manager')">メンバー管理</button>

@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+h1 {
+	font-weight: bold;
+	font-size: 18pt;
+	color: gray;
+	text-aligin: center;
+}
+
+.btn {
+	width: 80pt;
+	height: 20pt;
+}
+
+.footprint_modal {
+	width: 80%;
+	margin: 0 auto;
+}
+
+.footprint_wrapper {
+	width: 400px;
+	height: auto;
+	border:solid 1px #000;
+	padding: 1em;
+}
+
+#footprint_comment {
+	width: 70%;
+	height: 100px;
+}
+
+.footprint_label {
+	margin-left:20px;
+	font-size: 15px;
+	}
+
+.foot_error_message {
+  color: #F51414;
+  height: 20px;
+  font-size: 14px;
+  margin-left: 20px;
+}
