@@ -11,54 +11,102 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name="footprint")
+@Table(name = "footprint")
 public class FootPrint {
 
-	/**
-	 * あしあとID
-	 */
+	// あしあとID
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
-	private Long footprint_id;
+	private long footprint_id;
 
-	/**
-	 * 社員
-	 */
-	@ManyToOne
-	private Member login_id;
+	// コメント
+	@Column
+	private String comment;
+	
+	@Column(length = 100)
+	@NotNull
+	private String place_id;
 
-	/**
-	 * TODO: shopとの関連付
-	 */
+	@Column( length = 100)
+	@NotNull
+	private String login_id;
+
+	@Column
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date created_time;
+
 	@ManyToOne
+	@JsonBackReference
+	private Member member;
+
+	@ManyToOne
+	@JsonBackReference
 	private Shop shop;
 
+	public FootPrint() {
+		this.created_time = new Date();
+	}
 
-	/**
-	 * コメント
-	 */
-	@Column(name="comment")
-	private String comment;
+	public void setFootprint_id(long footprint_id) {
+		this.footprint_id = footprint_id;
+	}
 
-	/**
-	 *  登録日時
-	 */
-	@Column(name = "created_time")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date datetime;
+	public long getFootprint_id() {
+		return footprint_id;
+	}
 
-	public void setLogin_id(Member member) {
-		this.login_id = member;
+	public void setPlace_id(String place_id) {
+		this.place_id = place_id;
+	}
+
+	public String getPlace_id() {
+		return place_id;
+	}
+
+	public void setLogin_id(String login_id) {
+		this.login_id = login_id;
+	}
+
+	public String getLogin_id() {
+		return login_id;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
+	public Member getMember() {
+		return member;
+	}
+
+	public void setShop(Shop shop) {
+		this.shop = shop;
+	}
+
+	public Shop getShop() {
+		return shop;
 	}
 
 	public String getComment() {
 		return comment;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+	public Date getCreated_time() {
+		return created_time;
 	}
+
+	public void setCreated_time(Date created_time) {
+		this.created_time = created_time;
+	}
+	
 }

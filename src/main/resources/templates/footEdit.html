@@ -3,25 +3,42 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>footEdit</title>
+<script>
+	function lengthCheckEdit() {
+	    var comment = document . form_edit . comment_edit . value . length;
+
+	    if ( comment > 200 ){
+	        window . alert( '200文字以内で入力してください' );
+	        return false;
+	    }else{
+	        return true;
+	    }
+	}
+</script>
 <link rel="stylesheet"  href="/css/FootPrintCss.css" type="text/css" th:href="@{/css/FootPrintCss.css}">
 </head>
 <body>
-    <h1>あしあと情報 登録・編集</h1>
-    <button type="button" class="button" onclick="">戻る</button>
-    <br><br>
-	<div class="wrapper">
-		<form id="foot_print_form" method="post" th:action="@{/foot/register}">
-			<p th:value="${place_name}"></p> <!--  飲食店名を表示 -->
-			<p class="foot_print_label">"| あしあと： *{ FootPrint.datetime() } |"</p>
-			<p class="foot_print_label">コメント：</p>
-			<span  class="error_message" th:value="${error_message}"></span>  <!-- error表示 -->
-	        <textarea id="foot_print_comment" class="foot_print_label area" th:text="*{editComment}"></textarea>
+<div class="footprint_modal">
+    <h1>あしあと情報 編集</h1>
+	<form method = "post" th:action="@{previous}">
+		<input type="submit" class="btn" value="戻る"><br><br>
+		<input type="hidden" th:value="${place_id}" name="place_id">
+	</form>
+    <div class="footprint_wrapper">
+		<form method="post" th:action="@{update}" onsubmit="return lengthCheckEdit()" name="form_edit">
+			<p class="footprint_label" th:text="${editPlace_name}"></p> <!--  飲食店名を表示 -->
+			<p class="footprint_label" th:text="|あしあと：*{editDatetime}|"></p> <!--  登録日時を表示 -->
+			<p class="footprint_label">コメント：</p>
+	        <textarea id="footprint_comment" class="footprint_label" th:text="*{editComment}" name="comment_edit"></textarea>
+	        <input type="hidden" name="place_id" th:value="${place_id}">
+	        <input type="hidden" name="footprint_id" th:value="${footprint_id}">
 			<input type="reset" value="clear">
-			<p class="foot_print_label">最大200文字まで登録できます</p>
+			<p class="footprint_label">最大200文字まで登録できます</p>
 			<br>
-			<input type="submit" class="button" value="登録" />
+			<input type="submit" class="btn" value="登録" />
 		</form>
     </div>
+</div>
 </body>
 </html>

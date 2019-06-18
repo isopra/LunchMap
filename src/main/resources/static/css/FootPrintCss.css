@@ -4,28 +4,39 @@ h1 {
 	font-weight: bold;
 	font-size: 18pt;
 	color: gray;
+	text-aligin: center;
 }
 
-.brn {
+.btn {
 	width: 80pt;
 	height: 20pt;
 }
 
-.wrapper {
-	width: 400px;
-	height: 258px;
-	border:solid 1px #000;
+.footprint_modal {
+	width: 80%;
+	margin: 0 auto;
 }
 
-.foot_print_label {
+.footprint_wrapper {
+	width: 400px;
+	height: auto;
+	border:solid 1px #000;
+	padding: 1em;
+}
+
+#footprint_comment {
+	width: 70%;
+	height: 100px;
+}
+
+.footprint_label {
 	margin-left:20px;
-	font-size: 14px;
+	font-size: 15px;
 	}
 
-.area { width: 250px; height:100px;}
-
-.error_message {
+.foot_error_message {
   color: #F51414;
   height: 20px;
   font-size: 14px;
+  margin-left: 20px;
 }

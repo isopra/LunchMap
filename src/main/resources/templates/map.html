@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<title>map_now place</title>
+</head>
+<body>
+<h1>地図</h1>
+<button   onclick="toView('')">戻る</button> <!-- メニューにもどる -->
+<button id="openModal" onclick="Modal()">検索</button><!-- モーダルを開く -->
+<section id="modalArea" class="modalArea"><!-- モーダルの設定 -->
+	<div id="modalBg" class="modalBg" onclick="Modalclose()"></div>
+	<div class="modalWrapper">
+    <div class="modalContents">
+		<h1>検索</h1>
+		<p>口コミ情報：</p>
+		<form method ="POST" th:action ="@{/menu/searchView}">
+			<label> あり/なし両方
+			<input type ="radio" name ="locate" value ="Both" checked="checked" onClick="flg0(this.checked)">
+			</label>
+			<br>
+			<label> あり
+			<input type ="radio" name ="locate" value ="Exist" 	onClick="flg1(this.checked)"/>
+			</label>
+			<br>
+			<label> 最近の口コミ
+			<input type ="radio" id ="select1" name ="near" value ="near" disabled="disabled">
+			</label>
+			<br>
+			<label> 自分が投稿したもの
+			<input type ="radio" id ="select2" name ="mylog" value ="mylog" disabled="disabled">
+			</label>
+			<br>
+			<input type ="submit" value = "検索">
+		</form>
+    </div>
+    <div id="closeModal" class="closeModal" onclick="Modalclose()">
+		×
+    </div>
+	</div>
+</section>
+
+<div id="map_sam" style="width:100%; height:400px"></div>
+<script th:src="#{apikey}"></script>
+<script type="text/javascript"  th:inline="javascript">
+	var datalist = /*[[${datalist}]]*/ '';
+	var data =  /*[[${data}]]*/ '';
+</script>
+<script type="text/javascript" src="js/search.js" th:src="@{/js/search.js}"></script>
+<script >window.onload = initMap;</script>
+ <link href="/css/Map.css" th:href="@{/css/Map.css}" rel="stylesheet"></link>
+</body>
+</html>

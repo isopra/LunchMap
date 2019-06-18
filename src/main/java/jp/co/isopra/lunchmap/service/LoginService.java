@@ -60,7 +60,11 @@ public class LoginService implements UserDetailsService {
 	 */
 	private Collection<GrantedAuthority> getAuthorities(Member member) {
 		//認可が通った時にこのユーザに与える権限の範囲を設定する。
-		return AuthorityUtils.createAuthorityList("ROLE_MEMBER");
+		if (member.isAdmin_flag()) {
+			return AuthorityUtils.createAuthorityList("ROLE_ADMIN");
+		}else {
+			return AuthorityUtils.createAuthorityList("ROLE_MEMBER");
+		}
 	}
 
 }

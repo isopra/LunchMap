@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 import jp.co.isopra.lunchmap.entity.Shop;
 
 @Repository
-public interface ShopRepository extends JpaRepository<Shop, String> {}
+public interface ShopRepository extends JpaRepository<Shop, String> {
+
+//	public Optional<Shop> findById(Long place_id);
+
+}

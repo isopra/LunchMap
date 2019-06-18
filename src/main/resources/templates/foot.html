@@ -3,25 +3,41 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>footprint</title>
+<script>
+	function lengthCheck() {
+	    var comment_length = document . form1 . comment . value . length;
+
+	    if ( comment_length > 200 ){
+	        window . alert( '200文字以内で入力してください' );
+	        return false;
+	    }else{
+	        return true;
+	    }
+	}
+</script>
 <link rel="stylesheet"  href="/css/FootPrintCss.css" type="text/css" th:href="@{/css/FootPrintCss.css}">
 </head>
 <body>
-    <h1>あしあと情報 登録・編集</h1>
-    <button type="button" class="button" onclick="">戻る</button>
-    <br><br>
-	<div class="wrapper">
-		<form id="foot_print_form" method="post" th:action="@{/foot/register}">
-			<p th:value="${shop.getPlace_name}"></p>
-			<p class="foot_print_label">あしあと：</p> <!-- ToDo: system日時を表示 -->
-			<p class="foot_print_label">コメント：</p>
-			<span  class="error_message" th:value="${error_message}"></span>  <!-- error表示 -->
-	        <textarea id="foot_print_comment" class="foot_print_label area" name="comment"></textarea>
+<div class="footprint_modal">
+	<h1>あしあと情報 登録</h1>
+	<form method = "post" th:action="@{foot/previous}">
+		<input type="submit" class="btn" value="戻る"><br><br>
+		<input type="hidden" th:value="${place_id}" name="place_id">
+	</form>
+    <div class="footprint_wrapper">
+		<form method="post" th:action="@{foot/register}" onsubmit="return lengthCheck()" name="form1">
+			<p class="footprint_label" th:text="${place_name}"></p> <!-- 飲食店名を表示 -->
+		  	<p class="footprint_label" th:text="${datetime}"></p>  <!-- システム日時を表示 -->
+			<p class="footprint_label">コメント：</p>
+		    <textarea id="footprint_comment" class="footprint_label" name="comment"></textarea>
+		    <input type="hidden" name="place_id" th:value="${place_id}">
 			<input type="reset" value="clear">
-			<p class="foot_print_label">最大200文字まで登録できます</p>
+			<p class="footprint_label">最大200文字まで登録できます</p>
 			<br>
-			<input type="submit" class="button" value="登録" />
+			<input type="submit" class="btn" value="登録" />
 		</form>
-    </div>
+	</div>
+</div>
 </body>
 </html>
