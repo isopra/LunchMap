@@ -79,16 +79,17 @@ public class ShopinfoController {
 
 	}
 
-	@RequestMapping(value = "/shopinfo/delete/image/{place_id}/{image_id}")
+	@RequestMapping(value = "/shopinfo/delete/image/{place_id}/{image_id}/{place_name}")
 	@Transactional(readOnly=false)
 	public ModelAndView deleteImage(
 			@PathVariable String place_id,
-			@PathVariable Long image_id
+			@PathVariable Long image_id,
+			@PathVariable String place_name
 			) {
 
 		imageService.deleteImage(place_id, image_id);
 
-		return new ModelAndView("forward:");
+		return new ModelAndView("forward:/shopinfo/" + place_id + "/" + place_name);
 
 	}
 
