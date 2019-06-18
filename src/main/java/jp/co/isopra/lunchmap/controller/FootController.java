@@ -117,6 +117,7 @@ public class FootController {
 	public String newFoot(
 		@RequestParam String comment,
 		@RequestParam String place_id,
+		@RequestParam String place_name,
 		@ModelAttribute FootPrint footprint,
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
@@ -124,9 +125,21 @@ public class FootController {
 
 		FootPrint entity = new FootPrint();
 		Date nowDate = new Date();
-		Shop entityShop = this.shopRepository.findById(place_id).get();
+		Shop entityShop;
 
-		// DBに各値をセット
+		// Shop Tableにplace_idがない場合は登録
+		if(this.shopRepository.existsById(place_id)) {
+			entityShop = this.shopRepository.findById(place_id).get();
+		} else {
+			entityShop = new Shop();
+
+			entityShop.setPlace_id(place_id);
+			entityShop.setPlace_name(place_name);
+
+			shopRepository.save(entityShop);
+		}
+
+		// FootPrint Tableに各値をセット
 		entity.setComment(comment);
 		entity.setMember(accountDetails.getMember());
 		entity.setLogin_id(accountDetails.getMember().getLogin_id());
@@ -134,7 +147,7 @@ public class FootController {
 		entity.setCreated_time(nowDate);
 		entity.setShop(entityShop);
 
-		footRepository.saveAndFlush(entity);
+		footRepository.save(entity);
 
 		/* ToDo:
 		 * alert表示してから戻る
