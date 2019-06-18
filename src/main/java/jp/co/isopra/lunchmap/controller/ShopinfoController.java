@@ -40,9 +40,10 @@ public class ShopinfoController {
 	private ImageService imageService;
 
 
-	@RequestMapping(value = "/shopinfo/{place_id}")
+	@RequestMapping(value = "/shopinfo/{place_id}/{place_name}")
 	public ModelAndView shopinfo(ModelAndView mav,
 			@PathVariable String place_id,
+			@PathVariable String place_name,
 			Principal principal) {
 
 		// viewの指定
@@ -50,6 +51,7 @@ public class ShopinfoController {
 
 		//URLからplace_idを取得しviewに送る
 		mav.addObject("placeId",place_id);
+		mav.addObject("place_name",place_name);
 
 		// ログインしているidを取得しviewに送る
 		Authentication auth = (Authentication)principal;
@@ -76,17 +78,6 @@ public class ShopinfoController {
 		return mav;
 
 	}
-
-	@RequestMapping(value = "/shopinfo/update/{footprint_id}")
-	public ModelAndView updateFootprint(
-			@PathVariable Long footprint_id,
-			ModelAndView mav) {
-
-		mav.setViewName(""); //あしあとアップデートページへ
-		mav.addObject("footprint_id",footprint_id);
-
-        return mav;
-    }
 
 	@RequestMapping(value = "/shopinfo/delete/image/{place_id}/{image_id}")
 	@Transactional(readOnly=false)
