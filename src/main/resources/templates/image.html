@@ -7,11 +7,13 @@
 <link rel="stylesheet"  href="/css/ImageCss.css" type="text/css" th:href="@{/css/ImageCss.css}">
 <script>
 function check(){
-	  if(document.file.upfile.value)
-	    return true;
-	  else
-	    alert("画像を選択してください");
-	}
+	  if(document.file.upfile.value){
+		  return true;
+	  } else {
+		  alert("画像を選択してください");
+		  return false;
+	  }
+}
 </script>
 </head>
 <body>
@@ -19,21 +21,20 @@ function check(){
 	<h1>画像情報 登録</h1>
 	<!-- 戻るボタン -->
 	<div class="return">
-		<form method = "post" th:action="@{image/return}">
+		<form method = "post" th:action="@{return}">
 			<input type="submit" class="btn" value="戻る">
 		</form>
 	</div>
 
 	<!-- 画像登録フォーム -->
 	<div class="file_wrapper">
-		<form method="post" enctype=”multipart/form-data” name="file" th:action="@{image/register}">
+		<form method="post" enctype=”multipart/form-data” onsubmit="return check()" name="file" th:action="@{image/register}">
 			<input type="hidden" th:value="${place_id}" name="place_id">
 			<p th:text="${place_name}"></p>
-
 			<input type="file" name="upfile" accept="image/jpeg" multiple><br>
 			<!-- ToDo:選択画像表示 -->
 			<br>
-			<input type="submit" onclick="check()" value="登録">
+			<input type="submit" value="登録">
 		</form>
 	</div>
 </div>

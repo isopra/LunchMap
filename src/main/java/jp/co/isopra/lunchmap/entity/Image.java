@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
@@ -45,7 +46,7 @@ public class Image {
 		this.created_time = new Date();
 	}
 
-	public void setImage_id(long image_id) {
+	public void setImage_id(int image_id) {
 		this.image_id = image_id;
 	}
 
@@ -71,6 +72,10 @@ public class Image {
 
 	public Date getCreated_time() {
 		return created_time;
+	}
+	
+	public void setCreated_time(Date created_time) {
+		this.created_time = created_time;
 	}
 
 	public void setMember(Member member) {
