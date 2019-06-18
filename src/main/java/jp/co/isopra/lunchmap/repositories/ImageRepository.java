@@ -1,5 +1,6 @@
 package jp.co.isopra.lunchmap.repositories;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,5 +25,17 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     @Modifying
 	@Query("DELETE FROM Image  WHERE image_id = :image_id")
 	public void deleteByImage_id(@Param("image_id") Long image_id);
+
+
+//	自分の口コミだけがおされたとき
+	@Query("SELECT DISTINCT place_id FROM Image where login_id = :id ")
+	public List<String> findByLogin_id(@Param("id") String id);
+//	最近の口コミだけがおされたとき
+	@Query("SELECT DISTINCT place_id FROM Image where created_time > :date2")
+	public List<String> findByCreated_time(@Param("date2") Date date);
+//	どちらもおされたとき
+	@Query("SELECT DISTINCT place_id FROM Image where created_time > :date and login_id = :id")
+	public List<String> findByCreated_timeAndLogin_id(@Param("date") Date date,@Param("id") String id);
+
 
 }

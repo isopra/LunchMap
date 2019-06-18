@@ -109,8 +109,8 @@ function createMarker(place){
 	//place_idの判定
 	if(datalist != null){
 		for(var i = 0; i < datalist.length; i++){
-			if(place.place_id == datalist[i].place_id){
-				iconCo = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+            if(place.place_id == datalist[i]){
+            	iconCo = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
 				break;
 			}else{
 				iconCo ='https://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
