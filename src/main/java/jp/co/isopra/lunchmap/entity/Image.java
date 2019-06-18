@@ -21,7 +21,7 @@ public class Image {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private long image_id;
-	
+
 	@Column(length = 100)
 	@NotNull
 	private String place_id;
@@ -46,7 +46,7 @@ public class Image {
 		this.created_time = new Date();
 	}
 
-	public void setImage_id(int image_id) {
+	public void setImage_id(long image_id) {
 		this.image_id = image_id;
 	}
 
@@ -73,7 +73,7 @@ public class Image {
 	public Date getCreated_time() {
 		return created_time;
 	}
-	
+
 	public void setCreated_time(Date created_time) {
 		this.created_time = created_time;
 	}
