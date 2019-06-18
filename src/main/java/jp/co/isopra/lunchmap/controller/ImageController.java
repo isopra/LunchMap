@@ -1,13 +1,14 @@
 package jp.co.isopra.lunchmap.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import jp.co.isopra.lunchmap.entity.Shop;
+import jp.co.isopra.lunchmap.entity.AccountDetails;
 import jp.co.isopra.lunchmap.repositories.ImageRepository;
 import jp.co.isopra.lunchmap.repositories.ShopRepository;
 
@@ -21,56 +22,52 @@ public class ImageController {
 	ShopRepository ShopRepository;
 
 	// 画面遷移
-	@RequestMapping(value= "menu/image", method = RequestMethod.GET )
+	@RequestMapping(value= "create/image", method = RequestMethod.GET )
 	public ModelAndView img(
-			@RequestParam (name = "place_id", defaultValue = "") String place_id,
-			@RequestParam (name = "place_name", defaultValue = "") String place_name,
+			@RequestParam String place_id,
+			@RequestParam String place_name,
 			ModelAndView mav)
 	{
 		mav.setViewName("image");
-		Shop entityShop = this.ShopRepository.findById(place_id).get();
-		mav.addObject("getplace_name", entityShop.getPlace_name());
+		mav.addObject("place_name", place_name);
+		
+		// viewで非表示
+		mav.addObject("place_id", place_id);
+
 		return mav;
 	}
 
-	/* 登録処理
-	@RequestMapping(value = "menu/image/register", method = RequestMethod.POST)
-	public ModelAndView newImg(
-			@RequestParam String image_id,
-			ModelAndView mav)
+	// 登録処理
+	@RequestMapping(value="create/image/register")
+	public ModelAndView createimg(
+			@RequestParam String place_id,
+//			@RequestParam String place_name,
+			ModelAndView mav
+			)
 	{
 
-		if(){
-			// 画像数分DBにInsert
-			for( ) {
-				Image entity = new Image();
-				entity.setImage_id(image_id);
+		/* 画像枚数分Insert
+		for() {
+			Image entity = new image();
 
-				// ToDo 画像のファイル名を変更
-
-				repository.save(entity);
-			}
-			System.out.println("登録しました");
-		} else {
-			// 未選択の場合alert表示
-			mav.setViewName("menu/image");
-			mav.addObject("img_error_message", "画像ファイルを選択してください");  // ToDo: 表示させる
-
-		}
+			entity.setImage_id(image_id);
+			imageRepository.saveAndFlush(entity);
+		}*/
+		mav.setViewName("Image");
+		System.out.print("register");
 		return mav;
-	}*/
+	}
 
 
 	// 戻るボタン
-	@RequestMapping("menu/image/return")
-	public ModelAndView returnButton(
-		@RequestParam(name = "place_id", defaultValue = "") String place_id,
-		@RequestParam(name = "place_name", defaultValue = "") String place_name,
+	@RequestMapping(value = "menu/image/return", method = RequestMethod.POST)
+		public String previous(
+		@RequestParam String place_id,
+		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
 	{
+		return "redirect:/shopinfo/" + place_id;
 
-		mav.setViewName("shop");
-		return mav;
 	}
 
 }
