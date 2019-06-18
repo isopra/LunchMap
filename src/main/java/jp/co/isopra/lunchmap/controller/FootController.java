@@ -28,7 +28,7 @@ public class FootController {
 	ShopRepository shopRepository;
 
 
-	// コメント編集
+	// コメント編集時画面
 	@RequestMapping(value = "menu/foot/edit", method = RequestMethod.GET )
 	public ModelAndView footEdit (
 		@RequestParam (name = "footprint_id", defaultValue = "" ) Long footprint_id,
@@ -53,11 +53,11 @@ public class FootController {
 		//viewでは非表示
 		mav.addObject("place_id", entityShop.getPlace_id());
 		mav.addObject("footprint_id", footprint_id);
-		
+
 		return mav;
 	}
 
-	//  更新
+	//  コメント内容更新
 	@RequestMapping(value = "menu/foot/update", method = RequestMethod.POST)
 	public String Update(
 			@RequestParam String comment_edit,
@@ -78,21 +78,22 @@ public class FootController {
 		entityFootPrint.setShop(entityShop);
 
 		footRepository.saveAndFlush(entityFootPrint);
-		
+
 		/* ToDo: alert表示してから戻る
 		 * 	mav.setViewName("foot");
 			return mav;
 		 */
-		
+
 		return "redirect:/shopinfo/" + place_id;
 
 	}
 
 
-	// コメント作成
+	// コメント新規作成時画面
 	@RequestMapping(value = "menu/foot", method = RequestMethod.GET )
 	public ModelAndView footCreate(
 		@RequestParam String place_id,
+		@RequestParam String place_name,
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
 	{
@@ -102,14 +103,11 @@ public class FootController {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 		String formatDate = dateFormat.format(nowDate);
 
-		// shopテーブルから検索
-		Shop entityShop = this.shopRepository.findById(place_id).get();
-
 		// 表示
 		mav.setViewName("foot");
-		mav.addObject("place_name", entityShop.getPlace_name());
+		mav.addObject("place_name", place_name);
 		mav.addObject("datetime", formatDate);
-		mav.addObject("place_id", entityShop.getPlace_id());
+		mav.addObject("place_id", place_id);
 
 		return mav;
 	}
@@ -143,7 +141,7 @@ public class FootController {
 		 * mav.setViewName("foot");
 		 * return mav;
 		 */
-		
+
 		return "redirect:/shopinfo/" + place_id;
 
 	}
