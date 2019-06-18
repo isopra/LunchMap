@@ -53,9 +53,9 @@ public class ImageController {
 	{
 		Image entity = new Image();
 		Date nowDate = new Date();
-		
+
 		System.out.println("place_id : " + place_id);
-		
+
 		/* 画像枚数分Insert
 		for() {
 
@@ -70,8 +70,6 @@ public class ImageController {
 		entity.setCreated_time(nowDate);
 //		entity.setShop(entityShop);
 
-
-		imageRepository.saveAndFlush(entity);
 
 		mav.setViewName("Image");
 		return mav;
