@@ -1,25 +1,97 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>メンバー一覧</title>
-<style>
-	tr { margin:5px;}
-	th { padding:5px;}
-	td {padding:5px;;}
-</style>
+    <meta charset="UTF-8">
+    <!--<meta name="_csrf" th:content="${_csrf.token}"/>-->
+    <!--<meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
+    <title>メンバー一覧</title>
+    <style>
+
+        .data-click:hover {
+            background-color: #f26964;
+        }
+
+        .dataTables_wrapper {
+            max-width: 1000px;
+            margin:0 auto;
+            position: absolute;
+            top: 150px;
+        }
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
-<form method="POST" th:action="@{/member/edit_by_manager}">
-	<table border="1">
-		<tr><th></th><th>ID</th><th>ニックネーム</th></tr>
-		<tr th:each="obj : ${allMembers}" >
-			<td><input type="radio" name="login_id" th:value="${obj.login_id}"></td>
-			<td th:text="${obj.login_id}"></td>
-			<td th:text="${obj.nickname}"></td>
-		</tr>
-	</table>
-	<input type="submit" value="編集">
+<script>
+    $(function () {
+        $(document).ready(function () {
+            var table = $('#table').DataTable({
+                lengthChange: false,
+                searching: true,
+                ordering: true,
+                info: false,
+                paging: true,
+                columnDefs: [
+                    {targets: [0, 1], width: 50}
+                ]
+
+            });
+
+            $('#table tbody').on('click', 'tr', function () {
+                var data = table.row(this).data();
+
+                $('input:hidden[name="login_id"]').val(data[0]);
+                $('#form').submit();
+
+                // var token = $("meta[name='_csrf']").attr("content");
+                // var header = $("meta[name='_csrf_header']").attr("content");
+                // $(document).ajaxSend(function(e, xhr, options) {
+                //     xhr.setRequestHeader(header, token);
+                // });
+                //
+                // $.ajax({
+                //     type: "POST",
+                //     dataType: "json",
+                //     url: "/member/edit_by_manager",
+                //     data: {"id": data[0]}
+                // })
+            })
+        });
+    });
+
+</script>
+<form method="POST" th:action="@{/member/edit_by_manager}" id="form">
+    <input type="hidden" id="login_id" name="login_id">
+<table border="1" id="table">
+    <thead>
+    <tr>
+        <!--<th></th>-->
+        <th>ID</th>
+        <th>ニックネーム</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--<tr><td>1</td><td>北海道</td></tr>-->
+    <!--<tr><td>2</td><td>青森県</td></tr>-->
+    <!--<tr><td>3</td><td>岩手県</td></tr>-->
+    <!--<tr><td>4</td><td>宮城県</td></tr>-->
+    <!--<tr><td>5</td><td>秋田県</td></tr>-->
+    <!--<tr><td>6</td><td>山形県</td></tr>-->
+    <!--<tr><td>7</td><td>福島県</td></tr>-->
+    <!--<tr><td>8</td><td>茨城県</td></tr>-->
+    <!--<tr><td>9</td><td>栃木県</td></tr>-->
+    <!--<tr><td>10</td><td>群馬県</td></tr>-->
+    <!--<tr><td>47</td><td>沖縄県</td></tr>-->
+    <tr th:each="obj : ${allMembers}" class="data-click">
+        <!--<td><input type="radio" name="login_id" th:value="${obj.login_id}"></td>-->
+        <td th:text="${obj.login_id}"></td>
+        <td th:text="${obj.nickname}"></td>
+    </tr>
+    </tbody>
+</table>
+<!--<input type="submit" value="編集">-->
 </form>
 </body>
 </html>
