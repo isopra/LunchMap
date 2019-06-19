@@ -163,7 +163,7 @@ window.onload = function ShowMap(){
 	<div class="footprint-records">
 	   	<span>あしあと数：</span>
   		<span th:text="${footprintRecords}"></span>
-  		<a th:href="@{'../../menu/foot?place_id=' + ${placeId} + '&place_name=' + ${place_name}}" >足跡追加</a>
+  		<a th:href="@{'../../menu/foot?place_id=' + ${placeId} }" >足跡追加</a>
   	</div>
 
 		<div id="footprint_list_more" >
@@ -260,14 +260,14 @@ $(function() {
 	<div class="image-records">
 		<span>画像数：</span>
   		<span th:text="${imageRecords}"></span>
-  		<a th:href="@{'../../create/image?place_id=' + ${ placeId } + '&place_name=' + ${place_name}}" >画像追加</a>
+  		<a th:href="@{'../../create/image?place_id=' + ${ placeId }}" >画像追加</a>
   	</div>
 
 	<div id="image_list_more">
 			<div th:each="obj : ${imageDatalist}" class="image">
 				<img th:src="|/images/${obj.getPlace_id()}/${obj.getPlace_id()}_${obj.getImage_id()}.jpg|" > <!-- LunchMap/src/main/resources/static/images/{place_id}/[place_id]_[image_id].jpg -->
 				<p th:if="${obj.getMember().getLogin_id() == Login_id}" class="image-button">
-					<a th:href="@{'../delete/image/' + ${obj.getPlace_id()} + '/' + ${obj.getImage_id()} + '/' + ${place_name}}"><i class="fas fa-trash-alt"></i>削除</a>
+					<a th:href="@{'./delete/image/' + ${obj.getPlace_id()} + '/' + ${obj.getImage_id()} }"  onclick="return confirm('削除しますか？')"><i class="fas fa-trash-alt"></i>削除</a>
 				</p>
 			</div>
 
