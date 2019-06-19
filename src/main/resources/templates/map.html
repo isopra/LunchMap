@@ -6,15 +6,15 @@
 </head>
 <body>
 <h1>地図</h1>
-<button   onclick="toView('')">戻る</button> <!-- メニューにもどる -->
+<button  id="back" onclick="toView('')">戻る</button> <!-- メニューにもどる -->
 <button id="openModal" onclick="Modal()">検索</button><!-- モーダルを開く -->
 <section id="modalArea" class="modalArea"><!-- モーダルの設定 -->
 	<div id="modalBg" class="modalBg" onclick="Modalclose()"></div>
 	<div class="modalWrapper">
     <div class="modalContents">
 		<h1>検索</h1>
-		<p>口コミ情報：</p>
 		<form method ="POST" th:action ="@{/menu/searchView}">
+			<p>口コミ情報：</p>
 			<label> あり/なし両方
 			<input type ="radio" name ="locate" value ="Both" checked="checked" onClick="flg0(this.checked)">
 			</label>
@@ -23,6 +23,8 @@
 			<input type ="radio" name ="locate" value ="Exist" 	onClick="flg1(this.checked)"/>
 			</label>
 			<br>
+			<div class="search imp" id= "imp">
+			<p>絞り込み条件</p>
 			<label>
 			<input type ="checkbox" id ="select1" name ="near" value ="near" disabled="disabled">
 			最近の口コミ
@@ -32,8 +34,9 @@
 			<input type ="checkbox" id ="select2" name ="mylog" value ="mylog" disabled="disabled">
 			自分が投稿したもの
 			</label>
+			</div>
 			<br>
-			<input type ="submit" value = "検索">
+			<div class="center"><input class="searchbut" type ="submit"   value = "検索"></div>
 		</form>
     </div>
     <div id="closeModal" class="closeModal" onclick="Modalclose()">

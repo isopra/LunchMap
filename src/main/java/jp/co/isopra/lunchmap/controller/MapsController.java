@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import jp.co.isopra.lunchmap.entity.AccountDetails;
+import jp.co.isopra.lunchmap.entity.Shop;
 import jp.co.isopra.lunchmap.repositories.FootPrintRepository;
 import jp.co.isopra.lunchmap.repositories.ImageRepository;
 import jp.co.isopra.lunchmap.repositories.MemberRepository;
@@ -74,7 +75,7 @@ public class MapsController {
 		System.out.println(conditionSession.getPlacename());
 //		検索条件の判定
 		if(condition == null || condition.equals("Both") || condition.equals("Exist")) {
-		Iterable<String> list = shoprepo.findByplace_id();
+		Iterable<Shop> list = shoprepo.findAll();
 		mav.addObject("datalist", list);
 		}
 		else if(condition.equals("near")) {
@@ -83,19 +84,22 @@ public class MapsController {
 			time2.addAll(time);
 			Set<String> set = new HashSet<>(time2);
 			System.out.println(set);
-			mav.addObject("datalist", set);
+			Iterable<Shop> neartime = shoprepo.findByid(set);
+			mav.addObject("datalist", neartime);
 		}else if(condition.equals("mylog")) {
 			List<String> logId =footrepo.findByLogin_id((String) Login_id);
 			List<String> logId2 =imagerepo.findByLogin_id((String) Login_id);
 			logId2.addAll(logId);
 			Set<String> set = new HashSet<>(logId2);
-			mav.addObject("datalist", set);
+			Iterable<Shop> mylog = shoprepo.findByid(set);
+			mav.addObject("datalist", mylog);
 		}else if(condition.equals("both condition")) {
 			List<String> con = footrepo.findByCreated_timeAndLogin_id((Date) date,(String)Login_id);
 			List<String> con2 = imagerepo.findByCreated_timeAndLogin_id((Date) date,(String)Login_id);
 			con2.addAll(con);
 			Set<String> set = new HashSet<>(con2);
-			mav.addObject("datalist", set);
+			Iterable<Shop> both = shoprepo.findByid(set);
+			mav.addObject("datalist",both );
 		}
 
 		return mav;
@@ -135,7 +139,7 @@ public class MapsController {
 
 
 
-		return "redirect:/menu/mapView";
+		return "redirect:/shopinfo/"+ placeId;
 	}
 
 

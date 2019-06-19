@@ -49,6 +49,10 @@ function dispLatLng(){
     }
 	//中心座標取得
 	var center = map.getCenter();
+	var cenlat = center.lat();
+	var cenlng = center.lng();
+	console.log(cenlat);
+	console.log(cenlng);
 
 //	var bounds = map.getBounds();
 //    map_ne = bounds.getNorthEast();
@@ -68,27 +72,33 @@ function dispLatLng(){
 		service = new google.maps.places.PlacesService(map);
 		service.nearbySearch(request, callback);
 
-	}else if(data == "Exist"){
+
+	}else{
 		//ありが押されたとき
 		for(var i= 0;i<datalist.length;i++){
-			var request = {
-				placeId:datalist[i],
-				fields: ['name',  'place_id', 'geometry']
-			};
-			console.log(request);
-			service = new google.maps.places.PlacesService(map);
-			service.getDetails(request, createMarker);
-		}
-	}else {
-		//最近の口コミ、または自分の投稿が押されたとき
-		for(i= 0;i<datalist.length;i++){
-			var request = {
-				placeId:datalist[i],
-				fields: ['name',  'place_id', 'geometry']
-			};
-			console.log(request);
-			service = new google.maps.places.PlacesService(map);
-			service.getDetails(request, createMarker);
+			console.log(datalist.length);
+			var latlng = new google.maps.LatLng(datalist[i].latitude,datalist[i].longitude ) ;
+			var res1 = distance(cenlat, cenlng, datalist[i].latitude, datalist[i].longitude);
+			console.log("res1="+ res1);
+			var vis = true;
+			if(res1 > 500){
+				vis = false;
+			}
+			console.log(datalist[i]);
+			marker.push ( new google.maps.Marker({
+				position:latlng,
+				title:datalist[i].place_name,
+				url:"/sessionAdd/" + datalist[i].place_id + "/" + datalist[i].place_name+"/"+datalist[i].latitude+"/"+datalist[i].longitude,//情報ページのurl指定
+				map: map,
+				visible:vis,
+				icon:'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+
+			}));
+
+			google.maps.event.addListener(marker[i],'click',function(){
+				window.location.href = this.url;
+
+			})
 		}
 	}
 }
@@ -108,6 +118,8 @@ function callback(results, status) {
 function createMarker(place){
 	console.log(place);
 	var center = map.getCenter();
+	var cenlat = center.lat();
+	var cenlng = center.lng();
 	if(place == null){
 		return;
 	}
@@ -118,7 +130,7 @@ function createMarker(place){
 	//place_idの判定
 	if(datalist != null){
 		for(var i = 0; i < datalist.length; i++){
-            if(place.place_id == datalist[i]){
+            if(place.place_id == datalist[i].place_id){
             	iconCo = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
 				break;
 			}else{
@@ -128,8 +140,12 @@ function createMarker(place){
 	}
 
 	//中心座標との距離
-	var res = google.maps.geometry.spherical.computeDistanceBetween(place.geometry.location, center);
-	if(res > 500){
+	var lat = place.geometry.location.lat();
+	var lng = place.geometry.location.lng();
+	var res1 = distance(cenlat, cenlng, lat, lng)
+	console.log("res1="+ res1);
+
+	if(res1 > 500){
 		vis = false;
 	}
 	var lat = place.geometry.location.lat();
@@ -140,7 +156,7 @@ function createMarker(place){
 	marker.push ( new google.maps.Marker({
 		position: place.geometry.location,
 		title:place.name,
-		url:"/sessionAdd/" + place.place_id+"/"+place.name+"/"+lat+"/"+lng,//情報ページのurl指定
+		url:"/sessionAdd/" + place.place_id+"/"+place.name+"/"+lat+"/"+lng,//shopinfoへ移動
 		map: map,
 		visible:vis,
 		icon:iconCo
@@ -200,3 +216,11 @@ function flg1(ischecked){
   		imp2.disabled = true;
 	}
 }
+//座標間の距離計算
+function distance(lat1, lng1, lat2, lng2) {
+	  lat1 *= Math.PI / 180;
+	  lng1 *= Math.PI / 180;
+	  lat2 *= Math.PI / 180;
+	  lng2 *= Math.PI / 180;
+	  return 6378137 * Math.acos(Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1) + Math.sin(lat1) * Math.sin(lat2));
+	}
