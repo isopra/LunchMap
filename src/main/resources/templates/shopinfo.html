@@ -4,92 +4,116 @@
 	<title>shopinfo</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 <!--  	<link rel="stylesheet" media="all" th:href="@{/css/test.css}"/> -->
 <style>
-	h1{ font-size :18px;
-		font-weight:bold;
-		color: gray;
+	.google-maps {
+		position: relative;
+		padding-bottom: 40%; // これが縦横比
+		height: 0;
+		overflow: hidden;
 	}
 
-	body{
-		font-size:13px;
-		color:gray;
-		margin:5px 25px;
+	.google-maps #shopMap{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100% !important;
+		height: 100% !important;
 	}
 
-	pre {
-		border: solid 3px #ddd;
-		padding: 10px;
+	body
+    {
+     margin:2em;          /* ページ全体のmargin */
+     padding:0px;         /* ページ全体のpadding */
+
+    }
+
+	.main {
+    	padding: 0.5em 5em;
+    	margin: 2em 0;
+    	font-weight: bold;
+    	border: solid 1px #000000;
 	}
 
-	tr {
-		margin:5px;
+	.footprint-container{
+		margin: 2em 0;
 	}
 
-	th {
-		padding:5px;
-		color:white;
-		background:darkgray;
+	.footprint {
+  		margin: 1em 0;
+  		padding: 1rem;
+  		border: 1px solid #eee;
+  		border-radius: 6px;
 	}
 
-	td {
-		padding:5px;
-		color:black:
-		background:#f0f0f0;
+	.footprint-records {
+		display:flex;
 	}
 
-	table.navi {
-		width:100%;
-		background:white;
+	.footprint-records a {
+		margin: 0 0 0 auto;
 	}
 
-	table.navi tr {
-		background:white;
+	.comment-button {
+  		font-size: smaller;
+  		text-align: right;
 	}
 
-	table.navi tr td {
-		background:white;
+	.more-buttons {
+		font-size: smaller;
+  		text-align: right;
 	}
 
-	.err {
-		color:red;
+	.image-container{
+    	margin: 2em 0;
 	}
 
-	#shopMap {
-		width: 780px;
-		height: 400px;
+	.image-records {
+		display:flex;
+	}
+
+	.image-records a {
+		margin: 0 0 0 auto;
 	}
 
 	.image {
+		display: inline-block;
 		position: relative;
- 		width: 300px;
+ 		width: 23%;
+ 		margin:10px;
 	}
 
 	.image p{
 		position: absolute;
 		right: 0px;
 		bottom: 0px;
+		font-size: smaller;
 	}
 
 	.image img{
 		object-fit: contain;
-		width: 300px;
+		width: 100%;
 		height: 300px;
 		background-color: #ccc;
 		border: 1px solid #ccc;
 	}
+
 </style>
 </head>
 <body>
-<h1 th:text="${title}">shopinfo page</h1>
+<h1 >飲食店情報</h1>
 <script>
 	function toView(to) {
 		location.href = "/menu/" + to;
 	}
 </script>
 	<button type="button" onclick="toView('mapView')">戻る</button>
+<div class="main">
   	<label id="shopName"></label>
-  	<div id="shopMap"></div>
+  	<div class="google-maps">
+  		<div id="shopMap"></div>
+  	</div>
 
 <script th:inline="javascript">
 var placeId = /*[[${placeId}]]*/;
@@ -113,7 +137,7 @@ window.onload = function ShowMap(){
 
 			map = new google.maps.Map(document.getElementById('shopMap'), { // #shopMapに地図を埋め込む
 				center: place.geometry.location, // 地図の中心を指定
-				zoom: 16 // 地図のズームを指定
+				zoom: 18 // 地図のズームを指定
 				});
 
 			var marker = new google.maps.Marker({ // マーカーの追加
@@ -135,27 +159,30 @@ window.onload = function ShowMap(){
 	});
 }
 </script>
-   	<h1>あしあと数：</h1>
-  	<p th:text="${footprintRecords}"></p>
-  	<a th:href="@{'../menu/foot?place_id=' + ${placeId}}" >足跡追加</a>
+<div class="footprint-container">
+	<div class="footprint-records">
+	   	<span>あしあと数：</span>
+  		<span th:text="${footprintRecords}"></span>
+  		<a th:href="@{'../../menu/foot?place_id=' + ${placeId} + '&place_name=' + ${place_name}}" >足跡追加</a>
+  	</div>
 
-	<h1>コメント</h1>
-		<div id="footprint_list_more">
+		<div id="footprint_list_more" >
 			<div th:each="obj : ${footprintDatalist}">
 				<div th:unless="${obj.getComment().isBlank()}"  class="footprint">
-	  			<table>
-				<tr>
-					<td th:text="${obj.getComment()}"></td>
-					<td th:text="${obj.getMember().getNickname()}"></td>
-					<td th:if="${obj.getMember().getLogin_id() == Login_id}"><a th:href="@{'../menu/foot/edit?footprint_id=' + ${obj.getFootprint_id()} + '&place_id=' + ${placeId}}">編集</a></td>
-				</tr>
-				</table>
+					<strong th:text="${obj.getMember().getNickname()}" class="comment-name"></strong>
+					<p th:text="${obj.getComment()}" class="comment-text"></p>
+					<div th:if="${obj.getMember().getLogin_id() == Login_id}" class="comment-button">
+						<a th:href="@{'../../menu/foot/edit?footprint_id=' + ${obj.getFootprint_id()} + '&place_id=' + ${placeId}}" ><i class="fa fa-pencil"></i>編集</a>
+					</div>
 				</div>
 			</div>
 
-			<div id="footprint_more_btn">もっと表示する<i class="fa fa-chevron-down" aria-hidden="true"></i></div>
-			<div id="footprint_close_btn">表示数を戻す <i class="fa fa-chevron-up" aria-hidden="true"></i></div>
+			<div class="more-buttons">
+				<div id="footprint_more_btn">もっと表示する<i class="fa fa-chevron-down" aria-hidden="true"></i></div>
+				<div id="footprint_close_btn">表示数を戻す <i class="fa fa-chevron-up" aria-hidden="true"></i></div>
+			</div>
 		</div>
+</div>
 
 
 <script>
@@ -198,7 +225,7 @@ $(function() {
 	    	currentNum += addNum;
 
 	    	// 現在の表示数に追加表示数を加えた数の要素を表示する
-	    	$(this).parent().find(".footprint:lt("+currentNum+")").slideDown();
+	    	$(this).parent().parent().find(".footprint:lt("+currentNum+")").slideDown();
 
 	    	// 表示数の総数よりcurrentNumが多い=全て表示された時の処理
 	    	if($numberListLen <= currentNum) {
@@ -215,7 +242,7 @@ $(function() {
 	    		// closeボタンがクリックされた時の処理
 	    		$("#footprint_close_btn").click(function() {
 	    			// デフォルト数以降=インデックスがindexNumより多い要素は非表示にする
-	    			$(this).parent().find(".footprint:gt("+indexNum+")").slideUp();
+	    			$(this).parent().parent().find(".footprint:gt("+indexNum+")").slideUp();
 
 	    			// closeボタンを隠し、moreボタンを表示する
 	    			$(this).hide();
@@ -228,26 +255,29 @@ $(function() {
 </script>
 
 
-<h1>画像数：</h1>
-  	<p th:text="${imageRecords}"></p>
-  	<a th:href="@{'../create/image/' + ${ placeId }}" >画像追加</a>
 
-	<h1>画像</h1>
+<div class="image-container">
+	<div class="image-records">
+		<span>画像数：</span>
+  		<span th:text="${imageRecords}"></span>
+  		<a th:href="@{'../../create/image?place_id=' + ${ placeId } + '&place_name=' + ${place_name}}" >画像追加</a>
+  	</div>
+
 	<div id="image_list_more">
-	  	<table>
-	  	<tr>
-			<td th:each="obj : ${imageDatalist}">
-				<div class="image">
-					<img th:src="|/images/${obj.getPlace_id()}/${obj.getPlace_id()}_${obj.getImage_id()}.jpg|" > <!-- LunchMap/src/main/resources/static/images/{place_id}/[place_id]_[image_id].jpg -->
-					<p th:if="${obj.getMember().getLogin_id() == Login_id}"><a th:href="@{'./delete/image/' + ${obj.getPlace_id()} + '/' + ${obj.getImage_id()}}" class="deleteLink" >削除</a></p>
-				</div>
-			</td>
-		</tr>
-		</table>
+			<div th:each="obj : ${imageDatalist}" class="image">
+				<img th:src="|/images/${obj.getPlace_id()}/${obj.getPlace_id()}_${obj.getImage_id()}.jpg|" > <!-- LunchMap/src/main/resources/static/images/{place_id}/[place_id]_[image_id].jpg -->
+				<p th:if="${obj.getMember().getLogin_id() == Login_id}" class="image-button">
+					<a th:href="@{'../delete/image/' + ${obj.getPlace_id()} + '/' + ${obj.getImage_id()} + '/' + ${place_name}}"><i class="fas fa-trash-alt"></i>削除</a>
+				</p>
+			</div>
 
-	<div id="image_more_btn">もっと表示する<i class="fa fa-chevron-down" aria-hidden="true"></i></div>
-	<div id="image_close_btn">表示数を戻す <i class="fa fa-chevron-up" aria-hidden="true"></i></div>
+			<div class="more-buttons">
+				<div id="image_more_btn">もっと表示する<i class="fa fa-chevron-down" aria-hidden="true"></i></div>
+				<div id="image_close_btn">表示数を戻す <i class="fa fa-chevron-up" aria-hidden="true"></i></div>
+			</div>
 	</div>
+</div>
+
 
 <script>
 $(function() {
@@ -255,9 +285,9 @@ $(function() {
 	var $numberListLen = $("#image_list_more .image").length;
 
 	// デフォルトの表示数
-	var defaultNum = 5;
+	var defaultNum = 4;
 	// ボタンクリックで追加表示させる数
-	var addNum = 10;
+	var addNum = 4;
 	// 現在の表示数
 	var currentNum = 0;
 
@@ -290,7 +320,7 @@ $(function() {
 			currentNum += addNum;
 
 			// 現在の表示数に追加表示数を加えた数の要素を表示する
-			$(this).parent().find(".image:lt("+currentNum+")").slideDown();
+			$(this).parent().parent().find(".image:lt("+currentNum+")").slideDown();
 
 			// 表示数の総数よりcurrentNumが多い=全て表示された時の処理
 			if($numberListLen <= currentNum) {
@@ -306,7 +336,7 @@ $(function() {
 				// closeボタンがクリックされた時の処理
 				$("#image_close_btn").click(function() {
 					// デフォルト数以降=インデックスがindexNumより多い要素は非表示にする
-					$(this).parent().find(".image:gt("+indexNum+")").slideUp();
+					$(this).parent().parent().find(".image:gt("+indexNum+")").slideUp();
 
 					// closeボタンを隠し、moreボタンを表示する
 					$(this).hide();
@@ -318,5 +348,6 @@ $(function() {
 });
 </script>
 <script th:src="#{apikey}"></script>
+</div>
 </body>
 </html>
