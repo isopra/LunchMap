@@ -58,7 +58,7 @@ label.focus {
 	color: #000000;
 }
 
-input {
+input,p {
 	/*position: relative;*/
 	/*display: block;*/
 	width: 100%;
@@ -83,16 +83,6 @@ input[type="submit"] {
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+p {
+	background-color: #f0f0f0;
+}
