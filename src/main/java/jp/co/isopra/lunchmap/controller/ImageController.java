@@ -43,7 +43,7 @@ public class ImageController {
 
 	// 登録処理
 	@RequestMapping(value="create/image/register")
-	public ModelAndView createimg(
+	public String createimg(
 			@RequestParam String place_id,
 //			@RequestParam String place_name,
 			@ModelAttribute Image image,
@@ -71,8 +71,8 @@ public class ImageController {
 //		entity.setShop(entityShop);
 
 
-		mav.setViewName("Image");
-		return mav;
+		imageRepository.save(entity);
+		return "redirect:/shopinfo/" + place_id;
 	}
 
 
