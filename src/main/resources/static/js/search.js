@@ -50,13 +50,20 @@ function dispLatLng(){
 	//中心座標取得
 	var center = map.getCenter();
 
+//	var bounds = map.getBounds();
+//    map_ne = bounds.getNorthEast();
+
+
 	//map起動時またはあり/なし両方が押されたとき
 	if(data == "Both" || data == null){
 		var request = {
 			location: center,
 			rankBy: google.maps.places.RankBy.DISTANCE,
+//				radius:500,
 			type:['restaurant']
+//				fields: ['name',  'place_id', 'geometry'] フィールド指定できない
 		};
+
 		console.log(request);
 		service = new google.maps.places.PlacesService(map);
 		service.nearbySearch(request, callback);
@@ -65,9 +72,10 @@ function dispLatLng(){
 		//ありが押されたとき
 		for(var i= 0;i<datalist.length;i++){
 			var request = {
-				placeId:datalist[i].place_id,
+				placeId:datalist[i],
 				fields: ['name',  'place_id', 'geometry']
 			};
+			console.log(request);
 			service = new google.maps.places.PlacesService(map);
 			service.getDetails(request, createMarker);
 		}
@@ -78,6 +86,7 @@ function dispLatLng(){
 				placeId:datalist[i],
 				fields: ['name',  'place_id', 'geometry']
 			};
+			console.log(request);
 			service = new google.maps.places.PlacesService(map);
 			service.getDetails(request, createMarker);
 		}
@@ -123,12 +132,15 @@ function createMarker(place){
 	if(res > 500){
 		vis = false;
 	}
+	var lat = place.geometry.location.lat();
+	var lng = place.geometry.location.lng();
+	console.log(place.geometry.location.lat());
 	console.log(vis);
 	//各店のマーカーを定義
 	marker.push ( new google.maps.Marker({
 		position: place.geometry.location,
 		title:place.name,
-		url:"/shopinfo/" + place.place_id,//情報ページのurl指定
+		url:"/sessionAdd/" + place.place_id+"/"+place.name+"/"+lat+"/"+lng,//情報ページのurl指定
 		map: map,
 		visible:vis,
 		icon:iconCo
@@ -159,24 +171,32 @@ function Modalclose(){
 
 //あり/なし両方を押したとき
 function flg0(ischecked){
+	const imp = document.getElementById("imp");
+	const imp1 = document.getElementById("select1");
+	const imp2 = document.getElementById("select2")
 	if(ischecked == true){
-		document.getElementById("select1").disabled = true;
-		document.getElementById("select1").checked=false;
-		document.getElementById("select2").disabled = true;
-		document.getElementById("select2").checked=false;
+		imp.classList.add('imp');
+		imp1.disabled = true;
+		imp1.checked=false;
+		imp2.disabled = true;
+		imp2.checked=false;
 	}else {
-		document.getElementById("select1").disabled = false;
-		document.getElementById("select2").disabled = false;
+		imp1.disabled = false;
+		imp2.disabled = false;
 	}
 }
 
 //ありを押したとき
 function flg1(ischecked){
+	const imp = document.getElementById("imp");
+	const imp1 = document.getElementById("select1");
+	const imp2 = document.getElementById("select2");
 	if(ischecked == true){
-  		document.getElementById("select1").disabled = false;
-  		document.getElementById("select2").disabled = false;
+		imp.classList.remove('imp');
+  		imp1.disabled = false;
+  		imp2.disabled = false;
 	} else {
-  		document.getElementById("select1").disabled = true;
-  		document.getElementById("select2").disabled = true;
+  		imp1.disabled = true;
+  		imp2.disabled = true;
 	}
 }
