@@ -4,7 +4,7 @@
 	<title>shopinfo</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+	<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 <!--  	<link rel="stylesheet" media="all" th:href="@{/css/test.css}"/> -->
 <style>
 	.google-maps {
@@ -259,7 +259,7 @@ $(function() {
 <div class="image-container">
 	<div class="image-records">
 		<span>画像数：</span>
-  		<span th:text="${imageRecords}"></span>
+  		<span th:text="|${imageRecords}件|"></span>
   		<a th:href="@{'../../create/image?place_id=' + ${ placeId }}" >画像追加</a>
   	</div>
 
@@ -267,7 +267,7 @@ $(function() {
 			<div th:each="obj : ${imageDatalist}" class="image">
 				<img th:src="|/images/${obj.getPlace_id()}/${obj.getPlace_id()}_${obj.getImage_id()}.jpg|" > <!-- LunchMap/src/main/resources/static/images/{place_id}/[place_id]_[image_id].jpg -->
 				<p th:if="${obj.getMember().getLogin_id() == Login_id}" class="image-button">
-					<a th:href="@{'./delete/image/' + ${obj.getPlace_id()} + '/' + ${obj.getImage_id()} }"  onclick="return confirm('削除しますか？')"><i class="fas fa-trash-alt"></i>削除</a>
+					<a th:href="@{'./delete/image/' + ${obj.getPlace_id()} + '/' + ${obj.getImage_id()} }"  onclick="return confirm('削除しますか？')"><i class="fa fa-trash-o"></i>削除</a>
 				</p>
 			</div>
 
