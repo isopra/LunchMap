@@ -128,7 +128,7 @@ public class MapsController {
 //		double lat1 =Double.parseDouble(lat);
 //		double lng1 =Double.parseDouble(lng);
 		System.out.println(placeName);
-//		検索条件をセッションの保存
+//		緯度経度、名前をセッションに保存
 		conditionSession.setLatitude(lat1);
 		conditionSession.setLongitude(lng1);
 		conditionSession.setPlacename(placeName);
