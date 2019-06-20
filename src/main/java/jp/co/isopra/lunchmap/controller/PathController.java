@@ -17,14 +17,22 @@ public class PathController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/test")
     public void index() throws Throwable {
-        String filepath = "static/images/ChIJD4tLmA-MGGARqHJvbMa-yNs"; // src/main/resources 配下の相対パス
-        Resource resource = resourceLoader.getResource("classpath:" + filepath);
+    String filepath = "images/ChIJD4tLmA-MGGARqHJvbMa-yNs"; // src/main/resources 配下の相対パス
+    Resource resource = resourceLoader.getResource(filepath);
 
-        String name = resource.getFilename();
-        System.out.println("name: " + name);
-
-        File file = resource.getFile();
-        System.out.println("file.exists(): " + file.exists());
-        System.out.println("file.getAbsolutePath(): " + file.getAbsolutePath());
+    File file = resource.getFile();
+    System.out.println("file.exists(): " + file.exists());
+    System.out.println("file.getAbsolutePath(): " + file.getAbsolutePath());
     }
+//    public void index() throws Throwable {
+//        String filepath = "static/images/ChIJD4tLmA-MGGARqHJvbMa-yNs"; // src/main/resources 配下の相対パス
+//        Resource resource = resourceLoader.getResource("classpath:" + filepath);
+//
+//        String name = resource.getFilename();
+//        System.out.println("name: " + name);
+//
+//        File file = resource.getFile();
+//        System.out.println("file.exists(): " + file.exists());
+//        System.out.println("file.getAbsolutePath(): " + file.getAbsolutePath());
+//    }
 }
