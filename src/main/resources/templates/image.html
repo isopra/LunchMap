@@ -28,13 +28,15 @@ function check(){
 
 	<!-- 画像登録フォーム -->
 	<div class="file_wrapper">
-		<form method="post" enctype=”multipart/form-data” th:action="@{image/register}" onsubmit="return check()" name="file">
-			<input type="hidden" th:value="${place_id}" name="place_id">
-			<input type="hidden" th:value="${place_name}" name="place_name">
+		<form method="post" enctype=”multipart/form-data” th:action="@{image/register}">
+			<!--
+			<input type="hidden" th:value="${place_id}" th:name="place_id">
+			<input type="hidden" th:value="${place_name}" th:name="place_name">
 			<p th:text="${place_name}"></p>
-			
+			-- >
+
 			<!-- 画像選択 -->
-			<input type="file" name="upfile" accept="image/jpeg" multiple><br>
+			<input type="file" th:value="${upfile}" th:name="upfile" accept="image/jpeg" multiple><br>
 			<!-- ToDo:画像表示 -->
 			<br>
 			<input type="submit" value="登録">
