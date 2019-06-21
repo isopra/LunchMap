@@ -21,8 +21,9 @@ function check(){
 	<h1>画像情報 登録</h1>
 	<!-- 戻るボタン -->
 	<div class="return">
-		<form method = "post" th:action = "@{/}">
+		<form method = "post" th:action = "@{/shopinfo}">
 			<input type="submit" class="btn" value="戻る">
+			<input type="hidden" th:value="${place_id}" name="place_id">
 		</form>
 	</div>
 
