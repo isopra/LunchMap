@@ -79,7 +79,7 @@ public class MemberRegistrationControllerTest {
         	.andDo(MockMvcResultHandlers.print())
         	.andExpect(MockMvcResultMatchers.status().isOk())
         	.andExpect(MockMvcResultMatchers.model().hasNoErrors())
-        	.andExpect(MockMvcResultMatchers.view().name("memberRegisterOrEdit"));
+        	.andExpect(MockMvcResultMatchers.view().name("memberRegister"));
 
 	}
 
