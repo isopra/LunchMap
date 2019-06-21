@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+h1 {
+	font-weight:bold;
+	font-size:18pt;
+	color:gray;
+    text-align: center;
+}
+
+.img_modal {
+    margin: auto;
+    padding: 20px;
+    width: 50%;
+    height: 120%;
+    border: 1px solid #000;
+}
+
+#comment {
+	font-size:12px;
+}
+
+.file_wrapper {
+	width: 60%;
+	height: 200px;
+	margin: 10px auto;
+	border:solid 1px #000;
+	padding: 20px;
+}
+
+.btn {
+    margin: 30px auto;
+}
+
+.return {
+    width: 68%;
+    height: 50px;
+    margin: auto;
+    padding: 10px;
+}

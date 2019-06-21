@@ -60,7 +60,7 @@ public class MemberRegistrationController {
 		} catch (ServletException e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "登録には成功しましたが、ログインに失敗しました。");
-			return "memberRegisterOrEdit";
+			return "login";
 		}
 	}
 

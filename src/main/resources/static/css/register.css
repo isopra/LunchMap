@@ -1,0 +1,88 @@
+@charset "UTF-8";
+
+@keyframes onAutoFillStart { from {} to {}}
+
+input:-webkit-autofill {
+	animation-name: onAutoFillStart;
+	transition: background-color 50000s ease-in-out 0s, color 50000s ease-in-out 0s;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html, body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	height: 100%;
+	width: 100%;
+	background-color: #ffffff;
+	font-family: 'Arial', sans-serif;
+}
+
+form {
+	width: 500px;
+}
+
+.wrap {
+	color: #000000;
+	/*text-transform: uppercase;*/
+	text-align: center;
+	font-size: 50px;
+	/*position: relative;*/
+	/*width: 500px;*/
+	height: 100%;
+	/*margin: 0 auto;*/
+	display: block;
+	/*width: 100%;*/
+	/*border: solid;*/
+	/*border-color: deepskyblue;*/
+
+}
+
+label {
+	position: absolute;
+	font-size: 16px;
+	color: #a0a0a0;
+	transition: all 0.25s ease;
+	left: 10px;
+	top: 30px;
+}
+
+label.focus {
+	top: -7px;
+	left: 5px;
+	font-size: 14px;
+	color: #000000;
+}
+
+input,p {
+	/*position: relative;*/
+	/*display: block;*/
+	width: 100%;
+	padding: 15px;
+	border-radius: 5px;
+	font-size: 16px;
+	outline: none;
+	border: solid;
+	border-color: #a0a0a0;
+	color: #000;
+
+}
+
+.block {
+	display: block;
+	position: relative;
+	margin-top: 15px;
+}
+
+input[type="submit"] {
+	margin-top: 30px;
+
+}
+
+p {
+	background-color: #f0f0f0;
+}

@@ -77,17 +77,6 @@ public class ShopinfoController {
 
 	}
 
-	@RequestMapping(value = "/shopinfo/update/{footprint_id}")
-	public ModelAndView updateFootprint(
-			@PathVariable Long footprint_id,
-			ModelAndView mav) {
-
-		mav.setViewName(""); //あしあとアップデートページへ
-		mav.addObject("footprint_id",footprint_id);
-
-        return mav;
-    }
-
 	@RequestMapping(value = "/shopinfo/delete/image/{place_id}/{image_id}")
 	@Transactional(readOnly=false)
 	public ModelAndView deleteImage(
@@ -97,7 +86,7 @@ public class ShopinfoController {
 
 		imageService.deleteImage(place_id, image_id);
 
-		return new ModelAndView("forward:");
+		return new ModelAndView("redirect:/shopinfo/" + place_id );
 
 	}
 

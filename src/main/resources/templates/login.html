@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>ログイン</title>
-<script th:inline="javascript">
+<link th:href="@{/css/login.css}" rel="stylesheet">
 
+<script th:inline="javascript">
 window.addEventListener("load", function() {
 	var errorMessage = [[${errorMessage}]];
 	if(!errorMessage == "") {
@@ -39,24 +39,15 @@ function checkValue() {
 </script>
 </head>
 <body>
-<form th:action="@{/authenticate}" method="POST" name="form" onSubmit="return checkValue()">
-    <table align="center">
-        <tr>
-            <td>ログインID：</td>
-            <td><input type="text" id="login_id" name="login_id"/></td>
-        </tr>
-        <tr>
-            <td>パスワード：</td>
-            <td><input type="password" id="password" name="password"/></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td align="right"><button type="submit">ログイン</button></td>
-        </tr>
-    </table>
+<form th:action="@{/authenticate}" method="POST" name="form" onSubmit="return checkValue()" autocomplete="off">
+	<h1>食べログ</h1>
+	<input type="text" id="login_id" name="login_id" placeholder="Login ID"/>
+    <input type="password" id="password" name="password" placeholder="Password"/>
+	<button type="submit">Login</button>
+	<a href="/member/register">Sign up</a>
 </form>
 
-<button onClick="toRegister()">新規登録</button>
+
 
 </body>
 </html>
