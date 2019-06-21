@@ -119,11 +119,10 @@ jobs:
       - run:
           name: deploy
           command: |
-            scp ./target/*-SNAPSHOT.jar ${DEPLOY_USER}@${DEPLOY_HOST}:~/deploy/deploy.jar
+            scp ./target/*-SNAPSHOT.jar ${DEPLOY_USER}@${DEPLOY_HOST}:~/deploy/tmp/${CIRCLE_WORKFLOW_ID}.jar
             ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo service spring-boot stop"
-            ssh ${DEPLOY_USER}@${DEPLOY_HOST} "\cp -f --preserve=mode,ownership ~/deploy/deploy.jar ~/deploy/spring-boot.jar"
+            ssh ${DEPLOY_USER}@${DEPLOY_HOST} "\cp -f --preserve=mode,ownership ~/deploy/tmp/${CIRCLE_WORKFLOW_ID}.jar ~/deploy/spring-boot.jar"
             ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo service spring-boot start"
-            ssh ${DEPLOY_USER}@${DEPLOY_HOST} "rm ~/deploy/deploy.jar"
 workflows:
   build-and-test-and-deploy:
     jobs:
