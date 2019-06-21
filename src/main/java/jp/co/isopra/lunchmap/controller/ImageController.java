@@ -54,58 +54,53 @@ public class ImageController {
 	@RequestMapping(value="create/image/register", method = RequestMethod.POST)
 	String upload(
 			ModelAndView mav,
-			@RequestParam (value = "files") List<MultipartFile> files,
+			@RequestParam List<MultipartFile> files,
 			@RequestParam String place_id,
 			@RequestParam String place_name,
 			@AuthenticationPrincipal AccountDetails accountDetails
 			)
 	{
 		
-		Image entity = new Image();
-		Date nowDate = new Date();
-		Shop entityShop;
+		for(MultipartFile file : files) {
 		
-		// ShopTableにinsert
-		if(this.ShopRepository.existsById(place_id)) {
-			entityShop = this.ShopRepository.findById(place_id).get();
-		} else {
-			entityShop = new Shop();
-			entityShop.setPlace_id(place_id);
-			entityShop.setPlace_name(place_name);
+			Image entity = new Image();
+			Date nowDate = new Date();
+			Shop entityShop;
 			
-			ShopRepository.save(entityShop);
+			// ShopTableにinsert
+			if(this.ShopRepository.existsById(place_id)) {
+				entityShop = this.ShopRepository.findById(place_id).get();
+			} else {
+				entityShop = new Shop();
+				entityShop.setPlace_id(place_id);
+				entityShop.setPlace_name(place_name);
+				
+				ShopRepository.save(entityShop);
+			}
+			
+			// ImageTableにinsert
+			entity.setMember(accountDetails.getMember());
+			entity.setLogin_id(accountDetails.getMember().getLogin_id());
+			entity.setPlace_id(place_id);
+			entity.setCreated_time(nowDate);
+			entity.setShop(entityShop);
+			
+			imageRepository.save(entity);
+			
+			
+			// 画像をフォルダに保存
+			savefiles(files, place_id);
 		}
-		
-		// ImageTableにinsert
-		entity.setMember(accountDetails.getMember());
-		entity.setLogin_id(accountDetails.getMember().getLogin_id());
-		entity.setPlace_id(place_id);
-		entity.setCreated_time(nowDate);
-		entity.setShop(entityShop);
-		
-		imageRepository.save(entity);
-		
-		// 画像をフォルダに保存
-		savefiles(files, place_id);
-
 		
 		return "image";
 	}
-
-	// 戻るボタン
-	@RequestMapping(value = "menu/image/return", method = RequestMethod.POST)
-		public String previous(
-		@RequestParam String place_id,
-		@AuthenticationPrincipal AccountDetails accountDetails,
-		ModelAndView mav)
-	{
-		return "redirect:/shopinfo/" + place_id;
-
-	}
-
-	/* 保存場所の指定 :ここでファイル名を変える*/
+	
+	/* 保存場所の指定 ToDo:ここでファイル名を変える*/
     private void savefile(MultipartFile file, String place_id) {
-    	String filename = file.getOriginalFilename();
+    	  	
+    	String filename = file.getOriginalFilename(); 
+    	
+    	
     	Path uploadfile = Paths.get("images/" + place_id + "/" + filename);
 
     	try (OutputStream os = Files.newOutputStream(uploadfile, StandardOpenOption.CREATE)) {
@@ -119,8 +114,7 @@ public class ImageController {
     	}
     }
 
-
-    //ファイルを保存　：ここで繰り返し処理 place_idも引数で受け取る
+    // ファイルを保存 TODO：ここで繰り返し処理
     private void savefiles(List<MultipartFile> multipartFiles, String place_id) {
     	createDirectory(place_id);
     	for (MultipartFile file : multipartFiles)
@@ -149,6 +143,17 @@ public class ImageController {
 				//エラー処理は省略
 			}
 		}
+
+	}
+	
+	// 戻るボタン
+	@RequestMapping(value = "menu/image/return", method = RequestMethod.POST)
+		public String previous(
+		@RequestParam String place_id,
+		@AuthenticationPrincipal AccountDetails accountDetails,
+		ModelAndView mav)
+	{
+		return "redirect:/shopinfo/" + place_id;
 
 	}
 

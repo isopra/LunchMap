@@ -32,7 +32,7 @@ function check(){
 			<input type="hidden" th:value="${place_id}" th:name="place_id">
 			<input type="hidden" th:value="${place_name}" th:name="place_name">
 			<p th:text="${place_name}"></p>
-			<input type="file" th:value="${files}" th:name="files" name="upload">
+			<input type="file" th:value="${files}" th:name="files" name="upload" accept="image/jpeg" multiple>
 
 			<input type="submit" value="登録">
 
