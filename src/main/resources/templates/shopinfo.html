@@ -160,31 +160,6 @@ $(function() {
 });
 </script>
 
-
-ルートパス
-<div class="image-container">
-	<div class="image-records">
-		<span>画像数：</span>
-  		<span th:text="|${imageRecords}件|"></span>
-  		<a th:href="@{'../../create/image?place_id=' + ${ placeId }}" ><img src="/images/image_css/imageImage.jpeg" class="iconImage"></a>
-  	</div>
-
-	<div id="image_list_more">
-			<div th:each="obj : ${imageDatalist}" class="image">
-				<img th:src="|${rootPath}/${obj.getPlace_id()}_${obj.getImage_id()}.jpg|" > <!-- LunchMap/src/main/resources/static/images/{place_id}/[place_id]_[image_id].jpg -->
-				<p th:if="${obj.getMember().getLogin_id() == Login_id}" class="image-button">
-					<a th:href="@{'./delete/image/' + ${obj.getPlace_id()} + '/' + ${obj.getImage_id()} }"  onclick="return confirm('削除しますか？')"><i class="fa fa-trash-o"></i>削除</a>
-				</p>
-			</div>
-
-			<div class="more-buttons">
-				<div id="image_more_btn">もっと表示する<i class="fa fa-chevron-down" aria-hidden="true"></i></div>
-				<div id="image_close_btn">表示数を戻す <i class="fa fa-chevron-up" aria-hidden="true"></i></div>
-			</div>
-	</div>
-</div>
-
-絶対パス
 <div class="image-container">
 	<div class="image-records">
 		<span>画像数：</span>
