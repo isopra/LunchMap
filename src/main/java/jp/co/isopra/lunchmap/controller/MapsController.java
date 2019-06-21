@@ -271,12 +271,73 @@ public class MapsController {
 	}
 
 //	画面内か判定
-//	@ResponseBody
-//	@RequestMapping(path="/menu/border" , method = RequestMethod.POST, produces="application/json")
-//	public Iterable<Shop> ajax2(@RequestBody List<BigDecimal> latlng,Principal principal,
-//			Model mav) {
-//
-//		return list;
-//	}
+	@ResponseBody
+	@RequestMapping(path="/menu/border" , method = RequestMethod.POST, produces="application/json")
+	public Iterable<Shop> ajax2(@RequestBody List<String> test_arr,Principal principal,
+			Model mav) {
+		BigDecimal lat1 = new BigDecimal(test_arr.get(0));
+		BigDecimal lng1 = new BigDecimal(test_arr.get(1));
+		BigDecimal lat2 = new BigDecimal(test_arr.get(2));
+		BigDecimal lng2 = new BigDecimal(test_arr.get(3));
+		System.out.println(test_arr);
+		System.out.println(lat1);
+		System.out.println(lng1);
+		System.out.println(lat2);
+		System.out.println(lng2);
+		Iterable<Shop> list = null;
+
+		Authentication auth = (Authentication) principal;
+		AccountDetails accountDetails = (AccountDetails) auth.getPrincipal();
+		String Login_id = accountDetails.getMember().getLogin_id();
+//		時間の取得
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DATE, -14);
+		Date date = calendar.getTime();
+//		セッション情報の取得
+		String condition = conditionSession.getCondition();
+//		mav.addObject("data",condition);
+
+		System.out.println("session::" + condition);
+		System.out.println("session::" + conditionSession.getLatitude());
+		System.out.println("session::" + conditionSession.getLongitude());
+		System.out.println(conditionSession.getPlacename());
+//		検索条件の判定
+		if(condition == null || condition.equals("Both") ) {
+		list = shoprepo.findAll();
+		System.out.println("-----------------------");
+		System.out.println(list);
+		System.out.println("-----------------------");
+		}
+		else if(condition.equals("Exist")) {
+			list = shoprepo.findBylatlng((BigDecimal) lat1,(BigDecimal) lat2,(BigDecimal) lng1,(BigDecimal) lng2);
+		}
+		else if(condition.equals("near")) {
+			List<String> time = footrepo.findByCreated_time((Date) date);
+			List<String> time2 = imagerepo.findByCreated_time((Date) date);
+			time2.addAll(time);
+			Set<String> set = new HashSet<>(time2);
+			System.out.println(set);
+			list = shoprepo.findBylatlngAndId(set,(BigDecimal) lat1,(BigDecimal) lat2,(BigDecimal) lng1,(BigDecimal) lng2);
+		}else if(condition.equals("mylog")) {
+			List<String> logId =footrepo.findByLogin_id((String) Login_id);
+			List<String> logId2 =imagerepo.findByLogin_id((String) Login_id);
+			logId2.addAll(logId);
+			Set<String> set = new HashSet<>(logId2);
+			list = shoprepo.findBylatlngAndId(set,(BigDecimal) lat1,(BigDecimal) lat2,(BigDecimal) lng1,(BigDecimal) lng2);
+		}else if(condition.equals("both condition")) {
+			List<String> con = footrepo.findByCreated_timeAndLogin_id((Date) date,(String)Login_id);
+			List<String> con2 = imagerepo.findByCreated_timeAndLogin_id((Date) date,(String)Login_id);
+			con2.addAll(con);
+			Set<String> set = new HashSet<>(con2);
+			list = shoprepo.findBylatlngAndId(set,(BigDecimal) lat1,(BigDecimal) lat2,(BigDecimal) lng1,(BigDecimal) lng2);
+		}
+//		System.out.println("-----------------------");
+//		System.out.println(list.getClass());
+//		System.out.println(list);
+//		System.out.println("-----------------------");
+
+
+		return list;
+	}
 
 }

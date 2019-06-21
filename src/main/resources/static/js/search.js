@@ -54,10 +54,20 @@ function dispLatLng(){
 //	console.log(cenlat);
 //	console.log(cenlng);
 
+//	画面の境界を取得
+	var bounds = map.getBounds();
+//	地図の右上の座標
+	var map_ne = bounds.getNorthEast();
+	var nelat = map_ne.lat();
+	var nelng = map_ne.lng();
 
+//	地図の左下の座標
+	var map_sw = bounds.getSouthWest();
+	var swlat = map_sw.lat();
+	var swlng = map_sw.lng();
 
 /*ajaxで画面限界を送信、datalist更新----------------------*/
-//	border();
+	border(nelat,nelng,swlat,swlng);
 //
 
 	//map起動時またはあり/なし両方が押されたとき
@@ -265,9 +275,9 @@ function search(){
    });
 
 }
-//
-//function border(){
-////	画面の境界を取得
+
+function border(nelat,nelng,swlat,swlng){
+//	画面の境界を取得
 //	var bounds = map.getBounds();
 ////	地図の右上の座標
 //	var map_ne = bounds.getNorthEast();
@@ -278,36 +288,62 @@ function search(){
 //	var map_sw = bounds.getSouthWest();
 //	var swlat = map_sw.lat();
 //	var swlng = map_sw.lng();
-//
-//	/*ajaxでpostで送信するとき必要---------------------------------*/
-//    var token = $("meta[name='_csrf']").attr("content");
-//    var header = $("meta[name='_csrf_header']").attr("content");
-//    $(document).ajaxSend(function(e, xhr, options) {
-//      xhr.setRequestHeader(header, token);
-//    });
-//    /*------------------------------------------------------------*/
-//
-//    $.ajax({
-//        url: "/menu/border",  //POST送信を行うファイル名を指定
-//        type: "POST",
-//        data: {latlng:'nelat,nelng,swlat,swlng'},  //POST送信するデータを指定
-//        datatype: 'json',
-//        contentType: 'application/json',
-//        scriptCharset: 'utf-8',
-//        success: function(data) {
-//     	   console.log("success");
-//     	   console.log(data);
-//     	   datalist = data;
+	console.log(nelat);
+	console.log(nelng);
+	console.log(swlat);
+	console.log(swlng);
+//	var test_arr = new Array();
+//	test_arr["a"] = nelat;
+//	test_arr["b"] = nelng;
+//	test_arr["c"] = swlat;
+//	test_arr["d"] = swlng;
+
+	var test_arr =[nelat,nelng,swlat,swlng];
+//	test_arr.push = nelat;
+//	test_arr.push = nelng;
+//	test_arr.push = swlat;
+//	test_arr.push = swlng;
+
+console.log(test_arr);
+	//連想配列をobjectに変換
+	var test_obj = {};
+	for(key in test_arr){
+	  test_obj [key] = test_arr[key];
+	}
+
+	/*ajaxでpostで送信するとき必要---------------------------------*/
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+      xhr.setRequestHeader(header, token);
+    });
+    /*------------------------------------------------------------*/
+
+    $.ajax({
+        url: "/menu/border",  //POST送信を行うファイル名を指定
+        type: "POST",
+        data: JSON.stringify(test_arr),  //POST送信するデータを指定
+        //data:{"test_obj" :test_arr }
+        datatype: 'json',
+        contentType: 'application/json',
+        scriptCharset: 'utf-8',
+        traditional: true,
+        success: function(data) {
+     	   console.log("success");
+     	  console.log(datalist);
+     	   console.log(data);
+     	   datalist = data;
+     	  console.log(datalist);
 //     	   initMap();
 //     	   Modalclose();
-//        },
-//        error: function(data) {
-//     	   alert('error');
-//        }
-//
-//    });
-//
-//}
+        },
+        error: function(data) {
+     	   alert('error' );
+        }
+
+    });
+
+}
 
 function condition(cond){
 	con = "Both";
