@@ -1,5 +1,7 @@
 @charset "UTF-8";
 
+@keyframes onAutoFillStart { from {} to {}}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -13,12 +15,16 @@
 body{
 	font: 15px/1.25 "Alef";
 	color: #111;
+	background-image: url(../images/stockhiroDSCF5504_TP_V.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 form {
-	margin: 70px auto;
+	margin: auto;
 	background: #2a3644;
 	width: 347px;
+	height: 360px;
 	text-align: center;
 	padding: 40px;
 	-webkit-border-radius: 6px;
@@ -26,6 +32,11 @@ form {
 	-ms-border-radius: 6px;
 	-o-border-radius: 6px;
 	border-radius: 6px;
+	position: absolute;
+	top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 form > h1 {

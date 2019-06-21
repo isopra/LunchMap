@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>ログイン</title>
 <link th:href="@{/css/login.css}" rel="stylesheet">
+
 <script th:inline="javascript">
 window.addEventListener("load", function() {
 	var errorMessage = [[${errorMessage}]];
@@ -38,7 +39,7 @@ function checkValue() {
 </script>
 </head>
 <body>
-<form th:action="@{/authenticate}" method="POST" name="form" onSubmit="return checkValue()">
+<form th:action="@{/authenticate}" method="POST" name="form" onSubmit="return checkValue()" autocomplete="off">
 	<h1>食べログ</h1>
 	<input type="text" id="login_id" name="login_id" placeholder="Login ID"/>
     <input type="password" id="password" name="password" placeholder="Password"/>
