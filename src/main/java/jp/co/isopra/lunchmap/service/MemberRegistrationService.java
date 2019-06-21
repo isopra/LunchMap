@@ -3,12 +3,15 @@ package jp.co.isopra.lunchmap.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jp.co.isopra.lunchmap.entity.Member;
 import jp.co.isopra.lunchmap.repositories.MemberRepository;
@@ -21,11 +24,15 @@ public class MemberRegistrationService {
 	private MemberRepository memberRepository;
 
 	@Autowired
+	private EntityManagerFactory factory;
+
+	@Autowired
 	PasswordEncoder passwordEncoder;
 
 	/**
 	 * メンバー情報をDBに登録。
 	 */
+	@Transactional(readOnly = false)
 	public Member registerMember(Member entity) throws DataIntegrityViolationException {
 
 		//同一のlogin_idがないかチェック
@@ -37,7 +44,15 @@ public class MemberRegistrationService {
 		entity.setPassword(passwordEncoder.encode(entity.getPassword()));
 
 		//会員情報をUSERテーブルにinsert。
-		return memberRepository.save(entity);
+		EntityManager manager = factory.createEntityManager();
+		EntityTransaction tx = manager.getTransaction();
+		tx.begin();
+		manager.persist(entity);
+		memberRepository.flush();
+		tx.commit();
+		return entity;
+
+//		return memberRepository.save(entity);
 
 
 
@@ -49,10 +64,20 @@ public class MemberRegistrationService {
 	}
 
 	//メンバー情報のアップデート
-		//ほぼ登録といっしょなのだが。。。
+	@Transactional(readOnly = false)
 	public Member updateMember(Member member) {
 		member.setPassword(passwordEncoder.encode(member.getPassword()));
-		return memberRepository.save(member);
+
+		//更新処理
+		EntityManager manager = factory.createEntityManager();
+		EntityTransaction tx = manager.getTransaction();
+		tx.begin();
+		Member member2 =  manager.find(Member.class, member.getLogin_id());
+		member2.setNickname(member.getNickname());
+		member2.setPassword(member.getPassword());
+		memberRepository.flush();
+		tx.commit();
+		return member2;
 	}
 
 	/**
