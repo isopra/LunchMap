@@ -21,7 +21,7 @@ function check(){
 	<h1>画像情報 登録</h1>
 	<!-- 戻るボタン -->
 	<div class="return">
-		<form method = "post" th:action="@{return}">
+		<form method = "post" th:action = "@{/}">
 			<input type="submit" class="btn" value="戻る">
 		</form>
 	</div>
@@ -30,7 +30,6 @@ function check(){
 	<div>
 		<form method="post" th:action="@{image/register}" enctype="multipart/form-data" onsubmit="return check()" name="file">
 			<input type="hidden" th:value="${place_id}" th:name="place_id">
-			<input type="hidden" th:value="${place_name}" th:name="place_name">
 			<p th:text="${place_name}"></p>
 			<input type="file" th:value="${files}" th:name="files" name="upload" accept="image/jpeg" multiple>
 
