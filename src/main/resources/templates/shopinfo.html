@@ -5,112 +5,18 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-<!--  	<link rel="stylesheet" media="all" th:href="@{/css/test.css}"/> -->
-<style>
-	.google-maps {
-		position: relative;
-		padding-bottom: 40%; // これが縦横比
-		height: 0;
-		overflow: hidden;
-	}
-
-	.google-maps #shopMap{
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100% !important;
-		height: 100% !important;
-	}
-
-	body
-    {
-     margin:2em;          /* ページ全体のmargin */
-     padding:0px;         /* ページ全体のpadding */
-
-    }
-
-	.main {
-    	padding: 0.5em 5em;
-    	margin: 2em 0;
-    	font-weight: bold;
-    	border: solid 1px #000000;
-	}
-
-	.footprint-container{
-		margin: 2em 0;
-	}
-
-	.footprint {
-  		margin: 1em 0;
-  		padding: 1rem;
-  		border: 1px solid #eee;
-  		border-radius: 6px;
-	}
-
-	.footprint-records {
-		display:flex;
-	}
-
-	.footprint-records a {
-		margin: 0 0 0 auto;
-	}
-
-	.comment-button {
-  		font-size: smaller;
-  		text-align: right;
-	}
-
-	.more-buttons {
-		font-size: smaller;
-  		text-align: right;
-	}
-
-	.image-container{
-    	margin: 2em 0;
-	}
-
-	.image-records {
-		display:flex;
-	}
-
-	.image-records a {
-		margin: 0 0 0 auto;
-	}
-
-	.image {
-		display: inline-block;
-		position: relative;
- 		width: 23%;
- 		margin:10px;
-	}
-
-	.image p{
-		position: absolute;
-		right: 0px;
-		bottom: 0px;
-		font-size: smaller;
-	}
-
-	.image img{
-		object-fit: contain;
-		width: 100%;
-		height: 300px;
-		background-color: #ccc;
-		border: 1px solid #ccc;
-	}
-
-</style>
+    <link rel="stylesheet" media="all" th:href="@{/css/shopinfo.css}"/>
 </head>
 <body>
-<h1 >飲食店情報</h1>
+<h1 id="title">飲食店情報</h1>
 <script>
 	function toView(to) {
 		location.href = "/menu/" + to;
 	}
 </script>
-	<button type="button" onclick="toView('mapView')">戻る</button>
+	<button type="button" onclick="toView('mapView')" class="button" id="back">戻る</button>
 <div class="main">
-  	<label id="shopName"></label>
+  	<div id="shopName"></div>
   	<div class="google-maps">
   		<div id="shopMap"></div>
   	</div>
@@ -125,7 +31,7 @@ window.onload = function ShowMap(){
 	var icon = 'https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|0099cc|';
 
 	map = new google.maps.Map(document.getElementById('shopMap'), { // #shopMapに地図を埋め込む
-		zoom: 19 // 地図のズームを指定
+		zoom: 18 // 地図のズームを指定
 		});
 
 	var service = new google.maps.places.PlacesService(map);
@@ -163,7 +69,7 @@ window.onload = function ShowMap(){
 	<div class="footprint-records">
 	   	<span>あしあと数：</span>
   		<span th:text="${footprintRecords}"></span>
-  		<a th:href="@{'../../menu/foot?place_id=' + ${placeId} }" >足跡追加</a>
+  		<a th:href="@{'../../menu/foot?place_id=' + ${placeId} }" ><img src="/images/image_css/footprintImage.jpeg" class="iconImage"></a>
   	</div>
 
 		<div id="footprint_list_more" >
@@ -253,16 +159,17 @@ $(function() {
 	});
 });
 </script>
+
 <div class="image-container">
 	<div class="image-records">
 		<span>画像数：</span>
   		<span th:text="|${imageRecords}件|"></span>
-  		<a th:href="@{'../../create/image?place_id=' + ${ placeId }}" >画像追加</a>
+  		<a th:href="@{'../../create/image?place_id=' + ${ placeId }}" ><img src="/images/image_css/imageImage.jpeg" class="iconImage"></a>
   	</div>
 
 	<div id="image_list_more">
 			<div th:each="obj : ${imageDatalist}" class="image">
-				<img th:src="|../../../../images/${obj.getPlace_id()}/${obj.getPlace_id()}_${obj.getImage_id()}.jpg|" > <!-- LunchMap/src/main/resources/static/images/{place_id}/[place_id]_[image_id].jpg -->
+				<img th:src="|${absolutePath}/${obj.getPlace_id()}_${obj.getImage_id()}.jpg|" > <!-- LunchMap/src/main/resources/static/images/{place_id}/[place_id]_[image_id].jpg -->
 				<p th:if="${obj.getMember().getLogin_id() == Login_id}" class="image-button">
 					<a th:href="@{'./delete/image/' + ${obj.getPlace_id()} + '/' + ${obj.getImage_id()} }"  onclick="return confirm('削除しますか？')"><i class="fa fa-trash-o"></i>削除</a>
 				</p>

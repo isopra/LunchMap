@@ -1,6 +1,8 @@
 package jp.co.isopra.lunchmap.service;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,22 +33,22 @@ public class ImageService {
 		Path absolutePath = path.toAbsolutePath();
 
 		return  absolutePath.toString();
+    }
 
+	public void deleteImage(String place_id,Long image_id) {
 
-		String url = "images/"+ place_id + "/" + place_id + "_" + image_id + ".jpg";
+		Path path = Paths.get("images/" + place_id + "/" + place_id + "_" + image_id + ".jpg");
 
-		File file = new File(url);
-
-
-		if (!file.exists()) {
-            System.out.println("ファイル:[" + url + "]が存在しません");
+		if (!Files.exists(path)) {
+            System.out.println("ファイル:[" + path + "]が存在しません");
         }
 
-        if (file.delete()) {
+        try {
+        	Files.delete(path);
         	imageRepository.deleteByImage_id(image_id);
-            System.out.println("ファイル:[" + url + "]の削除に成功しました");
-        } else {
-        	System.out.println("ファイル:[" + url + "]の削除に失敗しました");
+            System.out.println("ファイル:[" + path + "]の削除に成功しました");
+        } catch (Exception e) {
+        	System.out.println("ファイル:[" + path + "]の削除に失敗しました");
         }
     }
 }
