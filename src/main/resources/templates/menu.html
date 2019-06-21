@@ -1,21 +1,41 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-<meta charset="UTF-8">
-<title>メニュー</title>
-<script>
-function toView(to) {
-	location.href = "/menu/" + to;
-}
-</script>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link th:href="@{/css/menu.css}" rel="stylesheet">
+
+
+    <title>メニュー</title>
+    <script>
+        function toView(to) {
+            location.href = "/menu/" + to;
+        }
+    </script>
 </head>
 <body>
-	<button onClick="toView('mapView')">地図表示/検索</button>
-	<button onClick="toView('acount_edit')">アカウント情報編集</button>
-	<div sec:authorize="hasRole('ROLE_ADMIN')">
-		<button onClick="toView('member_manager')">メンバー管理</button>
-	</div>
+<div id="wrap_buttons" class="container">
+    <div class="row justify-content-center align-items-center">
+        <button onClick="toView('mapView')" id="map" class="col-6 center-block pink panel">地図から探す</button>
+    </div>
+    <div class="row align-items-center justify-content-center">
+        <button onClick="toView('acount_edit')" id="edit" class="col-3 align-self-center ">アカウント情報編集</button>
+    </div>
+    <div class="row justify-content-center" sec:authorize="hasRole('ROLE_ADMIN')">
+        <button onClick="toView('member_manager')" id="manager" class="col-2">メンバー管理</button>
+    </div>
+</div>
 
 </body>
 </html>

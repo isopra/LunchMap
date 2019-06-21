@@ -1,0 +1,10 @@
+.data-click:hover {
+    background-color: #f26964;
+}
+
+.dataTables_wrapper {
+    max-width: 1000px;
+    margin:0 auto;
+    position: absolute;
+    top: 150px;
+}
