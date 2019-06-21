@@ -4,7 +4,7 @@
 	<title>shopinfo</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+	<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 <!--  	<link rel="stylesheet" media="all" th:href="@{/css/test.css}"/> -->
 <style>
 	.google-maps {
@@ -122,7 +122,7 @@ window.onload = function ShowMap(){
 
 	var map;
 	var infoWindow;
-	var icon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|0099cc|';
+	var icon = 'https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|0099cc|';
 
 	map = new google.maps.Map(document.getElementById('shopMap'), { // #shopMapに地図を埋め込む
 		zoom: 19 // 地図のズームを指定
@@ -163,7 +163,7 @@ window.onload = function ShowMap(){
 	<div class="footprint-records">
 	   	<span>あしあと数：</span>
   		<span th:text="${footprintRecords}"></span>
-  		<a th:href="@{'../../menu/foot?place_id=' + ${placeId} + '&place_name=' + ${place_name}}" >足跡追加</a>
+  		<a th:href="@{'../../menu/foot?place_id=' + ${placeId} }" >足跡追加</a>
   	</div>
 
 		<div id="footprint_list_more" >
@@ -259,15 +259,15 @@ $(function() {
 <div class="image-container">
 	<div class="image-records">
 		<span>画像数：</span>
-  		<span th:text="${imageRecords}"></span>
-  		<a th:href="@{'../../create/image?place_id=' + ${ placeId } + '&place_name=' + ${place_name}}" >画像追加</a>
+  		<span th:text="|${imageRecords}件|"></span>
+  		<a th:href="@{'../../create/image?place_id=' + ${ placeId }}" >画像追加</a>
   	</div>
 
 	<div id="image_list_more">
 			<div th:each="obj : ${imageDatalist}" class="image">
-				<img th:src="|/images/${obj.getPlace_id()}/${obj.getPlace_id()}_${obj.getImage_id()}.jpg|" > <!-- LunchMap/src/main/resources/static/images/{place_id}/[place_id]_[image_id].jpg -->
+				<img th:src="|../../../../images/${obj.getPlace_id()}/${obj.getPlace_id()}_${obj.getImage_id()}.jpg|" > <!-- LunchMap/src/main/resources/static/images/{place_id}/[place_id]_[image_id].jpg -->
 				<p th:if="${obj.getMember().getLogin_id() == Login_id}" class="image-button">
-					<a th:href="@{'../delete/image/' + ${obj.getPlace_id()} + '/' + ${obj.getImage_id()} + '/' + ${place_name}}"><i class="fas fa-trash-alt"></i>削除</a>
+					<a th:href="@{'./delete/image/' + ${obj.getPlace_id()} + '/' + ${obj.getImage_id()} }"  onclick="return confirm('削除しますか？')"><i class="fa fa-trash-o"></i>削除</a>
 				</p>
 			</div>
 

@@ -1,5 +1,6 @@
 package jp.co.isopra.lunchmap.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -22,9 +23,17 @@ public class Shop {
 	@Column(length = 100)
 	private String place_id;
 
-	@Column(length = 100, nullable = true)
+	@Column(length = 100, nullable = false)
 	@NotNull
 	private String place_name;
+
+	@Column(precision=38, scale=35, nullable = false)
+	@NotNull
+	private BigDecimal latitude;
+
+	@Column(precision=38, scale=35, nullable = false)
+	@NotNull
+	private BigDecimal longitude;
 
 	@OneToMany(mappedBy = "shop", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
 	@JsonManagedReference // 循環参照を止めるアノテーション
@@ -44,12 +53,12 @@ public class Shop {
 
 	public String getPlace_name(){
 		return place_name;
-	}	
+	}
 
 	public void setPlace_name(String place_name) {
 		this.place_name = place_name;
 	}
-	
+
 	public void setFootprint(List<FootPrint> footprint) {
 		this.footprint = footprint;
 	}
@@ -64,6 +73,22 @@ public class Shop {
 
 	public List<Image> getImage() {
 		return image;
+	}
+
+	public void setLatitude(BigDecimal latitude) {
+		this.latitude = latitude;
+	}
+
+	public BigDecimal getLatitude() {
+		return latitude;
+	}
+
+	public void setLongitude(BigDecimal longitude) {
+		this.longitude = longitude;
+	}
+
+	public BigDecimal getLongitude() {
+		return longitude;
 	}
 
 }

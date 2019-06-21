@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>メンバー一覧</title>
-<style>
-	tr { margin:5px;}
-	th { padding:5px;}
-	td {padding:5px;;}
-</style>
+    <meta charset="UTF-8">
+    <!--<meta name="_csrf" th:content="${_csrf.token}"/>-->
+    <!--<meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
+    <title>メンバー一覧</title>
+    <link th:href="@{/css/memberManager.css}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
-<form method="POST" th:action="@{/member/edit_by_manager}">
-	<table border="1">
-		<tr><th></th><th>ID</th><th>ニックネーム</th></tr>
-		<tr th:each="obj : ${allMembers}" >
-			<td><input type="radio" name="login_id" th:value="${obj.login_id}"></td>
-			<td th:text="${obj.login_id}"></td>
-			<td th:text="${obj.nickname}"></td>
-		</tr>
-	</table>
-	<input type="submit" value="編集">
+<script th:src="@{/js/memberManager.js}"></script>
+<form method="POST" th:action="@{/member/edit_by_manager}" id="form">
+    <input type="hidden" id="login_id" name="login_id">
+<table border="1" id="table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>ニックネーム</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="obj : ${allMembers}" class="data-click">
+        <td th:text="${obj.login_id}"></td>
+        <td th:text="${obj.nickname}"></td>
+    </tr>
+    </tbody>
+</table>
 </form>
 </body>
 </html>

@@ -7,15 +7,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jp.co.isopra.lunchmap.controller.MapsController.ConditionSession;
-
-
 import jp.co.isopra.lunchmap.entity.AccountDetails;
 import jp.co.isopra.lunchmap.entity.Member;
 import jp.co.isopra.lunchmap.service.MemberRegistrationService;
 
 @Controller
 public class MenuController {
-	
+
 	@Autowired
 	private MemberRegistrationService service;
 
@@ -41,13 +39,19 @@ public class MenuController {
 
 		return "accountEdit";
 	}
-	
+
 	//メンバー管理画面表示
 	@RequestMapping("/menu/member_manager")
 	public String showMemberManager(Model model) {
-		
+
 		model.addAttribute("allMembers", service.findAllMembers());
-		
+
 		return "memberManager";
+	}
+
+	//indexページ削除に伴う
+	@RequestMapping("/")
+	public String showIndex() {
+		return "menu";
 	}
 }

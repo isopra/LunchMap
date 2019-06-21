@@ -25,9 +25,12 @@ public class ImageService {
 	@Autowired
 	ImageRepository imageRepository;
 
+
 	public void deleteImage(String place_id,Long image_id) {
 
-		String url = "src/main/resources/static/images/"+ place_id + "/" + place_id + "_" + image_id + ".jpg";
+
+		String url = "images/"+ place_id + "/" + place_id + "_" + image_id + ".jpg";
+
 		File file = new File(url);
 
 
