@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Date;
 import java.util.List;
 
 import javax.imageio.IIOException;
@@ -20,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import jp.co.isopra.lunchmap.entity.AccountDetails;
+import jp.co.isopra.lunchmap.entity.Image;
+import jp.co.isopra.lunchmap.entity.Shop;
 import jp.co.isopra.lunchmap.repositories.ImageRepository;
 import jp.co.isopra.lunchmap.repositories.ShopRepository;
 
@@ -47,7 +50,7 @@ public class ImageController {
 	    return mav;
 	}
 
-	// 登録処理 ToDo:繰り返し
+	// 登録処理 ToDo:DB保存繰り返し
 	@RequestMapping(value="create/image/register", method = RequestMethod.POST)
 	String upload(
 			ModelAndView mav,
@@ -57,12 +60,35 @@ public class ImageController {
 			@AuthenticationPrincipal AccountDetails accountDetails
 			)
 	{
-
-		// 画像保存処理
+		
+		Image entity = new Image();
+		Date nowDate = new Date();
+		Shop entityShop;
+		
+		// ShopTableにinsert
+		if(this.ShopRepository.existsById(place_id)) {
+			entityShop = this.ShopRepository.findById(place_id).get();
+		} else {
+			entityShop = new Shop();
+			entityShop.setPlace_id(place_id);
+			entityShop.setPlace_name(place_name);
+			
+			ShopRepository.save(entityShop);
+		}
+		
+		// ImageTableにinsert
+		entity.setMember(accountDetails.getMember());
+		entity.setLogin_id(accountDetails.getMember().getLogin_id());
+		entity.setPlace_id(place_id);
+		entity.setCreated_time(nowDate);
+		entity.setShop(entityShop);
+		
+		imageRepository.save(entity);
+		
+		// 画像をフォルダに保存
 		savefiles(files, place_id);
 
-
-
+		
 		return "image";
 	}
 
