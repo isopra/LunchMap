@@ -7,7 +7,7 @@
 <link rel="stylesheet"  href="/css/ImageCss.css" type="text/css" th:href="@{/css/ImageCss.css}">
 <script>
 function check(){
-	  if(document.file.upload.value){
+	  if(document.file.files.value){
 		  return true;
 	  } else {
 		  alert("画像を選択してください");
@@ -17,25 +17,23 @@ function check(){
 </script>
 </head>
 <body>
-<div class="img_modal">
+<div class="img">
 	<h1>画像情報 登録</h1>
 	<!-- 戻るボタン -->
 	<div class="return">
 		<form method = "post" th:action = "@{/shopinfo}">
-			<input type="submit" class="btn" value="戻る">
+			<input type="submit"  value="戻る">
 			<input type="hidden" th:value="${place_id}" name="place_id">
 		</form>
 	</div>
 
 	<!-- 画像登録フォーム -->
-	<div>
+	<div class="file_wrapper">
 		<form method="post" th:action="@{image/register}" enctype="multipart/form-data" onsubmit="return check()" name="file">
 			<input type="hidden" th:value="${place_id}" th:name="place_id">
 			<p th:text="${place_name}"></p>
-			<input type="file" th:value="${files}" th:name="files" name="upload" accept="image/jpeg" multiple>
-
+			<input type="file" th:value="${files}" th:name="files" accept="image/jpeg" multiple>
 			<input type="submit" value="登録">
-
 		</form>
 	</div>
 </div>
