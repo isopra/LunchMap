@@ -5,14 +5,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jp.co.isopra.lunchmap.entity.AccountDetails;
 import jp.co.isopra.lunchmap.entity.Member;
 import jp.co.isopra.lunchmap.service.MemberRegistrationService;
 
@@ -75,25 +73,15 @@ public class MemberRegistrationController {
 	public String editMember(
 			@RequestParam String login_id,
 			@RequestParam String password,
-			@RequestParam String nickname,
-//			@RequestParam(defaultValue = "general") String authority,
-			HttpServletRequest request,
-			@AuthenticationPrincipal AccountDetails accountDetails, @RequestParam(defaultValue = "off") String admin_flag)
-	{
+			@RequestParam String nickname
+			){
 		Member entity = new Member();
 
 		entity.setLogin_id(login_id);
 		entity.setPassword(password);
 		entity.setNickname(nickname);
 		
-		if (admin_flag.equals("on")) {
-			entity.setAdmin_flag(true);
-		}else {
-			//defaultでfalseなので必要ない？
-			entity.setAdmin_flag(false);
-		}
-		
-		service.updateMember(entity);
+		service.updateMember(entity, false);
 
 		return "menu";
 	}
@@ -109,4 +97,29 @@ public class MemberRegistrationController {
 
 		return "accountEdit";
 	}
+	
+	//メンバー管理からのアカウント情報編集
+		@RequestMapping("/member/editByAdministrator")
+		public String editMemberByAdministrator(
+				@RequestParam String login_id,
+				@RequestParam String password,
+				@RequestParam String nickname,
+				@RequestParam(defaultValue = "off") String admin_flag)
+		{
+			Member entity = new Member();
+
+			entity.setLogin_id(login_id);
+			entity.setPassword(password);
+			entity.setNickname(nickname);
+			
+			if (admin_flag.equals("on")) {
+				entity.setAdmin_flag(true);
+			}else {
+				entity.setAdmin_flag(false);
+			}
+			
+			service.updateMember(entity, true);
+
+			return "menu";
+		}
 }

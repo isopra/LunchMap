@@ -65,7 +65,7 @@ public class MemberRegistrationService {
 
 	//メンバー情報のアップデート
 	@Transactional(readOnly = false)
-	public Member updateMember(Member member) {
+	public Member updateMember(Member member, boolean is_edit_by_administrator) {
 		member.setPassword(passwordEncoder.encode(member.getPassword()));
 
 		//更新処理
@@ -75,7 +75,11 @@ public class MemberRegistrationService {
 		Member member2 =  manager.find(Member.class, member.getLogin_id());
 		member2.setNickname(member.getNickname());
 		member2.setPassword(member.getPassword());
-		member2.setAdmin_flag(member.isAdmin_flag());
+		
+		if (is_edit_by_administrator) {
+			member2.setAdmin_flag(member.isAdmin_flag());
+		}
+	
 		memberRepository.flush();
 		tx.commit();
 		return member2;

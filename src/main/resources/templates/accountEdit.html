@@ -61,16 +61,10 @@
         </div>
         <script th:inline="javascript">
             $("#admin_flag").prop("checked", [[${admin_flag}]]);
+            document.form.action = "/member/editByAdministrator";
         </script>
-        <!--<select name="authority" id="admin_flag">-->
-        <!--<option value="admin">管理者</option>-->
-        <!--<option value="general" selected>一般</option>-->
-        <!--</select>-->
-        <input type="submit" value="更新">
     </div>
-    <div th:unless="${flag}">
         <input type="submit" value="登録">
-    </div>
 </form>
 </body>
 </html>
