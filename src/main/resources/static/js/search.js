@@ -14,7 +14,7 @@ function initMap(){
 			center:latlng
 		};
 
-		console.log(data);
+		console.log(con);
 		map = new google.maps.Map(document.getElementById("map_sam"), opts);
 
 		//現在地にマーカーを立てる
@@ -51,15 +51,17 @@ function dispLatLng(){
 	var center = map.getCenter();
 	var cenlat = center.lat();
 	var cenlng = center.lng();
-	console.log(cenlat);
-	console.log(cenlng);
+//	console.log(cenlat);
+//	console.log(cenlng);
 
-//	var bounds = map.getBounds();
-//    map_ne = bounds.getNorthEast();
 
+
+/*ajaxで画面限界を送信、datalist更新----------------------*/
+//	border();
+//
 
 	//map起動時またはあり/なし両方が押されたとき
-	if(data == "Both" || data == null){
+	if(con == "Both" || con == null){
 		var request = {
 			location: center,
 			rankBy: google.maps.places.RankBy.DISTANCE,
@@ -76,15 +78,15 @@ function dispLatLng(){
 	}else{
 		//ありが押されたとき
 		for(var i= 0;i<datalist.length;i++){
-			console.log(datalist.length);
+//			console.log(datalist.length);
 			var latlng = new google.maps.LatLng(datalist[i].latitude,datalist[i].longitude ) ;
 			var res1 = distance(cenlat, cenlng, datalist[i].latitude, datalist[i].longitude);
-			console.log("res1="+ res1);
+//			console.log("res1="+ res1);
 			var vis = true;
 			if(res1 > 500){
 				vis = false;
 			}
-			console.log(datalist[i]);
+//			console.log(datalist[i]);
 			marker.push ( new google.maps.Marker({
 				position:latlng,
 				title:datalist[i].place_name,
@@ -116,7 +118,7 @@ function callback(results, status) {
 
 //マーカーを表示
 function createMarker(place){
-	console.log(place);
+//	console.log(place);
 	var center = map.getCenter();
 	var cenlat = center.lat();
 	var cenlng = center.lng();
@@ -143,15 +145,15 @@ function createMarker(place){
 	var lat = place.geometry.location.lat();
 	var lng = place.geometry.location.lng();
 	var res1 = distance(cenlat, cenlng, lat, lng)
-	console.log("res1="+ res1);
+//	console.log("res1="+ res1);
 
 	if(res1 > 500){
 		vis = false;
 	}
 	var lat = place.geometry.location.lat();
 	var lng = place.geometry.location.lng();
-	console.log(place.geometry.location.lat());
-	console.log(vis);
+//	console.log(place.geometry.location.lat());
+//	console.log(vis);
 	//各店のマーカーを定義
 	marker.push ( new google.maps.Marker({
 		position: place.geometry.location,
@@ -224,3 +226,99 @@ function distance(lat1, lng1, lat2, lng2) {
 	  lng2 *= Math.PI / 180;
 	  return 6378137 * Math.acos(Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1) + Math.sin(lat1) * Math.sin(lat2));
 	}
+
+//ajax
+function search(){
+	/*ajaxでpostで送信するとき必要---------------------------------*/
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+      xhr.setRequestHeader(header, token);
+    });
+    /*------------------------------------------------------------*/
+
+
+    var jsonString = $('#the-form').serialize();
+	var formData =  JSON.stringify(jsonString);
+
+	condition(formData);
+	console.log(con);
+//	 console.log(formData);
+	 $.ajax({
+       url: "/menu/search",  //POST送信を行うファイル名を指定
+       type: "POST",
+       data: formData,  //POST送信するデータを指定
+       datatype: 'json',
+       contentType: 'application/json',
+       scriptCharset: 'utf-8',
+       success: function(data) {
+    	   console.log("success");
+    	   console.log(data);
+    	   datalist = data;
+    	   initMap();
+    	   Modalclose();
+       },
+       error: function(data) {
+    	   alert('error');
+       }
+
+   });
+
+}
+//
+//function border(){
+////	画面の境界を取得
+//	var bounds = map.getBounds();
+////	地図の右上の座標
+//	var map_ne = bounds.getNorthEast();
+//	var nelat = map_ne.lat();
+//	var nelng = map_ne.lng();
+//
+////	地図の左下の座標
+//	var map_sw = bounds.getSouthWest();
+//	var swlat = map_sw.lat();
+//	var swlng = map_sw.lng();
+//
+//	/*ajaxでpostで送信するとき必要---------------------------------*/
+//    var token = $("meta[name='_csrf']").attr("content");
+//    var header = $("meta[name='_csrf_header']").attr("content");
+//    $(document).ajaxSend(function(e, xhr, options) {
+//      xhr.setRequestHeader(header, token);
+//    });
+//    /*------------------------------------------------------------*/
+//
+//    $.ajax({
+//        url: "/menu/border",  //POST送信を行うファイル名を指定
+//        type: "POST",
+//        data: {latlng:'nelat,nelng,swlat,swlng'},  //POST送信するデータを指定
+//        datatype: 'json',
+//        contentType: 'application/json',
+//        scriptCharset: 'utf-8',
+//        success: function(data) {
+//     	   console.log("success");
+//     	   console.log(data);
+//     	   datalist = data;
+//     	   initMap();
+//     	   Modalclose();
+//        },
+//        error: function(data) {
+//     	   alert('error');
+//        }
+//
+//    });
+//
+//}
+
+function condition(cond){
+	con = "Both";
+	if(cond == "\"locate=Exist\""){
+		con = "Exist";
+	}else if(cond == "\"locate=Exist&near=near\""){
+		con = "near";
+	}else if(cond == "\"locate=Exist&mylog=mylog\""){
+		con = "mylog";
+	}else if(cond == "\"locate=Exist&near=near&mylog=mylog\""){
+		con = "both condition";
+	}
+
+}

@@ -2,18 +2,21 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ <link href="/css/Map.css" th:href="@{/css/Map.css}" rel="stylesheet"></link>
 <title>map_now place</title>
 </head>
 <body>
 <h1>地図</h1>
-<button  id="back" onclick="toView('')">戻る</button> <!-- メニューにもどる -->
-<button id="openModal" onclick="Modal()">検索</button><!-- モーダルを開く -->
+
 <section id="modalArea" class="modalArea"><!-- モーダルの設定 -->
 	<div id="modalBg" class="modalBg" onclick="Modalclose()"></div>
 	<div class="modalWrapper">
     <div class="modalContents">
 		<h1>検索</h1>
-		<form method ="POST" th:action ="@{/menu/searchView}">
+		<form  id="the-form" method ="POST"  action="javascript:void(0)">
 			<p>口コミ情報：</p>
 			<label> あり/なし両方
 			<input type ="radio" name ="locate" value ="Both" checked="checked" onClick="flg0(this.checked)">
@@ -36,7 +39,7 @@
 			</label>
 			</div>
 			<br>
-			<div class="center"><input class="searchbut" type ="submit"   value = "検索"></div>
+			<div class="center"><input class="searchbut" type ="submit"   value = "検索" onclick="search()"></div>
 		</form>
     </div>
     <div id="closeModal" class="closeModal" onclick="Modalclose()">
@@ -44,15 +47,20 @@
     </div>
 	</div>
 </section>
+<div class="mapwin"><div >
+<button id="back"  onclick="toView('')">戻る</button> <!-- メニューにもどる -->
 
-<div id="map_sam" style="width:100%; height:400px"></div>
+<button id="openModal" onclick="Modal()">検索</button><!-- モーダルを開く -->
+</div>
+<div id="map_sam" ></div>
+</div>
 <script th:src="#{apikey}"></script>
 <script type="text/javascript"  th:inline="javascript">
 	var datalist = /*[[${datalist}]]*/ '';
-	var data =  /*[[${data}]]*/ '';
+	var con =  /*[[${data}]]*/ '';
 </script>
 <script type="text/javascript" src="js/search.js" th:src="@{/js/search.js}"></script>
 <script >window.onload = initMap;</script>
- <link href="/css/Map.css" th:href="@{/css/Map.css}" rel="stylesheet"></link>
+
 </body>
 </html>

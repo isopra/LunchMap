@@ -15,10 +15,13 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -102,6 +105,7 @@ public class MapsController {
 			mav.addObject("datalist",both );
 		}
 
+
 		return mav;
 	}
 
@@ -184,5 +188,95 @@ public class MapsController {
 	      }
 
 	}
+//		ajax確認用
+	@ResponseBody
+	@RequestMapping(path="/menu/search" , method = RequestMethod.POST, produces="application/json")
+	public Iterable<Shop> ajax(@RequestBody String formData,Principal principal,
+			Model mav) {
+
+		conditionSession.setCondition("Both");
+		System.out.println("----------------");
+//		System.out.println("ajax=" +formData);
+		System.out.println("----------------");
+		if(formData.equals("\"locate=Exist\"")) {
+			System.out.println("ajax=Exist true" );
+			conditionSession.setCondition("Exist");
+			System.out.println("----------------");
+		}else if(formData.equals("\"locate=Exist&near=near\"")) {
+			System.out.println("ajax=locate=Exist&near=near" );
+			conditionSession.setCondition("near");
+			System.out.println("----------------");
+		}else if(formData.equals("\"locate=Exist&mylog=mylog\"")) {
+			System.out.println("ajax=Exist&mylog=mylog" );
+			conditionSession.setCondition("mylog");
+			System.out.println("----------------");
+		}else if(formData.equals("\"locate=Exist&near=near&mylog=mylog\"")) {
+			System.out.println("ajax=Exist&near=near&mylog=mylog" );
+			conditionSession.setCondition("both condition");
+			System.out.println("----------------");
+		}
+		Iterable<Shop> list = null;
+		Authentication auth = (Authentication) principal;
+		AccountDetails accountDetails = (AccountDetails) auth.getPrincipal();
+		String Login_id = accountDetails.getMember().getLogin_id();
+//		時間の取得
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DATE, -14);
+		Date date = calendar.getTime();
+//		セッション情報の取得
+		String condition = conditionSession.getCondition();
+//		mav.addObject("data",condition);
+
+		System.out.println("session::" + condition);
+		System.out.println("session::" + conditionSession.getLatitude());
+		System.out.println("session::" + conditionSession.getLongitude());
+		System.out.println(conditionSession.getPlacename());
+//		検索条件の判定
+		if(condition == null || condition.equals("Both") || condition.equals("Exist")) {
+		list = shoprepo.findAll();
+		System.out.println("-----------------------");
+		System.out.println(list);
+		System.out.println("-----------------------");
+//		mav.addAttribute("datalist", list);
+		}
+		else if(condition.equals("near")) {
+			List<String> time = footrepo.findByCreated_time((Date) date);
+			List<String> time2 = imagerepo.findByCreated_time((Date) date);
+			time2.addAll(time);
+			Set<String> set = new HashSet<>(time2);
+			System.out.println(set);
+			list = shoprepo.findByid(set);
+//			mav.addAttribute("datalist", neartime);
+		}else if(condition.equals("mylog")) {
+			List<String> logId =footrepo.findByLogin_id((String) Login_id);
+			List<String> logId2 =imagerepo.findByLogin_id((String) Login_id);
+			logId2.addAll(logId);
+			Set<String> set = new HashSet<>(logId2);
+			list = shoprepo.findByid(set);
+//			mav.addObject("datalist", mylog);
+		}else if(condition.equals("both condition")) {
+			List<String> con = footrepo.findByCreated_timeAndLogin_id((Date) date,(String)Login_id);
+			List<String> con2 = imagerepo.findByCreated_timeAndLogin_id((Date) date,(String)Login_id);
+			con2.addAll(con);
+			Set<String> set = new HashSet<>(con2);
+			list= shoprepo.findByid(set);
+//			mav.addObject("datalist",both );
+		}
+		System.out.println("-----------------------");
+		System.out.println(list.getClass());
+		System.out.println(list);
+		System.out.println("-----------------------");
+
+		return list;
+	}
+
+//	画面内か判定
+//	@ResponseBody
+//	@RequestMapping(path="/menu/border" , method = RequestMethod.POST, produces="application/json")
+//	public Iterable<Shop> ajax2(@RequestBody List<BigDecimal> latlng,Principal principal,
+//			Model mav) {
+//
+//		return list;
+//	}
 
 }
