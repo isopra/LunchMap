@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/isopra/LunchMap/tree/master.svg?style=svg)](https://circleci.com/gh/isopra/LunchMap/tree/master)
+
 ### Java Spring template project
 
 This project is based on a GitLab [Project Template](https://docs.gitlab.com/ee/gitlab-basics/create-project.html).
