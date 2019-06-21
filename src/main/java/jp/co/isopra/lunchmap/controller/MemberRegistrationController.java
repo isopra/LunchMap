@@ -67,7 +67,7 @@ public class MemberRegistrationController {
 	//登録画面表示
 	@RequestMapping("/member/register")
 	public String showMemberRegisterForm() {
-		return "memberRegisterOrEdit";
+		return "memberRegister";
 	}
 
 	//アカウント情報編集
@@ -76,9 +76,9 @@ public class MemberRegistrationController {
 			@RequestParam String login_id,
 			@RequestParam String password,
 			@RequestParam String nickname,
-			@RequestParam(defaultValue = "general") String authority,
+//			@RequestParam(defaultValue = "general") String authority,
 			HttpServletRequest request,
-			@AuthenticationPrincipal AccountDetails accountDetails)
+			@AuthenticationPrincipal AccountDetails accountDetails, @RequestParam(defaultValue = "off") String admin_flag)
 	{
 		Member entity = new Member();
 
@@ -86,7 +86,7 @@ public class MemberRegistrationController {
 		entity.setPassword(password);
 		entity.setNickname(nickname);
 		
-		if (authority.equals("admin")) {
+		if (admin_flag.equals("on")) {
 			entity.setAdmin_flag(true);
 		}else {
 			//defaultでfalseなので必要ない？
@@ -104,6 +104,8 @@ public class MemberRegistrationController {
 		Member member = service.findMember(login_id);
 		model.addAttribute("id", member.getLogin_id());
 		model.addAttribute("nickname", member.getNickname());
+		model.addAttribute("admin_flag", member.isAdmin_flag());
+		model.addAttribute("flag",  true);
 
 		return "accountEdit";
 	}

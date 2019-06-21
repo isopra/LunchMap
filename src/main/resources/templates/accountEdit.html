@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>アカウント情報編集</title>
     <link th:href="@{/css/register.css}" rel="stylesheet">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <script>
@@ -53,17 +54,23 @@
         </div>
     </div>
 
-    <!--<div sec:authorize="hasRole('ROLE_ADMIN')">-->
-        <!--権限：-->
-
-        <!--<select name="authority">-->
-            <!--<option value="admin">管理者</option>-->
-            <!--<option value="general" selected>一般</option>-->
+    <div th:if="${flag}">
+        <div class="item">
+            <h4>Do you want to give admin rights?</h4>
+            <input type="checkbox" class="conic" name="admin_flag" id="admin_flag">
+        </div>
+        <script th:inline="javascript">
+            $("#admin_flag").prop("checked", [[${admin_flag}]]);
+        </script>
+        <!--<select name="authority" id="admin_flag">-->
+        <!--<option value="admin">管理者</option>-->
+        <!--<option value="general" selected>一般</option>-->
         <!--</select>-->
-
-
-    <!--</div>-->
-    <input type="submit" value="登録">
+        <input type="submit" value="更新">
+    </div>
+    <div th:unless="${flag}">
+        <input type="submit" value="登録">
+    </div>
 </form>
 </body>
 </html>
