@@ -23,6 +23,7 @@
 	<h1>あしあと情報 登録</h1>
 	<form method = "post" th:action="@{foot/previous}">
 		<input type="submit" class="btn" value="戻る"><br><br>
+		<input type="hidden" th:value="${place_id}" name="place_id">
 	</form>
     <div class="footprint_wrapper">
 		<form method="post" th:action="@{foot/register}" onsubmit="return lengthCheck()" name="form1">
