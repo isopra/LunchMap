@@ -22,9 +22,29 @@
         function toView(to) {
             location.href = "/menu/" + to;
         }
+
+        // function logout() {
+        //     location.href = "/logout";
+        // }
     </script>
 </head>
 <body>
+<!--<header>-->
+    <!--<style>-->
+        <!--header {-->
+            <!--margin-top: 30px;-->
+            <!--margin-right: 70px;-->
+        <!--}-->
+        <!--header button {-->
+            <!--display: block;-->
+            <!--margin: 0 0 0 auto;-->
+        <!--}-->
+
+    <!--</style>-->
+    <!--<form th:action="@{/logout}" method="post">-->
+        <!--<button type="submit">ログアウト</button>-->
+    <!--</form>-->
+<!--</header>-->
 <div id="wrap_buttons" class="container">
     <div class="row justify-content-center align-items-center">
         <button onClick="toView('mapView')" id="map" class="col-6 center-block pink panel">地図から探す</button>
