@@ -72,6 +72,7 @@ public class ShopinfoController {
 		//　place_idが一致するImageオブジェクト
 		List<Image> imageDatalist = imageRepository.getByPlace_id(place_id);
 		mav.addObject("imageDatalist",imageDatalist);
+		mav.addObject("absolutePath",imageService.getAbsolutePath(place_id));
 
 		return mav;
 

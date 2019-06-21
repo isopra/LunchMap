@@ -17,7 +17,7 @@ public class PathController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/test")
     public void index() throws Throwable {
-    String filepath = "images/ChIJD4tLmA-MGGARqHJvbMa-yNs"; // src/main/resources 配下の相対パス
+    String filepath = "images/ChIJD4tLmA-MGGARqHJvbMa-yNs";
     Resource resource = resourceLoader.getResource(filepath);
 
     File file = resource.getFile();
