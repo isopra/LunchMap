@@ -169,7 +169,7 @@ $(function() {
 
 	<div id="image_list_more">
 			<div th:each="obj : ${imageDatalist}" class="image">
-				<img th:src="|${absolutePath}/${obj.getPlace_id()}_${obj.getImage_id()}.jpg|" > <!-- LunchMap/src/main/resources/static/images/{place_id}/[place_id]_[image_id].jpg -->
+				<img th:src="@{'image/view/' + ${ placeId } + '/' + ${obj.getImage_id()}}">
 				<p th:if="${obj.getMember().getLogin_id() == Login_id}" class="image-button">
 					<a th:href="@{'./delete/image/' + ${obj.getPlace_id()} + '/' + ${obj.getImage_id()} }"  onclick="return confirm('削除しますか？')"><i class="fa fa-trash-o"></i>削除</a>
 				</p>
