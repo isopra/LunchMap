@@ -5,24 +5,25 @@
 <meta charset="UTF-8">
 <title>footprint</title>
 <script>
-	function lengthCheck() {
-	    var comment_length = document . form1 . comment . value . length;
+function lengthCheck() {
+    var comment_length = document . form1 . comment . value . length;
 
-	    if ( comment_length > 200 ){
-	        window . alert( '200文字以内で入力してください' );
-	        return false;
-	    }else{
-	        return true;
-	    }
-	}
+    if ( comment_length > 200 ){
+        window . alert( '200文字以内で入力してください' );
+        return false;
+    }else{
+        return true;
+    }
+}
 </script>
 <link rel="stylesheet"  href="/css/FootPrintCss.css" type="text/css" th:href="@{/css/FootPrintCss.css}">
 </head>
 <body>
-<div class="footprint_modal">
+<div class="footprint">
 	<h1>あしあと情報 登録</h1>
 	<form method = "post" th:action="@{foot/previous}">
 		<input type="submit" class="btn" value="戻る"><br><br>
+		<input type="hidden" th:value="${place_id}" name="place_id">
 	</form>
     <div class="footprint_wrapper">
 		<form method="post" th:action="@{foot/register}" onsubmit="return lengthCheck()" name="form1">
@@ -32,7 +33,7 @@
 		    <textarea id="footprint_comment" class="footprint_label" name="comment"></textarea>
 		    <input type="hidden" name="place_id" th:value="${place_id}">
 		    <input type="hidden" name="place_name" th:value="${place_name}">
-			<input type="reset" value="clear">
+			<input type="reset" value="reset">
 			<p class="footprint_label">最大200文字まで登録できます</p>
 			<br>
 			<input type="submit" class="btn" value="登録" />

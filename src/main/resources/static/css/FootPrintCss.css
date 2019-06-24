@@ -12,13 +12,13 @@ h1 {
 	height: 20pt;
 }
 
-.footprint_modal {
+.footprint {
 	width: 80%;
 	margin: 0 auto;
 }
 
 .footprint_wrapper {
-	width: 400px;
+	width: 50%;
 	height: auto;
 	border:solid 1px #000;
 	padding: 1em;

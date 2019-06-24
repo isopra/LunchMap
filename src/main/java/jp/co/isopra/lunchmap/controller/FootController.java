@@ -1,5 +1,6 @@
 package jp.co.isopra.lunchmap.controller;
 
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import jp.co.isopra.lunchmap.controller.MapsController.ConditionSession;
 import jp.co.isopra.lunchmap.entity.AccountDetails;
 import jp.co.isopra.lunchmap.entity.FootPrint;
 import jp.co.isopra.lunchmap.entity.Shop;
@@ -26,14 +28,17 @@ public class FootController {
 
 	@Autowired
 	ShopRepository shopRepository;
-
+	
+	@Autowired
+	protected ConditionSession conditionSession;
 
 	// コメント編集時画面
 	@RequestMapping(value = "menu/foot/edit", method = RequestMethod.GET )
 	public ModelAndView footEdit (
 		@RequestParam (name = "footprint_id", defaultValue = "" ) Long footprint_id,
-		@RequestParam (name = "place_id", defaultValue = "") String place_id,
+		@RequestParam (name = "place_id", defaultValue = "") String place_id,		
 		@AuthenticationPrincipal AccountDetails accountDetails,
+		Principal Principal,
 		ModelAndView mav)
 	{
 
@@ -65,6 +70,7 @@ public class FootController {
 			@RequestParam Long footprint_id,
 			@ModelAttribute FootPrint footPrint,
 			@AuthenticationPrincipal AccountDetails accountDetails,
+			Principal Principal,
 			ModelAndView mav)
 	{
 		Date nowDate = new Date();
@@ -93,8 +99,8 @@ public class FootController {
 	@RequestMapping(value = "menu/foot", method = RequestMethod.GET )
 	public ModelAndView footCreate(
 		@RequestParam String place_id,
-		@RequestParam String place_name,
 		@AuthenticationPrincipal AccountDetails accountDetails,
+		Principal Principal,
 		ModelAndView mav)
 	{
 
@@ -105,7 +111,7 @@ public class FootController {
 
 		// 表示
 		mav.setViewName("foot");
-		mav.addObject("place_name", place_name);
+		mav.addObject("place_name", conditionSession.getPlacename());
 		mav.addObject("datetime", formatDate);
 		mav.addObject("place_id", place_id);
 
@@ -117,8 +123,7 @@ public class FootController {
 	public String newFoot(
 		@RequestParam String comment,
 		@RequestParam String place_id,
-		@RequestParam String place_name,
-		@ModelAttribute FootPrint footprint,
+		Principal Prinsipal,
 		@AuthenticationPrincipal AccountDetails accountDetails,
 		ModelAndView mav)
 	{
@@ -134,7 +139,9 @@ public class FootController {
 			entityShop = new Shop();
 
 			entityShop.setPlace_id(place_id);
-			entityShop.setPlace_name(place_name);
+			entityShop.setPlace_name(conditionSession.getPlacename());
+			entityShop.setLatitude(conditionSession.getLatitude());
+			entityShop.setLongitude(conditionSession.getLongitude());
 
 			shopRepository.save(entityShop);
 		}
