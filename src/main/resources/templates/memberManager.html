@@ -9,9 +9,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+
 </head>
 <body>
 <script th:src="@{/js/memberManager.js}"></script>
+<div class="wrap">
 <form method="POST" th:action="@{/member/edit_by_manager}" id="form">
     <input type="hidden" id="login_id" name="login_id">
 <table border="1" id="table">
@@ -29,5 +32,7 @@
     </tbody>
 </table>
 </form>
+<a th:href="@{/menu}" class="btnn paper paper-raise" id="back">Back</a></form>
+</div>
 </body>
 </html>

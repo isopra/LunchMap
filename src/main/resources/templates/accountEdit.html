@@ -57,8 +57,6 @@
             <label for="login_id" class="focus">Login ID</label>
         </div>
 
-        <!--<p th:text="${id}"></p>-->
-
         <div class="block">
             <input type="password" id="password" name="password"/>
             <label for="password">Password</label>
@@ -82,7 +80,8 @@
     </div>
     <div th:unless="${flag}" style="margin-top: 40px"></div>
     <button type="submit" class="btnn paper paper-raise btnnn">Registration</button>
-    <a th:href="@{/menu}" class="btnn paper paper-raise" id="back">Cancel</a></form>
+    <a th:href="@{/menu}" class="btnn paper paper-raise" id="back">Cancel</a>
+</form>
 <div th:if="${flag}">
     <script>
         document.getElementById("back").href = "/menu/member_manager";
