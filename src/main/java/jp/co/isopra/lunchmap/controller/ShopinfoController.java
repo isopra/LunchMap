@@ -1,15 +1,20 @@
 package jp.co.isopra.lunchmap.controller;
 
-
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import jp.co.isopra.lunchmap.entity.AccountDetails;
@@ -20,6 +25,7 @@ import jp.co.isopra.lunchmap.repositories.ImageRepository;
 import jp.co.isopra.lunchmap.repositories.MemberRepository;
 import jp.co.isopra.lunchmap.repositories.ShopRepository;
 import jp.co.isopra.lunchmap.service.ImageService;
+
 
 @Controller
 public class ShopinfoController {
@@ -67,12 +73,12 @@ public class ShopinfoController {
 
 		// imageについて
 		//　レコード数の取得
-		int imageRecords = imageRepository.getImageRecords(place_id) ;
+		int imageRecords = imageRepository.getImageRecords(place_id);
 		mav.addObject("imageRecords",imageRecords);
 		//　place_idが一致するImageオブジェクト
 		List<Image> imageDatalist = imageRepository.getByPlace_id(place_id);
+
 		mav.addObject("imageDatalist",imageDatalist);
-		mav.addObject("absolutePath",imageService.getAbsolutePath(place_id));
 
 		return mav;
 
@@ -90,6 +96,20 @@ public class ShopinfoController {
 		return new ModelAndView("redirect:/shopinfo/" + place_id );
 
 	}
+
+
+    @RequestMapping(value = "/shopinfo/image/view/{place_id}/{image_id}", produces=MediaType.IMAGE_JPEG_VALUE )
+    public @ResponseBody byte[] responseImage(
+    		@PathVariable String place_id,
+    		@PathVariable long image_id
+    		) throws IOException {
+
+
+			Path path = Paths.get("images/" + place_id + "/" + place_id + "_" + image_id +".jpg");
+			byte[] file = Files.readAllBytes(path);
+
+        return file;
+    }
 
 }
 

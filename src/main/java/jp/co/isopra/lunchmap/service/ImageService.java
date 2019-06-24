@@ -27,14 +27,6 @@ public class ImageService {
 	@Autowired
 	ImageRepository imageRepository;
 
-	public String getAbsolutePath(String place_id) {
-
-		Path path = Paths.get("images/" + place_id);
-		Path absolutePath = path.toAbsolutePath();
-
-		return  absolutePath.toString();
-    }
-
 	public void deleteImage(String place_id,Long image_id) {
 
 		Path path = Paths.get("images/" + place_id + "/" + place_id + "_" + image_id + ".jpg");
