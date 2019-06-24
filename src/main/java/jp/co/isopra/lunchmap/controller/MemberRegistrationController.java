@@ -49,7 +49,7 @@ public class MemberRegistrationController {
 			service.registerMember(entity);
 		} catch (DataIntegrityViolationException e) {
 			model.addAttribute("errorMessage", e.getMessage());
-			return "memberRegisterOrEdit";
+			return "memberRegister";
 		}
 
 		try {
@@ -80,7 +80,7 @@ public class MemberRegistrationController {
 		entity.setLogin_id(login_id);
 		entity.setPassword(password);
 		entity.setNickname(nickname);
-		
+
 		service.updateMember(entity, false);
 
 		return "menu";
@@ -97,7 +97,7 @@ public class MemberRegistrationController {
 
 		return "accountEdit";
 	}
-	
+
 	//メンバー管理からのアカウント情報編集
 		@RequestMapping("/member/editByAdministrator")
 		public String editMemberByAdministrator(
@@ -111,13 +111,13 @@ public class MemberRegistrationController {
 			entity.setLogin_id(login_id);
 			entity.setPassword(password);
 			entity.setNickname(nickname);
-			
+
 			if (admin_flag.equals("on")) {
 				entity.setAdmin_flag(true);
 			}else {
 				entity.setAdmin_flag(false);
 			}
-			
+
 			service.updateMember(entity, true);
 
 			return "menu";

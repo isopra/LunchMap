@@ -87,11 +87,15 @@ button:hover {
 
 #map {
     height: 300px;
-    margin-top: 150px;
+    /*margin-top: 150px;*/
     /*background-image: url("../static/images/stockhiroDSCF5504_TP_V.jpg");*/
     font-size: 40px;
 }
 
 #edit {
     margin-top: 20px;
+}
+
+.container {
+    margin-top: 7%;
 }
