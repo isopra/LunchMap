@@ -1,42 +1,115 @@
-h1 {font-weight:bold;}
+h1 {
+	font-weight:bold;
+	text-align: center;
+}
+
+form{
+	font-size:larger;
+	border : solid;
+	padding:20px;
+}
+p{
+	margin:0;
+}
 
 .modalArea {
-  visibility: hidden;
-  opacity : 0;
-  position: fixed;
-  z-index: 10;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transition: .4s;
+	visibility: hidden;
+	opacity : 0;
+	position: fixed;
+	z-index: 10;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	transition: .4s;
 }
 
 .modalBg {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(30,30,30,0.9);
+	width: 100%;
+	height: 100%;
+	background-color: rgba(30,30,30,0.9);
 }
 
 .modalWrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform:translate(-50%,-50%);
-  width: 70%;
-  max-width: 500px;
-  padding: 10px 30px;
-  background-color: #fff;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform:translate(-50%,-50%);
+	width: 70%;
+	max-width: 500px;
+	padding: 10px 30px;
+	background-color: #fff;
 }
 
 .closeModal {
-  position: absolute;
-  top: 0.5rem;
-  right: 1rem;
-  cursor: pointer;
+	position: absolute;
+	top: 0.5rem;
+	right: 1rem;
+	cursor: pointer;
 }
 
 .is-show { /* モーダル表示用クラス */
-  visibility: visible;
-  opacity : 1;
+	visibility: visible;
+	opacity : 1;
 }
+
+#back{
+	display: inline-block;
+	background-color: #4682b4;
+	padding: 10px 30px;
+	margin: 20px;
+	font-weight: bold;
+	font-size: 1.4em;
+	    float: left;
+}
+
+#openModal{
+	display: inline-block;
+	background-color: #4682b4;
+	padding: 10px 30px;
+	margin: 20px;
+	font-weight: bold;
+	font-size: 1.4em;
+	float: right;
+}
+#map_sam{
+	width:90%;
+	height:400px;
+	margin:0 auto;
+}
+
+.search{
+	border : solid;
+	margin: 0px 0px 5px 40px;
+	padding: 10px;
+	width: 300px;
+}
+.searchbut{
+	display: inline-block;
+	background-color: #4682b4;
+	padding: 10px 30px;
+	font-weight: bold;
+	font-size: 1.4em
+}
+.center{
+	text-align : center ;
+}
+
+
+
+.imp{
+	color:  #dddddd;
+}
+/* .back{
+	display: inline-block;
+	text-align: right;
+	background-color:red;
+
+
+}
+
+.openModel{
+	display: inline-block;
+	text-align: left;
+}
+ */
