@@ -50,10 +50,15 @@
 </head>
 <body>
 <form th:action="@{/member/edit}" method="POST" onSubmit="return checkValue()" name="form">
-    <input type="hidden" th:value="${id}" name="login_id">
 
-    <p th:text="${id}"></p>
     <div class="wrap">
+        <div class="block">
+            <input type="text" th:value="${id}" name="login_id" disabled id="login_id">
+            <label for="login_id" class="focus">Login ID</label>
+        </div>
+
+        <!--<p th:text="${id}"></p>-->
+
         <div class="block">
             <input type="password" id="password" name="password"/>
             <label for="password">Password</label>
@@ -76,10 +81,13 @@
         </script>
     </div>
     <div th:unless="${flag}" style="margin-top: 40px"></div>
-        <button type="submit" class="btnn paper paper-raise btnnn">Registration</button>
-        <a th:href="@{/menu}" class="btnn paper paper-raise" id="back">Cancel</a></form>
-        <script>
+    <button type="submit" class="btnn paper paper-raise btnnn">Registration</button>
+    <a th:href="@{/menu}" class="btnn paper paper-raise" id="back">Cancel</a></form>
+<div th:if="${flag}">
+    <script>
         document.getElementById("back").href = "/menu/member_manager";
-        </script>
+    </script>
+</div>
+
 </body>
 </html>
