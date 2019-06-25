@@ -22,8 +22,10 @@ function lengthCheckEdit() {
 <div class="footprint">
     <h1>あしあと情報 編集</h1>
 	<form method = "post" th:action="@{previous}">
-		<input type="submit" class="btn" value="戻る"><br><br>
+	<div class="return">
+		<input type="submit" class="btn-square-toy" value="戻る"><br><br>
 		<input type="hidden" th:value="${place_id}" name="place_id">
+		</div>
 	</form>
     <div class="footprint_wrapper">
 		<form method="post" th:action="@{update}" onsubmit="return lengthCheckEdit()" name="form_edit">
@@ -31,12 +33,13 @@ function lengthCheckEdit() {
 			<p class="footprint_label" th:text="|あしあと：*{editDatetime}|"></p> <!--  登録日時を表示 -->
 			<p class="footprint_label">コメント：</p>
 	        <textarea id="footprint_comment" class="footprint_label" th:text="*{editComment}" name="comment_edit"></textarea>
+	        <input type="reset" value="reset" class="btn-square-toy">
 	        <input type="hidden" name="place_id" th:value="${place_id}">
 	        <input type="hidden" name="footprint_id" th:value="${footprint_id}">
-			<input type="reset" value="reset">
+			
 			<p class="footprint_label">最大200文字まで登録できます</p>
 			<br>
-			<input type="submit" class="btn" value="登録" />
+			<input type="submit" class="btn-square-toy" value="登録" />
 		</form>
     </div>
 </div>

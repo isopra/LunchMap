@@ -17,25 +17,27 @@ function check(){
 </script>
 </head>
 <body>
-<div class="img_modal">
+<div class="img">
 	<h1>画像情報 登録</h1>
 	<!-- 戻るボタン -->
 	<div class="return">
 		<form method = "post" th:action = "@{/}">
-			<input type="submit" class="btn" value="戻る">
+			<input type="submit" class="btn-square-toy" value="戻る">
 		</form>
 	</div>
 
 	<!-- 画像登録フォーム -->
-	<div>
-		<form method="post" th:action="@{image/register}" enctype="multipart/form-data" onsubmit="return check()" name="file">
+	<div class="file_wrapper">
+		<div class="register">
+			<form method="post" th:action="@{image/register}" enctype="multipart/form-data" onsubmit="return check()" name="file">
 			<input type="hidden" th:value="${place_id}" th:name="place_id">
 			<p th:text="${place_name}"></p>
 			<input type="file" th:value="${files}" th:name="files" name="upload" accept="image/jpeg" multiple>
-
-			<input type="submit" value="登録">
-
-		</form>
+			<div class="register_btn">
+				<p><input type="submit" value="登録" class="btn-square-toy"></p>
+			</div>
+			</form>
+		</div>
 	</div>
 </div>
 </body>

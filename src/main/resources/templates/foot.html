@@ -22,7 +22,7 @@ function lengthCheck() {
 <div class="footprint">
 	<h1>あしあと情報 登録</h1>
 	<form method = "post" th:action="@{foot/previous}">
-		<input type="submit" class="btn" value="戻る"><br><br>
+		<input type="submit" class="btn-square-toy" value="戻る"><br><br>
 		<input type="hidden" th:value="${place_id}" name="place_id">
 	</form>
     <div class="footprint_wrapper">
@@ -31,12 +31,13 @@ function lengthCheck() {
 		  	<p class="footprint_label" th:text="${datetime}"></p>  <!-- システム日時を表示 -->
 			<p class="footprint_label">コメント：</p>
 		    <textarea id="footprint_comment" class="footprint_label" name="comment"></textarea>
+		    <input type="reset" value="reset" class="btn-square-toy">
 		    <input type="hidden" name="place_id" th:value="${place_id}">
 		    <input type="hidden" name="place_name" th:value="${place_name}">
-			<input type="reset" value="reset">
+
 			<p class="footprint_label">最大200文字まで登録できます</p>
 			<br>
-			<input type="submit" class="btn" value="登録" />
+			<input type="submit" class="btn-square-toy" value="登録" />
 		</form>
 	</div>
 </div>
