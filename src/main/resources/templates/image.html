@@ -4,7 +4,49 @@
 <head>
 <meta charset="UTF-8">
 <title>image register</title>
-<link rel="stylesheet"  href="/css/ImageCss.css" type="text/css" th:href="@{/css/ImageCss.css}">
+<!--<link rel="stylesheet"  href="/css/ImageCss.css" type="text/css" th:href="@{/css/ImageCss.css}">-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+	<style>
+		h1 {
+			font-weight:bold;
+			font-size:18pt;
+			color:gray;
+			text-align: center;
+		}
+
+		.img_modal {
+			margin: auto;
+			padding: 20px;
+			width: 50%;
+			height: 120%;
+			border: 1px solid #000;
+		}
+
+		.file_wrapper {
+			width: 60%;
+			height: 200px;
+			margin: 10px auto;
+			border:solid 1px #000;
+			padding: 20px;
+		}
+
+		.btn {
+			margin: 30px auto;
+		}
+
+		.return {
+			width: 68%;
+			height: 50px;
+			margin: auto;
+			padding: 10px;
+		}
+
+		#canvasBox {
+			display: inline;
+		}
+	</style>
+
 <script>
 function check(){
 	  if(document.file.upload.value){
@@ -14,6 +56,59 @@ function check(){
 		  return false;
 	  }
 }
+
+$(function () {
+
+	$("input[type=file]").change(function () {
+
+		var canvasList = new Array();
+		const canvasBox = $("#canvasBox");
+		canvasBox.empty();
+		var count = 0;
+
+		for(i = 0; i < this.files.length; i++) {
+			let image = new Image();
+			let reader = new FileReader();
+			let file = $(this).prop('files')[i];
+
+			if (file.type != "image/jpeg" && file.type != "image/png") {
+				file = null;
+				console.log("out!");
+				return;
+			}
+
+			reader.onload = function(e) {
+				image.onload = function () {
+					let width, height, ratio, marginTop, marginLeft;
+					if (image.width > image.height) {
+						ratio = image.height/image.width;
+						width = 300;
+						height = 300 * ratio;
+					}else {
+						ratio = image.width / image.height;
+						width = 300 * ratio;
+						height = 300;
+					}
+
+					var canvas = $("#canvasBox").append("<canvas width=300 height=300></canvas>");
+
+					// var canvas = $("#canvas");
+					let ctx = $("canvas")[count].getContext("2d");
+					ctx.drawImage(image, 0, 0, width, height);
+					count++;
+				};
+				image.src = e.target.result;
+			};
+
+
+			reader.readAsDataURL(file);
+		}
+	});
+
+
+})
+
+
 </script>
 </head>
 <body>
@@ -31,12 +126,17 @@ function check(){
 		<form method="post" th:action="@{image/register}" enctype="multipart/form-data" onsubmit="return check()" name="file">
 			<input type="hidden" th:value="${place_id}" th:name="place_id">
 			<p th:text="${place_name}"></p>
-			<input type="file" th:value="${files}" th:name="files" name="upload" accept="image/jpeg" multiple>
+			<input type="file" th:value="${files}" name="files[]" accept="image/*" multiple>
 
 			<input type="submit" value="登録">
 
 		</form>
 	</div>
+
 </div>
+<div id="canvasBox">
+	<!--<canvas id="canvas" height="300" width="300"></canvas>-->
+</div>
+
 </body>
 </html>
