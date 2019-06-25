@@ -1,28 +1,122 @@
 <!DOCTYPE html>
-<html  xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>image register</title>
-<link rel="stylesheet"  href="/css/ImageCss.css" type="text/css" th:href="@{/css/ImageCss.css}">
-<script>
-function check(){
-	  if(document.file.upload.value){
-		  return true;
-	  } else {
-		  alert("画像を選択してください");
-		  return false;
-	  }
-}
-</script>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>image register</title>
+    <link rel="stylesheet"  href="/css/ImageCss.css" type="text/css" th:href="@{/css/ImageCss.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script th:inline="javascript">
+      
+        $(function () {
+            var canvasList = new Array();
+
+            $("input[type=file]").change(function () {
+
+                const canvasBox = $("#canvasBox");
+                canvasBox.empty();
+                var count = 0;
+
+                for (var i = 0; i < this.files.length; i++) {
+                    let image = new Image();
+                    let reader = new FileReader();
+                    let file = $(this).prop('files')[i];
+
+                    if (file.type != "image/jpeg" && file.type != "image/png") {
+                        file = null;
+                        console.log("画像ファイルではありません!");
+                        return;
+                    }
+
+                    reader.onload = function (e) {
+                        image.onload = function () {
+                            let width, height, ratio, marginTop, marginLeft;
+                            if (image.width > image.height) {
+                                ratio = image.height / image.width;
+                                width = 300;
+                                height = 300 * ratio;
+                            } else {
+                                ratio = image.width / image.height;
+                                width = 300 * ratio;
+                                height = 300;
+                            }
+
+                            var canvas = $("#canvasBox").append("<canvas width=300 height=300></canvas>");
+
+                            let ctx = $("canvas")[count].getContext("2d");
+                            ctx.drawImage(image, 0, 0, width, height);
+                            count++;
+                            canvasList.push(canvas);
+                        };
+                        image.src = e.target.result;
+                    };
+
+
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            $("#form").on("submit", (function () {
+
+                if (document.file.files.value) {
+                    // return true;
+                } else {
+                    alert("画像を選択してください");
+                    return false;
+                    // return false;
+                }
+
+                // let formData = new FormData($(this).get(0));
+                var formData = new FormData();
+                var files = $("#fileList");
+                $("canvas").each(function(i, val) {
+
+                    var base64 = val.toDataURL("image/jpeg");
+                    var bin = atob(base64.split("base64,")[1]);
+                    var len = bin.length;
+                    var barr = new Uint8Array(len);
+                    for (var i = 0; i < bin.length; i++) {
+                        barr[i] = bin.charCodeAt(i);
+                    }
+                    files.push(new Blob([barr.buffer], {type: "image/jpeg"}));
+
+                });
+
+                formData.append("files", files);
+                formData.append("place_id", [[${place_id}]]);
+
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+                $(document).ajaxSend(function(e, xhr, options) {
+                    xhr.setRequestHeader(header, token);
+                });
+
+                // for(item of formData) console.log(item);
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "image/register",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    enctype: 'multipart/form-data',
+                });
+            }));
+        });
+    </script>
 </head>
 <body>
 <div class="img">
 	<h1>画像情報 登録</h1>
 	<!-- 戻るボタン -->
 	<div class="return">
-		<form method = "post" th:action = "@{/}">
-			<input type="submit" class="btn-square-toy" value="戻る">
+		<form method = "post" th:action = "@{/shopinfo}">
+			<input type="submit"  value="戻る">
+			<input type="hidden" th:value="${place_id}" name="place_id">
 		</form>
 	</div>
 
@@ -40,5 +134,7 @@ function check(){
 		</div>
 	</div>
 </div>
+<div id="canvasBox"></div>
+
 </body>
 </html>

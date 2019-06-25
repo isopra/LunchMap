@@ -57,3 +57,7 @@ h1 {
     margin: auto;
     padding: 10px;
 }
+
+#canvasBox {
+    display: inline;
+}
