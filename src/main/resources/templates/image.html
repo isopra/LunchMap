@@ -10,10 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <script th:inline="javascript">
-        function check() {
-
-        }
-
+      
         $(function () {
             var canvasList = new Array();
 
@@ -113,15 +110,6 @@
     </script>
 </head>
 <body>
-<div class="img_modal">
-    <h1>画像情報 登録</h1>
-    <!-- 戻るボタン -->
-    <div class="return">
-        <form method="post" th:action="@{/}">
-            <input type="submit" class="btn" value="戻る">
-        </form>
-    </div>
-
     <!-- 画像登録フォーム -->
     <div>
         <form method="post" th:action="@{image/register}" enctype="multipart/form-data"
@@ -135,9 +123,27 @@
         </form>
     </div>
 
+<div class="img">
+	<h1>画像情報 登録</h1>
+	<!-- 戻るボタン -->
+	<div class="return">
+		<form method = "post" th:action = "@{/shopinfo}">
+			<input type="submit"  value="戻る">
+			<input type="hidden" th:value="${place_id}" name="place_id">
+		</form>
+	</div>
+
+	<!-- 画像登録フォーム -->
+<!-- 	<div class="file_wrapper">
+		<form method="post" th:action="@{image/register}" enctype="multipart/form-data" onsubmit="return check()" name="file">
+			<input type="hidden" th:value="${place_id}" th:name="place_id">
+			<p th:text="${place_name}"></p>
+			<input type="file" th:value="${files}" th:name="files" accept="image/jpeg" multiple>
+			<input type="submit" value="登録">
+		</form>
+	</div> -->
 </div>
-<div id="canvasBox">
-</div>
+<div id="canvasBox"></div>
 
 </body>
 </html>

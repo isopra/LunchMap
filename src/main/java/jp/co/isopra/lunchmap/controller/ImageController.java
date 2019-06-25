@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -61,6 +62,7 @@ public class ImageController {
 	// 登録処理
 	@RequestMapping(value="create/image/register", method = RequestMethod.POST)
 	String upload(
+			Image image,
 			ModelAndView mav,
 			@RequestParam List<MultipartFile> files,
 			@RequestParam String place_id,
@@ -68,7 +70,9 @@ public class ImageController {
 			@AuthenticationPrincipal AccountDetails accountDetails
 			)
 	{
+
 		String place_name = conditionSession.getPlacename();
+		List<Long> imageIds = new ArrayList<Long>();
 
 		for(MultipartFile file : files) {
 
@@ -98,39 +102,40 @@ public class ImageController {
 
 			imageRepository.save(entity);
 
+			// image_idを取得
+			final long generatedImageld = entity.getImage_id();
+			imageIds.add(generatedImageld);
 
-			// 画像をフォルダに保存
-			savefiles(files, place_id);
 		}
+		// 画像をフォルダに保存
+		savefiles(files, place_id, imageIds);
 
 		return "redirect:/shopinfo/" + place_id;
 	}
 
-	/* 保存場所の指定 ToDo:ここでファイル名を変える*/
-    private void savefile(MultipartFile file, String place_id) {
+	// 保存場所の指定とファイル名の変更
+    private void savefile(MultipartFile file, String place_id, Long generatedImageld) {
 
-    	String filename = file.getOriginalFilename();
-
-
-    	Path uploadfile = Paths.get("images/" + place_id + "/" + filename);
+    	Path uploadfile = Paths.get("images/" + place_id + "/" + place_id + "_" +  generatedImageld  + ".jpg");
 
     	try (OutputStream os = Files.newOutputStream(uploadfile, StandardOpenOption.CREATE)) {
     		byte[] bytes = file.getBytes();
     		os.write(bytes);
     	} catch (IIOException e) {
-    		// エラー処理は省略
     	} catch (IOException e1) {
-    		// TODO 自動生成された catch ブロック
     		e1.printStackTrace();
     	}
     }
 
-    // ファイルを保存 TODO：ここで繰り返し処理
-    private void savefiles(List<MultipartFile> multipartFiles, String place_id) {
+    // ファイルを保存
+    private void savefiles(List<MultipartFile> multipartFiles, String place_id, List<Long> imageIds) {
     	createDirectory(place_id);
+    	int i = 0;
+
     	for (MultipartFile file : multipartFiles)
     	{
-    		savefile(file, place_id);
+    		savefile(file, place_id, imageIds.get(i));
+    		i++;
     	}
     }
 
@@ -157,7 +162,7 @@ public class ImageController {
 
 	}
 
-	// 戻るボタン TODO:前のページに戻るようにする
+	// 戻るボタン
 	@RequestMapping(value = "/shopinfo", method = RequestMethod.POST)
 		public String previous(
 				ModelAndView mav,
