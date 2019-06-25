@@ -104,7 +104,8 @@ public class MemberRegistrationController {
 				@RequestParam String login_id,
 				@RequestParam String password,
 				@RequestParam String nickname,
-				@RequestParam(defaultValue = "off") String admin_flag)
+				@RequestParam(defaultValue = "off") String admin_flag,
+				Model model)
 		{
 			Member entity = new Member();
 
@@ -120,6 +121,7 @@ public class MemberRegistrationController {
 
 			service.updateMember(entity, true);
 
-			return "menu";
+			model.addAttribute("allMembers", service.findAllMembers());
+			return "memberManager";
 		}
 }
