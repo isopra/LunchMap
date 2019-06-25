@@ -1,15 +1,23 @@
 $(function () {
     $(document).ready(function () {
+        // 日本語化
+        // $.extend( $.fn.dataTable.defaults, {
+        //     language: {
+        //         url: "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Japanese.json"
+        //     }
+        // });
+
         var table = $('#table').DataTable({
             lengthChange: false,
-            searching: true,
-            ordering: true,
-            info: false,
-            paging: true,
-            columnDefs: [
-                {targets: [0, 1], width: 50}
-            ]
-
+            // searching: true,
+            // // ordering: true,
+            // info: true,
+            // paging: true,
+            // columnDefs: [
+            //     {targets: [0, 1], width: 50}
+            // ],
+            // jQueryUI: true,
+            // autoWidth: true,
         });
 
         $('#table tbody').on('click', 'tr', function () {
@@ -17,19 +25,15 @@ $(function () {
 
             $('input:hidden[name="login_id"]').val(data[0]);
             $('#form').submit();
-
-            // var token = $("meta[name='_csrf']").attr("content");
-            // var header = $("meta[name='_csrf_header']").attr("content");
-            // $(document).ajaxSend(function(e, xhr, options) {
-            //     xhr.setRequestHeader(header, token);
-            // });
-            //
-            // $.ajax({
-            //     type: "POST",
-            //     dataType: "json",
-            //     url: "/member/edit_by_manager",
-            //     data: {"id": data[0]}
-            // })
-        })
+        });
     });
+});
+
+$(window).on("load resize", function () {
+    console.log(window.innerWidth);
+    if (window.innerWidth <= 1280) {
+        $("#table").addClass("table-sm");
+    }else {
+        $("#table").removeClass("table-sm");
+    }
 });
