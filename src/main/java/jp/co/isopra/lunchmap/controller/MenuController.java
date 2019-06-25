@@ -49,7 +49,7 @@ public class MenuController {
 		return "memberManager";
 	}
 
-	//indexページ削除に伴う
+	//indexページ削除に伴う / へのアクセス
 	@RequestMapping("/")
 	public String showIndex() {
 		return "menu";

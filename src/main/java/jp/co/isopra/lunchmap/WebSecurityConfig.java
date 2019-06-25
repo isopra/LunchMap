@@ -34,7 +34,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
         .antMatchers("/member/register", "/login", "/authenticate", "/error", "/member/register/result", "/css/**", "/js/**", "/images/**").permitAll()
         .antMatchers("/menu/member_manager").hasRole("ADMIN")
-//        .antMatchers("/**").hasRole("MEMBER") // 権限によるアクセス範囲の制御。
         .anyRequest().authenticated()
         .and()
         .formLogin() //ログインページを指定、だれでもアクセス可。

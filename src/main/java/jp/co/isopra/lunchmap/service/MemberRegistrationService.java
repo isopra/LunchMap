@@ -51,16 +51,6 @@ public class MemberRegistrationService {
 		memberRepository.flush();
 		tx.commit();
 		return entity;
-
-//		return memberRepository.save(entity);
-
-
-
-//		// DEBUG テーブル内データの確認
-//		java.lang.System.out.println("<MEMBER TABLE>");
-//		for(Member mem : memberRepository.findAll()) {
-//			java.lang.System.out.println(mem.getLogin_id() + "/" + mem.getPassword());
-//		}
 	}
 
 	//メンバー情報のアップデート
@@ -72,17 +62,17 @@ public class MemberRegistrationService {
 		EntityManager manager = factory.createEntityManager();
 		EntityTransaction tx = manager.getTransaction();
 		tx.begin();
-		Member member2 =  manager.find(Member.class, member.getLogin_id());
-		member2.setNickname(member.getNickname());
-		member2.setPassword(member.getPassword());
-		
+		Member org =  manager.find(Member.class, member.getLogin_id());
+		org.setNickname(member.getNickname());
+		org.setPassword(member.getPassword());
+
 		if (is_edit_by_administrator) {
-			member2.setAdmin_flag(member.isAdmin_flag());
+			org.setAdmin_flag(member.isAdmin_flag());
 		}
-	
+
 		memberRepository.flush();
 		tx.commit();
-		return member2;
+		return org;
 	}
 
 	/**
