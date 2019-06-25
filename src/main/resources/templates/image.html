@@ -110,19 +110,6 @@
     </script>
 </head>
 <body>
-    <!-- 画像登録フォーム -->
-    <div>
-        <form method="post" th:action="@{image/register}" enctype="multipart/form-data"
-              name="file" id="form">
-            <input type="hidden" th:value="${place_id}" th:name="place_id">
-            <p th:text="${place_name}"></p>
-            <input type="file" th:value="${files}" name="files" accept="image/*" multiple id="fileList" onsubmit="check()">
-
-            <input type="submit" value="登録">
-
-        </form>
-    </div>
-
 <div class="img">
 	<h1>画像情報 登録</h1>
 	<!-- 戻るボタン -->
@@ -134,14 +121,18 @@
 	</div>
 
 	<!-- 画像登録フォーム -->
-<!-- 	<div class="file_wrapper">
-		<form method="post" th:action="@{image/register}" enctype="multipart/form-data" onsubmit="return check()" name="file">
+	<div class="file_wrapper">
+		<div class="register">
+			<form method="post" th:action="@{image/register}" enctype="multipart/form-data" onsubmit="return check()" name="file">
 			<input type="hidden" th:value="${place_id}" th:name="place_id">
 			<p th:text="${place_name}"></p>
-			<input type="file" th:value="${files}" th:name="files" accept="image/jpeg" multiple>
-			<input type="submit" value="登録">
-		</form>
-	</div> -->
+			<input type="file" th:value="${files}" th:name="files" name="upload" accept="image/jpeg" multiple>
+			<div class="register_btn">
+				<p><input type="submit" value="登録" class="btn-square-toy"></p>
+			</div>
+			</form>
+		</div>
+	</div>
 </div>
 <div id="canvasBox"></div>
 
