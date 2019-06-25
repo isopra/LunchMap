@@ -34,9 +34,6 @@ public class MemberRegistrationController {
 			@RequestParam String password,
 			@RequestParam String nickname, HttpServletRequest request, Model model) {
 
-//		// DEBUG parameter出力
-//		java.lang.System.out.println("member regist:" + login_id + "/" + password + "/" + nickname);
-
 		//memberテーブルにinsertする時の引数。
 		Member entity = new Member();
 
@@ -52,6 +49,7 @@ public class MemberRegistrationController {
 			return "memberRegister";
 		}
 
+		//登録完了後自動でログインさせる
 		try {
 			request.login(login_id, password);
 			return "redirect:/menu";
@@ -86,7 +84,7 @@ public class MemberRegistrationController {
 		return "menu";
 	}
 
-	//メンバー管理からのアカウント情報編集
+	//メンバー管理からのアカウント情報編集画面表示
 	@RequestMapping(value = "/member/edit_by_manager", method = RequestMethod.POST)
 	public String editMemberByManager(@RequestParam String login_id, Model model) {
 		Member member = service.findMember(login_id);
@@ -113,6 +111,7 @@ public class MemberRegistrationController {
 			entity.setPassword(password);
 			entity.setNickname(nickname);
 
+			//checkboxのvalueで分岐
 			if (admin_flag.equals("on")) {
 				entity.setAdmin_flag(true);
 			}else {
